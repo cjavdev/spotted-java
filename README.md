@@ -39,8 +39,8 @@ import com.spotted.api.client.okhttp.SpottedOkHttpClient;
 import com.spotted.api.models.albums.AlbumRetrieveParams;
 import com.spotted.api.models.albums.AlbumRetrieveResponse;
 
-// Configures using the `spotted.spotifyClientId`, `spotted.spotifyClientSecret` and `spotted.baseUrl` system properties
-// Or configures using the `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET` and `SPOTTED_BASE_URL` environment variables
+// Configures using the `spotted.spotifyClientId`, `spotted.spotifyClientSecret`, `spotted.orgWebhookKey` and `spotted.baseUrl` system properties
+// Or configures using the `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET`, `ORG_WEBHOOK_KEY` and `SPOTTED_BASE_URL` environment variables
 SpottedClient client = SpottedOkHttpClient.fromEnv();
 
 AlbumRetrieveResponse album = client.albums().retrieve("4aawyAB9vmqN3uQ7FjRGTy");
@@ -54,8 +54,8 @@ Configure the client using system properties or environment variables:
 import com.spotted.api.client.SpottedClient;
 import com.spotted.api.client.okhttp.SpottedOkHttpClient;
 
-// Configures using the `spotted.spotifyClientId`, `spotted.spotifyClientSecret` and `spotted.baseUrl` system properties
-// Or configures using the `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET` and `SPOTTED_BASE_URL` environment variables
+// Configures using the `spotted.spotifyClientId`, `spotted.spotifyClientSecret`, `spotted.orgWebhookKey` and `spotted.baseUrl` system properties
+// Or configures using the `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET`, `ORG_WEBHOOK_KEY` and `SPOTTED_BASE_URL` environment variables
 SpottedClient client = SpottedOkHttpClient.fromEnv();
 ```
 
@@ -78,8 +78,8 @@ import com.spotted.api.client.SpottedClient;
 import com.spotted.api.client.okhttp.SpottedOkHttpClient;
 
 SpottedClient client = SpottedOkHttpClient.builder()
-    // Configures using the `spotted.spotifyClientId`, `spotted.spotifyClientSecret` and `spotted.baseUrl` system properties
-    // Or configures using the `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET` and `SPOTTED_BASE_URL` environment variables
+    // Configures using the `spotted.spotifyClientId`, `spotted.spotifyClientSecret`, `spotted.orgWebhookKey` and `spotted.baseUrl` system properties
+    // Or configures using the `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET`, `ORG_WEBHOOK_KEY` and `SPOTTED_BASE_URL` environment variables
     .fromEnv()
     .clientId("My Client ID")
     .build();
@@ -91,6 +91,7 @@ See this table for the available options:
 | -------------- | ----------------------------- | ----------------------- | -------- | ------------------------------ |
 | `clientId`     | `spotted.spotifyClientId`     | `SPOTIFY_CLIENT_ID`     | true     | -                              |
 | `clientSecret` | `spotted.spotifyClientSecret` | `SPOTIFY_CLIENT_SECRET` | true     | -                              |
+| `webhookKey`   | `spotted.orgWebhookKey`       | `ORG_WEBHOOK_KEY`       | false    | -                              |
 | `baseUrl`      | `spotted.baseUrl`             | `SPOTTED_BASE_URL`      | true     | `"https://api.spotify.com/v1"` |
 
 System properties take precedence over environment variables.
@@ -139,8 +140,8 @@ import com.spotted.api.models.albums.AlbumRetrieveParams;
 import com.spotted.api.models.albums.AlbumRetrieveResponse;
 import java.util.concurrent.CompletableFuture;
 
-// Configures using the `spotted.spotifyClientId`, `spotted.spotifyClientSecret` and `spotted.baseUrl` system properties
-// Or configures using the `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET` and `SPOTTED_BASE_URL` environment variables
+// Configures using the `spotted.spotifyClientId`, `spotted.spotifyClientSecret`, `spotted.orgWebhookKey` and `spotted.baseUrl` system properties
+// Or configures using the `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET`, `ORG_WEBHOOK_KEY` and `SPOTTED_BASE_URL` environment variables
 SpottedClient client = SpottedOkHttpClient.fromEnv();
 
 CompletableFuture<AlbumRetrieveResponse> album = client.async().albums().retrieve("4aawyAB9vmqN3uQ7FjRGTy");
@@ -155,8 +156,8 @@ import com.spotted.api.models.albums.AlbumRetrieveParams;
 import com.spotted.api.models.albums.AlbumRetrieveResponse;
 import java.util.concurrent.CompletableFuture;
 
-// Configures using the `spotted.spotifyClientId`, `spotted.spotifyClientSecret` and `spotted.baseUrl` system properties
-// Or configures using the `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET` and `SPOTTED_BASE_URL` environment variables
+// Configures using the `spotted.spotifyClientId`, `spotted.spotifyClientSecret`, `spotted.orgWebhookKey` and `spotted.baseUrl` system properties
+// Or configures using the `SPOTIFY_CLIENT_ID`, `SPOTIFY_CLIENT_SECRET`, `ORG_WEBHOOK_KEY` and `SPOTTED_BASE_URL` environment variables
 SpottedClientAsync client = SpottedOkHttpClientAsync.fromEnv();
 
 CompletableFuture<AlbumRetrieveResponse> album = client.albums().retrieve("4aawyAB9vmqN3uQ7FjRGTy");

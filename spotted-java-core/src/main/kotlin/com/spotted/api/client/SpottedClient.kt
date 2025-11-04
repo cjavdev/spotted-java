@@ -19,6 +19,7 @@ import com.spotted.api.services.blocking.SearchService
 import com.spotted.api.services.blocking.ShowService
 import com.spotted.api.services.blocking.TrackService
 import com.spotted.api.services.blocking.UserService
+import com.spotted.api.services.blocking.WebhookService
 import java.util.function.Consumer
 
 /**
@@ -87,6 +88,8 @@ interface SpottedClient {
 
     fun recommendations(): RecommendationService
 
+    fun webhooks(): WebhookService
+
     fun markets(): MarketService
 
     /**
@@ -141,6 +144,8 @@ interface SpottedClient {
         fun audioAnalysis(): AudioAnalysisService.WithRawResponse
 
         fun recommendations(): RecommendationService.WithRawResponse
+
+        fun webhooks(): WebhookService.WithRawResponse
 
         fun markets(): MarketService.WithRawResponse
     }

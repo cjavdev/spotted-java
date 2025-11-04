@@ -36,6 +36,8 @@ import com.spotted.api.services.async.TrackServiceAsync
 import com.spotted.api.services.async.TrackServiceAsyncImpl
 import com.spotted.api.services.async.UserServiceAsync
 import com.spotted.api.services.async.UserServiceAsyncImpl
+import com.spotted.api.services.async.WebhookServiceAsync
+import com.spotted.api.services.async.WebhookServiceAsyncImpl
 import java.util.function.Consumer
 
 class SpottedClientAsyncImpl(private val clientOptions: ClientOptions) : SpottedClientAsync {
@@ -109,6 +111,10 @@ class SpottedClientAsyncImpl(private val clientOptions: ClientOptions) : Spotted
         RecommendationServiceAsyncImpl(clientOptionsWithUserAgent)
     }
 
+    private val webhooks: WebhookServiceAsync by lazy {
+        WebhookServiceAsyncImpl(clientOptionsWithUserAgent)
+    }
+
     private val markets: MarketServiceAsync by lazy {
         MarketServiceAsyncImpl(clientOptionsWithUserAgent)
     }
@@ -149,6 +155,8 @@ class SpottedClientAsyncImpl(private val clientOptions: ClientOptions) : Spotted
     override fun audioAnalysis(): AudioAnalysisServiceAsync = audioAnalysis
 
     override fun recommendations(): RecommendationServiceAsync = recommendations
+
+    override fun webhooks(): WebhookServiceAsync = webhooks
 
     override fun markets(): MarketServiceAsync = markets
 
@@ -217,6 +225,10 @@ class SpottedClientAsyncImpl(private val clientOptions: ClientOptions) : Spotted
             RecommendationServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
 
+        private val webhooks: WebhookServiceAsync.WithRawResponse by lazy {
+            WebhookServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
         private val markets: MarketServiceAsync.WithRawResponse by lazy {
             MarketServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
@@ -257,6 +269,8 @@ class SpottedClientAsyncImpl(private val clientOptions: ClientOptions) : Spotted
         override fun audioAnalysis(): AudioAnalysisServiceAsync.WithRawResponse = audioAnalysis
 
         override fun recommendations(): RecommendationServiceAsync.WithRawResponse = recommendations
+
+        override fun webhooks(): WebhookServiceAsync.WithRawResponse = webhooks
 
         override fun markets(): MarketServiceAsync.WithRawResponse = markets
     }
