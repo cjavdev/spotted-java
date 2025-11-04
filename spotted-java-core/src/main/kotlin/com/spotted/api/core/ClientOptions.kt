@@ -110,6 +110,7 @@ private constructor(
     @get:JvmName("maxRetries") val maxRetries: Int,
     @get:JvmName("clientId") val clientId: String,
     @get:JvmName("clientSecret") val clientSecret: String,
+    private val webhookKey: String?,
 ) {
 
     init {
@@ -124,6 +125,8 @@ private constructor(
      * Defaults to the production environment: `https://api.spotify.com/v1`.
      */
     fun baseUrl(): String = baseUrl ?: PRODUCTION_URL
+
+    fun webhookKey(): Optional<String> = Optional.ofNullable(webhookKey)
 
     fun toBuilder() = Builder().from(this)
 
@@ -168,6 +171,7 @@ private constructor(
         private var maxRetries: Int = 2
         private var clientId: String? = null
         private var clientSecret: String? = null
+        private var webhookKey: String? = null
 
         @JvmSynthetic
         internal fun from(clientOptions: ClientOptions) = apply {
@@ -185,6 +189,7 @@ private constructor(
             maxRetries = clientOptions.maxRetries
             clientId = clientOptions.clientId
             clientSecret = clientOptions.clientSecret
+            webhookKey = clientOptions.webhookKey
         }
 
         /**
@@ -309,6 +314,11 @@ private constructor(
 
         fun clientSecret(clientSecret: String) = apply { this.clientSecret = clientSecret }
 
+        fun webhookKey(webhookKey: String?) = apply { this.webhookKey = webhookKey }
+
+        /** Alias for calling [Builder.webhookKey] with `webhookKey.orElse(null)`. */
+        fun webhookKey(webhookKey: Optional<String>) = webhookKey(webhookKey.getOrNull())
+
         fun headers(headers: Headers) = apply {
             this.headers.clear()
             putAllHeaders(headers)
@@ -400,6 +410,7 @@ private constructor(
          * |--------------|-----------------------------|-----------------------|--------|------------------------------|
          * |`clientId`    |`spotted.spotifyClientId`    |`SPOTIFY_CLIENT_ID`    |true    |-                             |
          * |`clientSecret`|`spotted.spotifyClientSecret`|`SPOTIFY_CLIENT_SECRET`|true    |-                             |
+         * |`webhookKey`  |`spotted.orgWebhookKey`      |`ORG_WEBHOOK_KEY`      |false   |-                             |
          * |`baseUrl`     |`spotted.baseUrl`            |`SPOTTED_BASE_URL`     |true    |`"https://api.spotify.com/v1"`|
          *
          * System properties take precedence over environment variables.
@@ -413,6 +424,9 @@ private constructor(
             (System.getProperty("spotted.spotifyClientSecret")
                     ?: System.getenv("SPOTIFY_CLIENT_SECRET"))
                 ?.let { clientSecret(it) }
+            (System.getProperty("spotted.orgWebhookKey") ?: System.getenv("ORG_WEBHOOK_KEY"))?.let {
+                webhookKey(it)
+            }
         }
 
         /**
@@ -502,6 +516,7 @@ private constructor(
                 maxRetries,
                 clientId,
                 clientSecret,
+                webhookKey,
             )
         }
     }

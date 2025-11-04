@@ -212,6 +212,11 @@ class SpottedOkHttpClient private constructor() {
 
         fun clientSecret(clientSecret: String) = apply { clientOptions.clientSecret(clientSecret) }
 
+        fun webhookKey(webhookKey: String?) = apply { clientOptions.webhookKey(webhookKey) }
+
+        /** Alias for calling [Builder.webhookKey] with `webhookKey.orElse(null)`. */
+        fun webhookKey(webhookKey: Optional<String>) = webhookKey(webhookKey.getOrNull())
+
         fun headers(headers: Headers) = apply { clientOptions.headers(headers) }
 
         fun headers(headers: Map<String, Iterable<String>>) = apply {
