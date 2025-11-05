@@ -6,8 +6,8 @@ import com.google.errorprone.annotations.MustBeClosed
 import com.spotted.api.core.ClientOptions
 import com.spotted.api.core.RequestOptions
 import com.spotted.api.core.http.HttpResponseFor
-import com.spotted.api.models.albums.AlbumListParams
-import com.spotted.api.models.albums.AlbumListResponse
+import com.spotted.api.models.albums.AlbumBulkRetrieveParams
+import com.spotted.api.models.albums.AlbumBulkRetrieveResponse
 import com.spotted.api.models.albums.AlbumListTracksPage
 import com.spotted.api.models.albums.AlbumListTracksParams
 import com.spotted.api.models.albums.AlbumRetrieveParams
@@ -59,13 +59,14 @@ interface AlbumService {
         retrieve(id, AlbumRetrieveParams.none(), requestOptions)
 
     /** Get Spotify catalog information for multiple albums identified by their Spotify IDs. */
-    fun list(params: AlbumListParams): AlbumListResponse = list(params, RequestOptions.none())
+    fun bulkRetrieve(params: AlbumBulkRetrieveParams): AlbumBulkRetrieveResponse =
+        bulkRetrieve(params, RequestOptions.none())
 
-    /** @see list */
-    fun list(
-        params: AlbumListParams,
+    /** @see bulkRetrieve */
+    fun bulkRetrieve(
+        params: AlbumBulkRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): AlbumListResponse
+    ): AlbumBulkRetrieveResponse
 
     /**
      * Get Spotify catalog information about an album’s tracks. Optional parameters can be used to
@@ -156,18 +157,19 @@ interface AlbumService {
 
         /**
          * Returns a raw HTTP response for `get /albums`, but is otherwise the same as
-         * [AlbumService.list].
+         * [AlbumService.bulkRetrieve].
          */
         @MustBeClosed
-        fun list(params: AlbumListParams): HttpResponseFor<AlbumListResponse> =
-            list(params, RequestOptions.none())
+        fun bulkRetrieve(
+            params: AlbumBulkRetrieveParams
+        ): HttpResponseFor<AlbumBulkRetrieveResponse> = bulkRetrieve(params, RequestOptions.none())
 
-        /** @see list */
+        /** @see bulkRetrieve */
         @MustBeClosed
-        fun list(
-            params: AlbumListParams,
+        fun bulkRetrieve(
+            params: AlbumBulkRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<AlbumListResponse>
+        ): HttpResponseFor<AlbumBulkRetrieveResponse>
 
         /**
          * Returns a raw HTTP response for `get /albums/{id}/tracks`, but is otherwise the same as

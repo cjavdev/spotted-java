@@ -11,7 +11,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /** Get Spotify catalog information for multiple albums identified by their Spotify IDs. */
-class AlbumListParams
+class AlbumBulkRetrieveParams
 private constructor(
     private val ids: String,
     private val market: String?,
@@ -47,7 +47,7 @@ private constructor(
     companion object {
 
         /**
-         * Returns a mutable builder for constructing an instance of [AlbumListParams].
+         * Returns a mutable builder for constructing an instance of [AlbumBulkRetrieveParams].
          *
          * The following fields are required:
          * ```java
@@ -57,7 +57,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
-    /** A builder for [AlbumListParams]. */
+    /** A builder for [AlbumBulkRetrieveParams]. */
     class Builder internal constructor() {
 
         private var ids: String? = null
@@ -66,11 +66,11 @@ private constructor(
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
         @JvmSynthetic
-        internal fun from(albumListParams: AlbumListParams) = apply {
-            ids = albumListParams.ids
-            market = albumListParams.market
-            additionalHeaders = albumListParams.additionalHeaders.toBuilder()
-            additionalQueryParams = albumListParams.additionalQueryParams.toBuilder()
+        internal fun from(albumBulkRetrieveParams: AlbumBulkRetrieveParams) = apply {
+            ids = albumBulkRetrieveParams.ids
+            market = albumBulkRetrieveParams.market
+            additionalHeaders = albumBulkRetrieveParams.additionalHeaders.toBuilder()
+            additionalQueryParams = albumBulkRetrieveParams.additionalQueryParams.toBuilder()
         }
 
         /**
@@ -193,7 +193,7 @@ private constructor(
         }
 
         /**
-         * Returns an immutable instance of [AlbumListParams].
+         * Returns an immutable instance of [AlbumBulkRetrieveParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
          *
@@ -204,8 +204,8 @@ private constructor(
          *
          * @throws IllegalStateException if any required field is unset.
          */
-        fun build(): AlbumListParams =
-            AlbumListParams(
+        fun build(): AlbumBulkRetrieveParams =
+            AlbumBulkRetrieveParams(
                 checkRequired("ids", ids),
                 market,
                 additionalHeaders.build(),
@@ -229,7 +229,7 @@ private constructor(
             return true
         }
 
-        return other is AlbumListParams &&
+        return other is AlbumBulkRetrieveParams &&
             ids == other.ids &&
             market == other.market &&
             additionalHeaders == other.additionalHeaders &&
@@ -240,5 +240,5 @@ private constructor(
         Objects.hash(ids, market, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
-        "AlbumListParams{ids=$ids, market=$market, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "AlbumBulkRetrieveParams{ids=$ids, market=$market, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }
