@@ -5,8 +5,8 @@ package com.spotted.api.services.async
 import com.spotted.api.core.ClientOptions
 import com.spotted.api.core.RequestOptions
 import com.spotted.api.core.http.HttpResponseFor
-import com.spotted.api.models.albums.AlbumListParams
-import com.spotted.api.models.albums.AlbumListResponse
+import com.spotted.api.models.albums.AlbumBulkRetrieveParams
+import com.spotted.api.models.albums.AlbumBulkRetrieveResponse
 import com.spotted.api.models.albums.AlbumListTracksPageAsync
 import com.spotted.api.models.albums.AlbumListTracksParams
 import com.spotted.api.models.albums.AlbumRetrieveParams
@@ -64,14 +64,15 @@ interface AlbumServiceAsync {
         retrieve(id, AlbumRetrieveParams.none(), requestOptions)
 
     /** Get Spotify catalog information for multiple albums identified by their Spotify IDs. */
-    fun list(params: AlbumListParams): CompletableFuture<AlbumListResponse> =
-        list(params, RequestOptions.none())
+    fun bulkRetrieve(
+        params: AlbumBulkRetrieveParams
+    ): CompletableFuture<AlbumBulkRetrieveResponse> = bulkRetrieve(params, RequestOptions.none())
 
-    /** @see list */
-    fun list(
-        params: AlbumListParams,
+    /** @see bulkRetrieve */
+    fun bulkRetrieve(
+        params: AlbumBulkRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<AlbumListResponse>
+    ): CompletableFuture<AlbumBulkRetrieveResponse>
 
     /**
      * Get Spotify catalog information about an album’s tracks. Optional parameters can be used to
@@ -166,16 +167,18 @@ interface AlbumServiceAsync {
 
         /**
          * Returns a raw HTTP response for `get /albums`, but is otherwise the same as
-         * [AlbumServiceAsync.list].
+         * [AlbumServiceAsync.bulkRetrieve].
          */
-        fun list(params: AlbumListParams): CompletableFuture<HttpResponseFor<AlbumListResponse>> =
-            list(params, RequestOptions.none())
+        fun bulkRetrieve(
+            params: AlbumBulkRetrieveParams
+        ): CompletableFuture<HttpResponseFor<AlbumBulkRetrieveResponse>> =
+            bulkRetrieve(params, RequestOptions.none())
 
-        /** @see list */
-        fun list(
-            params: AlbumListParams,
+        /** @see bulkRetrieve */
+        fun bulkRetrieve(
+            params: AlbumBulkRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<AlbumListResponse>>
+        ): CompletableFuture<HttpResponseFor<AlbumBulkRetrieveResponse>>
 
         /**
          * Returns a raw HTTP response for `get /albums/{id}/tracks`, but is otherwise the same as

@@ -15,8 +15,8 @@ import com.spotted.api.core.http.HttpResponse.Handler
 import com.spotted.api.core.http.HttpResponseFor
 import com.spotted.api.core.http.parseable
 import com.spotted.api.core.prepareAsync
-import com.spotted.api.models.albums.AlbumListParams
-import com.spotted.api.models.albums.AlbumListResponse
+import com.spotted.api.models.albums.AlbumBulkRetrieveParams
+import com.spotted.api.models.albums.AlbumBulkRetrieveResponse
 import com.spotted.api.models.albums.AlbumListTracksPageAsync
 import com.spotted.api.models.albums.AlbumListTracksPageResponse
 import com.spotted.api.models.albums.AlbumListTracksParams
@@ -45,12 +45,12 @@ class AlbumServiceAsyncImpl internal constructor(private val clientOptions: Clie
         // get /albums/{id}
         withRawResponse().retrieve(params, requestOptions).thenApply { it.parse() }
 
-    override fun list(
-        params: AlbumListParams,
+    override fun bulkRetrieve(
+        params: AlbumBulkRetrieveParams,
         requestOptions: RequestOptions,
-    ): CompletableFuture<AlbumListResponse> =
+    ): CompletableFuture<AlbumBulkRetrieveResponse> =
         // get /albums
-        withRawResponse().list(params, requestOptions).thenApply { it.parse() }
+        withRawResponse().bulkRetrieve(params, requestOptions).thenApply { it.parse() }
 
     override fun listTracks(
         params: AlbumListTracksParams,
@@ -105,13 +105,13 @@ class AlbumServiceAsyncImpl internal constructor(private val clientOptions: Clie
                 }
         }
 
-        private val listHandler: Handler<AlbumListResponse> =
-            jsonHandler<AlbumListResponse>(clientOptions.jsonMapper)
+        private val bulkRetrieveHandler: Handler<AlbumBulkRetrieveResponse> =
+            jsonHandler<AlbumBulkRetrieveResponse>(clientOptions.jsonMapper)
 
-        override fun list(
-            params: AlbumListParams,
+        override fun bulkRetrieve(
+            params: AlbumBulkRetrieveParams,
             requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<AlbumListResponse>> {
+        ): CompletableFuture<HttpResponseFor<AlbumBulkRetrieveResponse>> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -125,7 +125,7 @@ class AlbumServiceAsyncImpl internal constructor(private val clientOptions: Clie
                 .thenApply { response ->
                     errorHandler.handle(response).parseable {
                         response
-                            .use { listHandler.handle(it) }
+                            .use { bulkRetrieveHandler.handle(it) }
                             .also {
                                 if (requestOptions.responseValidation!!) {
                                     it.validate()
