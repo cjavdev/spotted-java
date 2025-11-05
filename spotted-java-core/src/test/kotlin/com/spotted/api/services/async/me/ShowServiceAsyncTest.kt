@@ -63,14 +63,7 @@ internal class ShowServiceAsyncTest {
                 .build()
         val showServiceAsync = client.me().shows()
 
-        val future =
-            showServiceAsync.remove(
-                ShowRemoveParams.builder()
-                    .queryIds("5CfCWKI5pZ28U0uOzXkDHe,5as3aKmN2k11yfDDDSrvaZ")
-                    .market("ES")
-                    .addBodyId("string")
-                    .build()
-            )
+        val future = showServiceAsync.remove(ShowRemoveParams.builder().addId("string").build())
 
         val response = future.get()
     }
@@ -86,13 +79,7 @@ internal class ShowServiceAsyncTest {
                 .build()
         val showServiceAsync = client.me().shows()
 
-        val future =
-            showServiceAsync.save(
-                ShowSaveParams.builder()
-                    .queryIds("5CfCWKI5pZ28U0uOzXkDHe,5as3aKmN2k11yfDDDSrvaZ")
-                    .addBodyId("string")
-                    .build()
-            )
+        val future = showServiceAsync.save(ShowSaveParams.builder().addId("string").build())
 
         val response = future.get()
     }

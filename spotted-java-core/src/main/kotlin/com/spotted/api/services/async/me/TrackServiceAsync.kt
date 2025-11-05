@@ -60,14 +60,21 @@ interface TrackServiceAsync {
     ): CompletableFuture<List<Boolean>>
 
     /** Remove one or more tracks from the current user's 'Your Music' library. */
-    fun remove(params: TrackRemoveParams): CompletableFuture<Void?> =
-        remove(params, RequestOptions.none())
+    fun remove(): CompletableFuture<Void?> = remove(TrackRemoveParams.none())
 
     /** @see remove */
     fun remove(
-        params: TrackRemoveParams,
+        params: TrackRemoveParams = TrackRemoveParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Void?>
+
+    /** @see remove */
+    fun remove(params: TrackRemoveParams = TrackRemoveParams.none()): CompletableFuture<Void?> =
+        remove(params, RequestOptions.none())
+
+    /** @see remove */
+    fun remove(requestOptions: RequestOptions): CompletableFuture<Void?> =
+        remove(TrackRemoveParams.none(), requestOptions)
 
     /** Save one or more tracks to the current user's 'Your Music' library. */
     fun save(params: TrackSaveParams): CompletableFuture<Void?> =
@@ -133,14 +140,22 @@ interface TrackServiceAsync {
          * Returns a raw HTTP response for `delete /me/tracks`, but is otherwise the same as
          * [TrackServiceAsync.remove].
          */
-        fun remove(params: TrackRemoveParams): CompletableFuture<HttpResponse> =
-            remove(params, RequestOptions.none())
+        fun remove(): CompletableFuture<HttpResponse> = remove(TrackRemoveParams.none())
 
         /** @see remove */
         fun remove(
-            params: TrackRemoveParams,
+            params: TrackRemoveParams = TrackRemoveParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponse>
+
+        /** @see remove */
+        fun remove(
+            params: TrackRemoveParams = TrackRemoveParams.none()
+        ): CompletableFuture<HttpResponse> = remove(params, RequestOptions.none())
+
+        /** @see remove */
+        fun remove(requestOptions: RequestOptions): CompletableFuture<HttpResponse> =
+            remove(TrackRemoveParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `put /me/tracks`, but is otherwise the same as

@@ -73,15 +73,7 @@ internal class FollowingServiceAsyncTest {
         val followingServiceAsync = client.me().following()
 
         val future =
-            followingServiceAsync.follow(
-                FollowingFollowParams.builder()
-                    .queryIds(
-                        "2CIMQHirSU0MQqyYHq0eOx,57dN52uHvrHOxijzpIgu3E,1vCWHaC5f2uS3yhpwWbIA6"
-                    )
-                    .type(FollowingFollowParams.Type.ARTIST)
-                    .addBodyId("string")
-                    .build()
-            )
+            followingServiceAsync.follow(FollowingFollowParams.builder().addId("string").build())
 
         val response = future.get()
     }
@@ -99,13 +91,7 @@ internal class FollowingServiceAsyncTest {
 
         val future =
             followingServiceAsync.unfollow(
-                FollowingUnfollowParams.builder()
-                    .queryIds(
-                        "2CIMQHirSU0MQqyYHq0eOx,57dN52uHvrHOxijzpIgu3E,1vCWHaC5f2uS3yhpwWbIA6"
-                    )
-                    .type(FollowingUnfollowParams.Type.ARTIST)
-                    .addBodyId("string")
-                    .build()
+                FollowingUnfollowParams.builder().addId("string").build()
             )
 
         val response = future.get()

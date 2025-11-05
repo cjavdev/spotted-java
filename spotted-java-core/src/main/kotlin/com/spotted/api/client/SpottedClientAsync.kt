@@ -19,7 +19,6 @@ import com.spotted.api.services.async.SearchServiceAsync
 import com.spotted.api.services.async.ShowServiceAsync
 import com.spotted.api.services.async.TrackServiceAsync
 import com.spotted.api.services.async.UserServiceAsync
-import com.spotted.api.services.async.WebhookServiceAsync
 import java.util.function.Consumer
 
 /**
@@ -88,8 +87,6 @@ interface SpottedClientAsync {
 
     fun recommendations(): RecommendationServiceAsync
 
-    fun webhooks(): WebhookServiceAsync
-
     fun markets(): MarketServiceAsync
 
     /**
@@ -148,8 +145,6 @@ interface SpottedClientAsync {
         fun audioAnalysis(): AudioAnalysisServiceAsync.WithRawResponse
 
         fun recommendations(): RecommendationServiceAsync.WithRawResponse
-
-        fun webhooks(): WebhookServiceAsync.WithRawResponse
 
         fun markets(): MarketServiceAsync.WithRawResponse
     }

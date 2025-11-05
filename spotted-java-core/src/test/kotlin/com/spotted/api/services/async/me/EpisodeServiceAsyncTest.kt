@@ -64,14 +64,7 @@ internal class EpisodeServiceAsyncTest {
         val episodeServiceAsync = client.me().episodes()
 
         val future =
-            episodeServiceAsync.remove(
-                EpisodeRemoveParams.builder()
-                    .queryIds(
-                        "7ouMYWpwJ422jRcDASZB7P,4VqPOruhp5EdPBeR92t6lQ,2takcwOaAZWiXQijPHIx7B"
-                    )
-                    .addBodyId("string")
-                    .build()
-            )
+            episodeServiceAsync.remove(EpisodeRemoveParams.builder().addId("string").build())
 
         val response = future.get()
     }
@@ -87,13 +80,7 @@ internal class EpisodeServiceAsyncTest {
                 .build()
         val episodeServiceAsync = client.me().episodes()
 
-        val future =
-            episodeServiceAsync.save(
-                EpisodeSaveParams.builder()
-                    .queryIds("77o6BIVlYM3msb4MMIL1jH,0Q86acNRm6V9GYx55SXKwf")
-                    .addBodyId("string")
-                    .build()
-            )
+        val future = episodeServiceAsync.save(EpisodeSaveParams.builder().addId("string").build())
 
         val response = future.get()
     }

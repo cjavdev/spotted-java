@@ -57,13 +57,21 @@ interface FollowingService {
     )
 
     /** Remove the current user as a follower of one or more artists or other Spotify users. */
-    fun unfollow(params: FollowingUnfollowParams) = unfollow(params, RequestOptions.none())
+    fun unfollow() = unfollow(FollowingUnfollowParams.none())
 
     /** @see unfollow */
     fun unfollow(
-        params: FollowingUnfollowParams,
+        params: FollowingUnfollowParams = FollowingUnfollowParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     )
+
+    /** @see unfollow */
+    fun unfollow(params: FollowingUnfollowParams = FollowingUnfollowParams.none()) =
+        unfollow(params, RequestOptions.none())
+
+    /** @see unfollow */
+    fun unfollow(requestOptions: RequestOptions) =
+        unfollow(FollowingUnfollowParams.none(), requestOptions)
 
     /** A view of [FollowingService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
@@ -124,15 +132,24 @@ interface FollowingService {
          * Returns a raw HTTP response for `delete /me/following`, but is otherwise the same as
          * [FollowingService.unfollow].
          */
-        @MustBeClosed
-        fun unfollow(params: FollowingUnfollowParams): HttpResponse =
-            unfollow(params, RequestOptions.none())
+        @MustBeClosed fun unfollow(): HttpResponse = unfollow(FollowingUnfollowParams.none())
 
         /** @see unfollow */
         @MustBeClosed
         fun unfollow(
-            params: FollowingUnfollowParams,
+            params: FollowingUnfollowParams = FollowingUnfollowParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponse
+
+        /** @see unfollow */
+        @MustBeClosed
+        fun unfollow(
+            params: FollowingUnfollowParams = FollowingUnfollowParams.none()
+        ): HttpResponse = unfollow(params, RequestOptions.none())
+
+        /** @see unfollow */
+        @MustBeClosed
+        fun unfollow(requestOptions: RequestOptions): HttpResponse =
+            unfollow(FollowingUnfollowParams.none(), requestOptions)
     }
 }

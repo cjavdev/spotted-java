@@ -25,8 +25,6 @@ import kotlin.jvm.optionals.getOrNull
 class TrackAddParams
 private constructor(
     private val playlistId: String?,
-    private val queryPosition: Long?,
-    private val queryUris: String?,
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
@@ -34,26 +32,6 @@ private constructor(
 
     /** The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the playlist. */
     fun playlistId(): Optional<String> = Optional.ofNullable(playlistId)
-
-    /**
-     * The position to insert the items, a zero-based index. For example, to insert the items in the
-     * first position: `position=0`; to insert the items in the third position: `position=2`. If
-     * omitted, the items will be appended to the playlist. Items are added in the order they are
-     * listed in the query string or request body.
-     */
-    fun queryPosition(): Optional<Long> = Optional.ofNullable(queryPosition)
-
-    /**
-     * A comma-separated list of [Spotify URIs](/documentation/web-api/concepts/spotify-uris-ids) to
-     * add, can be track or episode URIs. For
-     * example:<br/>`uris=spotify:track:4iV5W9uYEdYUVa79Axb7Rh,
-     * spotify:track:1301WleyT98MSxVHPZCA6M, spotify:episode:512ojhOuo1ktJprKbVcKyQ`<br/>A maximum
-     * of 100 items can be added in one request. <br/> _**Note**: it is likely that passing a large
-     * number of item URIs as a query parameter will exceed the maximum length of the request URI.
-     * When adding a large number of items, it is recommended to pass them in the request body, see
-     * below._
-     */
-    fun queryUris(): Optional<String> = Optional.ofNullable(queryUris)
 
     /**
      * The position to insert the items, a zero-based index. For example, to insert the items in the
@@ -66,7 +44,7 @@ private constructor(
      * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun bodyPosition(): Optional<Long> = body.bodyPosition()
+    fun position(): Optional<Long> = body.position()
 
     /**
      * A JSON array of the [Spotify URIs](/documentation/web-api/concepts/spotify-uris-ids) to add.
@@ -78,21 +56,21 @@ private constructor(
      * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun bodyUris(): Optional<List<String>> = body.bodyUris()
+    fun uris(): Optional<List<String>> = body.uris()
 
     /**
-     * Returns the raw JSON value of [bodyPosition].
+     * Returns the raw JSON value of [position].
      *
-     * Unlike [bodyPosition], this method doesn't throw if the JSON field has an unexpected type.
+     * Unlike [position], this method doesn't throw if the JSON field has an unexpected type.
      */
-    fun _bodyPosition(): JsonField<Long> = body._bodyPosition()
+    fun _position(): JsonField<Long> = body._position()
 
     /**
-     * Returns the raw JSON value of [bodyUris].
+     * Returns the raw JSON value of [uris].
      *
-     * Unlike [bodyUris], this method doesn't throw if the JSON field has an unexpected type.
+     * Unlike [uris], this method doesn't throw if the JSON field has an unexpected type.
      */
-    fun _bodyUris(): JsonField<List<String>> = body._bodyUris()
+    fun _uris(): JsonField<List<String>> = body._uris()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
@@ -116,8 +94,6 @@ private constructor(
     class Builder internal constructor() {
 
         private var playlistId: String? = null
-        private var queryPosition: Long? = null
-        private var queryUris: String? = null
         private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
@@ -125,8 +101,6 @@ private constructor(
         @JvmSynthetic
         internal fun from(trackAddParams: TrackAddParams) = apply {
             playlistId = trackAddParams.playlistId
-            queryPosition = trackAddParams.queryPosition
-            queryUris = trackAddParams.queryUris
             body = trackAddParams.body.toBuilder()
             additionalHeaders = trackAddParams.additionalHeaders.toBuilder()
             additionalQueryParams = trackAddParams.additionalQueryParams.toBuilder()
@@ -139,45 +113,12 @@ private constructor(
         fun playlistId(playlistId: Optional<String>) = playlistId(playlistId.getOrNull())
 
         /**
-         * The position to insert the items, a zero-based index. For example, to insert the items in
-         * the first position: `position=0`; to insert the items in the third position:
-         * `position=2`. If omitted, the items will be appended to the playlist. Items are added in
-         * the order they are listed in the query string or request body.
-         */
-        fun queryPosition(queryPosition: Long?) = apply { this.queryPosition = queryPosition }
-
-        /**
-         * Alias for [Builder.queryPosition].
-         *
-         * This unboxed primitive overload exists for backwards compatibility.
-         */
-        fun queryPosition(queryPosition: Long) = queryPosition(queryPosition as Long?)
-
-        /** Alias for calling [Builder.queryPosition] with `queryPosition.orElse(null)`. */
-        fun queryPosition(queryPosition: Optional<Long>) = queryPosition(queryPosition.getOrNull())
-
-        /**
-         * A comma-separated list of
-         * [Spotify URIs](/documentation/web-api/concepts/spotify-uris-ids) to add, can be track or
-         * episode URIs. For example:<br/>`uris=spotify:track:4iV5W9uYEdYUVa79Axb7Rh,
-         * spotify:track:1301WleyT98MSxVHPZCA6M, spotify:episode:512ojhOuo1ktJprKbVcKyQ`<br/>A
-         * maximum of 100 items can be added in one request. <br/> _**Note**: it is likely that
-         * passing a large number of item URIs as a query parameter will exceed the maximum length
-         * of the request URI. When adding a large number of items, it is recommended to pass them
-         * in the request body, see below._
-         */
-        fun queryUris(queryUris: String?) = apply { this.queryUris = queryUris }
-
-        /** Alias for calling [Builder.queryUris] with `queryUris.orElse(null)`. */
-        fun queryUris(queryUris: Optional<String>) = queryUris(queryUris.getOrNull())
-
-        /**
          * Sets the entire request body.
          *
          * This is generally only useful if you are already constructing the body separately.
          * Otherwise, it's more convenient to use the top-level setters instead:
-         * - [bodyPosition]
-         * - [bodyUris]
+         * - [position]
+         * - [uris]
          */
         fun body(body: Body) = apply { this.body = body.toBuilder() }
 
@@ -189,16 +130,15 @@ private constructor(
          * ["spotify:track:4iV5W9uYEdYUVa79Axb7Rh","spotify:track:1301WleyT98MSxVHPZCA6M"],
          * "position": 3}`
          */
-        fun bodyPosition(bodyPosition: Long) = apply { body.bodyPosition(bodyPosition) }
+        fun position(position: Long) = apply { body.position(position) }
 
         /**
-         * Sets [Builder.bodyPosition] to an arbitrary JSON value.
+         * Sets [Builder.position] to an arbitrary JSON value.
          *
-         * You should usually call [Builder.bodyPosition] with a well-typed [Long] value instead.
-         * This method is primarily for setting the field to an undocumented or not yet supported
-         * value.
+         * You should usually call [Builder.position] with a well-typed [Long] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun bodyPosition(bodyPosition: JsonField<Long>) = apply { body.bodyPosition(bodyPosition) }
+        fun position(position: JsonField<Long>) = apply { body.position(position) }
 
         /**
          * A JSON array of the [Spotify URIs](/documentation/web-api/concepts/spotify-uris-ids) to
@@ -207,23 +147,23 @@ private constructor(
          * maximum of 100 items can be added in one request. _**Note**: if the `uris` parameter is
          * present in the query string, any URIs listed here in the body will be ignored._
          */
-        fun bodyUris(bodyUris: List<String>) = apply { body.bodyUris(bodyUris) }
+        fun uris(uris: List<String>) = apply { body.uris(uris) }
 
         /**
-         * Sets [Builder.bodyUris] to an arbitrary JSON value.
+         * Sets [Builder.uris] to an arbitrary JSON value.
          *
-         * You should usually call [Builder.bodyUris] with a well-typed `List<String>` value
-         * instead. This method is primarily for setting the field to an undocumented or not yet
-         * supported value.
+         * You should usually call [Builder.uris] with a well-typed `List<String>` value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
          */
-        fun bodyUris(bodyUris: JsonField<List<String>>) = apply { body.bodyUris(bodyUris) }
+        fun uris(uris: JsonField<List<String>>) = apply { body.uris(uris) }
 
         /**
-         * Adds a single [String] to [Builder.bodyUris].
+         * Adds a single [String] to [Builder.uris].
          *
          * @throws IllegalStateException if the field was previously set to a non-list.
          */
-        fun addBodyUris(bodyUris: String) = apply { body.addBodyUris(bodyUris) }
+        fun addUris(uris: String) = apply { body.addUris(uris) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
             body.additionalProperties(additionalBodyProperties)
@@ -350,8 +290,6 @@ private constructor(
         fun build(): TrackAddParams =
             TrackAddParams(
                 playlistId,
-                queryPosition,
-                queryUris,
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -368,32 +306,21 @@ private constructor(
 
     override fun _headers(): Headers = additionalHeaders
 
-    override fun _queryParams(): QueryParams =
-        QueryParams.builder()
-            .apply {
-                queryPosition?.let { put("position", it.toString()) }
-                queryUris?.let { put("uris", it) }
-                putAll(additionalQueryParams)
-            }
-            .build()
+    override fun _queryParams(): QueryParams = additionalQueryParams
 
     class Body
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
-        private val bodyPosition: JsonField<Long>,
-        private val bodyUris: JsonField<List<String>>,
+        private val position: JsonField<Long>,
+        private val uris: JsonField<List<String>>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
         @JsonCreator
         private constructor(
-            @JsonProperty("position")
-            @ExcludeMissing
-            bodyPosition: JsonField<Long> = JsonMissing.of(),
-            @JsonProperty("uris")
-            @ExcludeMissing
-            bodyUris: JsonField<List<String>> = JsonMissing.of(),
-        ) : this(bodyPosition, bodyUris, mutableMapOf())
+            @JsonProperty("position") @ExcludeMissing position: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("uris") @ExcludeMissing uris: JsonField<List<String>> = JsonMissing.of(),
+        ) : this(position, uris, mutableMapOf())
 
         /**
          * The position to insert the items, a zero-based index. For example, to insert the items in
@@ -406,7 +333,7 @@ private constructor(
          * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun bodyPosition(): Optional<Long> = bodyPosition.getOptional("position")
+        fun position(): Optional<Long> = position.getOptional("position")
 
         /**
          * A JSON array of the [Spotify URIs](/documentation/web-api/concepts/spotify-uris-ids) to
@@ -418,24 +345,21 @@ private constructor(
          * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun bodyUris(): Optional<List<String>> = bodyUris.getOptional("uris")
+        fun uris(): Optional<List<String>> = uris.getOptional("uris")
 
         /**
-         * Returns the raw JSON value of [bodyPosition].
+         * Returns the raw JSON value of [position].
          *
-         * Unlike [bodyPosition], this method doesn't throw if the JSON field has an unexpected
-         * type.
+         * Unlike [position], this method doesn't throw if the JSON field has an unexpected type.
          */
-        @JsonProperty("position")
-        @ExcludeMissing
-        fun _bodyPosition(): JsonField<Long> = bodyPosition
+        @JsonProperty("position") @ExcludeMissing fun _position(): JsonField<Long> = position
 
         /**
-         * Returns the raw JSON value of [bodyUris].
+         * Returns the raw JSON value of [uris].
          *
-         * Unlike [bodyUris], this method doesn't throw if the JSON field has an unexpected type.
+         * Unlike [uris], this method doesn't throw if the JSON field has an unexpected type.
          */
-        @JsonProperty("uris") @ExcludeMissing fun _bodyUris(): JsonField<List<String>> = bodyUris
+        @JsonProperty("uris") @ExcludeMissing fun _uris(): JsonField<List<String>> = uris
 
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -458,14 +382,14 @@ private constructor(
         /** A builder for [Body]. */
         class Builder internal constructor() {
 
-            private var bodyPosition: JsonField<Long> = JsonMissing.of()
-            private var bodyUris: JsonField<MutableList<String>>? = null
+            private var position: JsonField<Long> = JsonMissing.of()
+            private var uris: JsonField<MutableList<String>>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(body: Body) = apply {
-                bodyPosition = body.bodyPosition
-                bodyUris = body.bodyUris.map { it.toMutableList() }
+                position = body.position
+                uris = body.uris.map { it.toMutableList() }
                 additionalProperties = body.additionalProperties.toMutableMap()
             }
 
@@ -477,18 +401,16 @@ private constructor(
              * ["spotify:track:4iV5W9uYEdYUVa79Axb7Rh","spotify:track:1301WleyT98MSxVHPZCA6M"],
              * "position": 3}`
              */
-            fun bodyPosition(bodyPosition: Long) = bodyPosition(JsonField.of(bodyPosition))
+            fun position(position: Long) = position(JsonField.of(position))
 
             /**
-             * Sets [Builder.bodyPosition] to an arbitrary JSON value.
+             * Sets [Builder.position] to an arbitrary JSON value.
              *
-             * You should usually call [Builder.bodyPosition] with a well-typed [Long] value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * You should usually call [Builder.position] with a well-typed [Long] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun bodyPosition(bodyPosition: JsonField<Long>) = apply {
-                this.bodyPosition = bodyPosition
-            }
+            fun position(position: JsonField<Long>) = apply { this.position = position }
 
             /**
              * A JSON array of the [Spotify URIs](/documentation/web-api/concepts/spotify-uris-ids)
@@ -497,28 +419,28 @@ private constructor(
              * maximum of 100 items can be added in one request. _**Note**: if the `uris` parameter
              * is present in the query string, any URIs listed here in the body will be ignored._
              */
-            fun bodyUris(bodyUris: List<String>) = bodyUris(JsonField.of(bodyUris))
+            fun uris(uris: List<String>) = uris(JsonField.of(uris))
 
             /**
-             * Sets [Builder.bodyUris] to an arbitrary JSON value.
+             * Sets [Builder.uris] to an arbitrary JSON value.
              *
-             * You should usually call [Builder.bodyUris] with a well-typed `List<String>` value
+             * You should usually call [Builder.uris] with a well-typed `List<String>` value
              * instead. This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun bodyUris(bodyUris: JsonField<List<String>>) = apply {
-                this.bodyUris = bodyUris.map { it.toMutableList() }
+            fun uris(uris: JsonField<List<String>>) = apply {
+                this.uris = uris.map { it.toMutableList() }
             }
 
             /**
-             * Adds a single [String] to [Builder.bodyUris].
+             * Adds a single [String] to [Builder.uris].
              *
              * @throws IllegalStateException if the field was previously set to a non-list.
              */
-            fun addBodyUris(bodyUris: String) = apply {
-                this.bodyUris =
-                    (this.bodyUris ?: JsonField.of(mutableListOf())).also {
-                        checkKnown("bodyUris", it).add(bodyUris)
+            fun addUris(uris: String) = apply {
+                this.uris =
+                    (this.uris ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("uris", it).add(uris)
                     }
             }
 
@@ -548,8 +470,8 @@ private constructor(
              */
             fun build(): Body =
                 Body(
-                    bodyPosition,
-                    (bodyUris ?: JsonMissing.of()).map { it.toImmutable() },
+                    position,
+                    (uris ?: JsonMissing.of()).map { it.toImmutable() },
                     additionalProperties.toMutableMap(),
                 )
         }
@@ -561,8 +483,8 @@ private constructor(
                 return@apply
             }
 
-            bodyPosition()
-            bodyUris()
+            position()
+            uris()
             validated = true
         }
 
@@ -582,8 +504,7 @@ private constructor(
          */
         @JvmSynthetic
         internal fun validity(): Int =
-            (if (bodyPosition.asKnown().isPresent) 1 else 0) +
-                (bodyUris.asKnown().getOrNull()?.size ?: 0)
+            (if (position.asKnown().isPresent) 1 else 0) + (uris.asKnown().getOrNull()?.size ?: 0)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -591,19 +512,17 @@ private constructor(
             }
 
             return other is Body &&
-                bodyPosition == other.bodyPosition &&
-                bodyUris == other.bodyUris &&
+                position == other.position &&
+                uris == other.uris &&
                 additionalProperties == other.additionalProperties
         }
 
-        private val hashCode: Int by lazy {
-            Objects.hash(bodyPosition, bodyUris, additionalProperties)
-        }
+        private val hashCode: Int by lazy { Objects.hash(position, uris, additionalProperties) }
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Body{bodyPosition=$bodyPosition, bodyUris=$bodyUris, additionalProperties=$additionalProperties}"
+            "Body{position=$position, uris=$uris, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {
@@ -613,23 +532,14 @@ private constructor(
 
         return other is TrackAddParams &&
             playlistId == other.playlistId &&
-            queryPosition == other.queryPosition &&
-            queryUris == other.queryUris &&
             body == other.body &&
             additionalHeaders == other.additionalHeaders &&
             additionalQueryParams == other.additionalQueryParams
     }
 
     override fun hashCode(): Int =
-        Objects.hash(
-            playlistId,
-            queryPosition,
-            queryUris,
-            body,
-            additionalHeaders,
-            additionalQueryParams,
-        )
+        Objects.hash(playlistId, body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
-        "TrackAddParams{playlistId=$playlistId, queryPosition=$queryPosition, queryUris=$queryUris, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "TrackAddParams{playlistId=$playlistId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

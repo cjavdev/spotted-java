@@ -72,14 +72,21 @@ interface EpisodeServiceAsync {
      * that you discover, in our
      * [developer community forum](https://community.spotify.com/t5/Spotify-for-Developers/bd-p/Spotify_Developer).
      */
-    fun remove(params: EpisodeRemoveParams): CompletableFuture<Void?> =
-        remove(params, RequestOptions.none())
+    fun remove(): CompletableFuture<Void?> = remove(EpisodeRemoveParams.none())
 
     /** @see remove */
     fun remove(
-        params: EpisodeRemoveParams,
+        params: EpisodeRemoveParams = EpisodeRemoveParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Void?>
+
+    /** @see remove */
+    fun remove(params: EpisodeRemoveParams = EpisodeRemoveParams.none()): CompletableFuture<Void?> =
+        remove(params, RequestOptions.none())
+
+    /** @see remove */
+    fun remove(requestOptions: RequestOptions): CompletableFuture<Void?> =
+        remove(EpisodeRemoveParams.none(), requestOptions)
 
     /**
      * Save one or more episodes to the current user's library.<br/> This API endpoint is in
@@ -152,14 +159,22 @@ interface EpisodeServiceAsync {
          * Returns a raw HTTP response for `delete /me/episodes`, but is otherwise the same as
          * [EpisodeServiceAsync.remove].
          */
-        fun remove(params: EpisodeRemoveParams): CompletableFuture<HttpResponse> =
-            remove(params, RequestOptions.none())
+        fun remove(): CompletableFuture<HttpResponse> = remove(EpisodeRemoveParams.none())
 
         /** @see remove */
         fun remove(
-            params: EpisodeRemoveParams,
+            params: EpisodeRemoveParams = EpisodeRemoveParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponse>
+
+        /** @see remove */
+        fun remove(
+            params: EpisodeRemoveParams = EpisodeRemoveParams.none()
+        ): CompletableFuture<HttpResponse> = remove(params, RequestOptions.none())
+
+        /** @see remove */
+        fun remove(requestOptions: RequestOptions): CompletableFuture<HttpResponse> =
+            remove(EpisodeRemoveParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `put /me/episodes`, but is otherwise the same as
