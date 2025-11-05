@@ -2,7 +2,6 @@
 
 package com.spotted.api.models.me.albums
 
-import com.spotted.api.core.http.QueryParams
 import kotlin.jvm.optionals.getOrNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -11,72 +10,21 @@ internal class AlbumSaveParamsTest {
 
     @Test
     fun create() {
-        AlbumSaveParams.builder()
-            .queryIds("382ObEPsp2rxGrnsizN5TX,1A2GTWGtFfWp7KSQTwWOyo,2noRn2Aes5aoNVsU6iWThc")
-            .addBodyId("string")
-            .build()
-    }
-
-    @Test
-    fun queryParams() {
-        val params =
-            AlbumSaveParams.builder()
-                .queryIds("382ObEPsp2rxGrnsizN5TX,1A2GTWGtFfWp7KSQTwWOyo,2noRn2Aes5aoNVsU6iWThc")
-                .addBodyId("string")
-                .build()
-
-        val queryParams = params._queryParams()
-
-        assertThat(queryParams)
-            .isEqualTo(
-                QueryParams.builder()
-                    .put(
-                        "ids",
-                        "382ObEPsp2rxGrnsizN5TX,1A2GTWGtFfWp7KSQTwWOyo,2noRn2Aes5aoNVsU6iWThc",
-                    )
-                    .build()
-            )
-    }
-
-    @Test
-    fun queryParamsWithoutOptionalFields() {
-        val params =
-            AlbumSaveParams.builder()
-                .queryIds("382ObEPsp2rxGrnsizN5TX,1A2GTWGtFfWp7KSQTwWOyo,2noRn2Aes5aoNVsU6iWThc")
-                .build()
-
-        val queryParams = params._queryParams()
-
-        assertThat(queryParams)
-            .isEqualTo(
-                QueryParams.builder()
-                    .put(
-                        "ids",
-                        "382ObEPsp2rxGrnsizN5TX,1A2GTWGtFfWp7KSQTwWOyo,2noRn2Aes5aoNVsU6iWThc",
-                    )
-                    .build()
-            )
+        AlbumSaveParams.builder().addId("string").build()
     }
 
     @Test
     fun body() {
-        val params =
-            AlbumSaveParams.builder()
-                .queryIds("382ObEPsp2rxGrnsizN5TX,1A2GTWGtFfWp7KSQTwWOyo,2noRn2Aes5aoNVsU6iWThc")
-                .addBodyId("string")
-                .build()
+        val params = AlbumSaveParams.builder().addId("string").build()
 
         val body = params._body()
 
-        assertThat(body.bodyIds().getOrNull()).containsExactly("string")
+        assertThat(body.ids().getOrNull()).containsExactly("string")
     }
 
     @Test
     fun bodyWithoutOptionalFields() {
-        val params =
-            AlbumSaveParams.builder()
-                .queryIds("382ObEPsp2rxGrnsizN5TX,1A2GTWGtFfWp7KSQTwWOyo,2noRn2Aes5aoNVsU6iWThc")
-                .build()
+        val params = AlbumSaveParams.builder().build()
 
         val body = params._body()
     }

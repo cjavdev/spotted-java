@@ -58,16 +58,35 @@ interface AlbumService {
     ): List<Boolean>
 
     /** Remove one or more albums from the current user's 'Your Music' library. */
-    fun remove(params: AlbumRemoveParams) = remove(params, RequestOptions.none())
+    fun remove() = remove(AlbumRemoveParams.none())
 
     /** @see remove */
-    fun remove(params: AlbumRemoveParams, requestOptions: RequestOptions = RequestOptions.none())
+    fun remove(
+        params: AlbumRemoveParams = AlbumRemoveParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    )
+
+    /** @see remove */
+    fun remove(params: AlbumRemoveParams = AlbumRemoveParams.none()) =
+        remove(params, RequestOptions.none())
+
+    /** @see remove */
+    fun remove(requestOptions: RequestOptions) = remove(AlbumRemoveParams.none(), requestOptions)
 
     /** Save one or more albums to the current user's 'Your Music' library. */
-    fun save(params: AlbumSaveParams) = save(params, RequestOptions.none())
+    fun save() = save(AlbumSaveParams.none())
 
     /** @see save */
-    fun save(params: AlbumSaveParams, requestOptions: RequestOptions = RequestOptions.none())
+    fun save(
+        params: AlbumSaveParams = AlbumSaveParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    )
+
+    /** @see save */
+    fun save(params: AlbumSaveParams = AlbumSaveParams.none()) = save(params, RequestOptions.none())
+
+    /** @see save */
+    fun save(requestOptions: RequestOptions) = save(AlbumSaveParams.none(), requestOptions)
 
     /** A view of [AlbumService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
@@ -121,28 +140,46 @@ interface AlbumService {
          * Returns a raw HTTP response for `delete /me/albums`, but is otherwise the same as
          * [AlbumService.remove].
          */
-        @MustBeClosed
-        fun remove(params: AlbumRemoveParams): HttpResponse = remove(params, RequestOptions.none())
+        @MustBeClosed fun remove(): HttpResponse = remove(AlbumRemoveParams.none())
 
         /** @see remove */
         @MustBeClosed
         fun remove(
-            params: AlbumRemoveParams,
+            params: AlbumRemoveParams = AlbumRemoveParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponse
+
+        /** @see remove */
+        @MustBeClosed
+        fun remove(params: AlbumRemoveParams = AlbumRemoveParams.none()): HttpResponse =
+            remove(params, RequestOptions.none())
+
+        /** @see remove */
+        @MustBeClosed
+        fun remove(requestOptions: RequestOptions): HttpResponse =
+            remove(AlbumRemoveParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `put /me/albums`, but is otherwise the same as
          * [AlbumService.save].
          */
-        @MustBeClosed
-        fun save(params: AlbumSaveParams): HttpResponse = save(params, RequestOptions.none())
+        @MustBeClosed fun save(): HttpResponse = save(AlbumSaveParams.none())
 
         /** @see save */
         @MustBeClosed
         fun save(
-            params: AlbumSaveParams,
+            params: AlbumSaveParams = AlbumSaveParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponse
+
+        /** @see save */
+        @MustBeClosed
+        fun save(params: AlbumSaveParams = AlbumSaveParams.none()): HttpResponse =
+            save(params, RequestOptions.none())
+
+        /** @see save */
+        @MustBeClosed
+        fun save(requestOptions: RequestOptions): HttpResponse =
+            save(AlbumSaveParams.none(), requestOptions)
     }
 }

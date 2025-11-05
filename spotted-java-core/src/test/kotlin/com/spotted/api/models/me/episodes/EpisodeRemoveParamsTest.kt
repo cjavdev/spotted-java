@@ -2,7 +2,6 @@
 
 package com.spotted.api.models.me.episodes
 
-import com.spotted.api.core.http.QueryParams
 import kotlin.jvm.optionals.getOrNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -11,72 +10,21 @@ internal class EpisodeRemoveParamsTest {
 
     @Test
     fun create() {
-        EpisodeRemoveParams.builder()
-            .queryIds("7ouMYWpwJ422jRcDASZB7P,4VqPOruhp5EdPBeR92t6lQ,2takcwOaAZWiXQijPHIx7B")
-            .addBodyId("string")
-            .build()
-    }
-
-    @Test
-    fun queryParams() {
-        val params =
-            EpisodeRemoveParams.builder()
-                .queryIds("7ouMYWpwJ422jRcDASZB7P,4VqPOruhp5EdPBeR92t6lQ,2takcwOaAZWiXQijPHIx7B")
-                .addBodyId("string")
-                .build()
-
-        val queryParams = params._queryParams()
-
-        assertThat(queryParams)
-            .isEqualTo(
-                QueryParams.builder()
-                    .put(
-                        "ids",
-                        "7ouMYWpwJ422jRcDASZB7P,4VqPOruhp5EdPBeR92t6lQ,2takcwOaAZWiXQijPHIx7B",
-                    )
-                    .build()
-            )
-    }
-
-    @Test
-    fun queryParamsWithoutOptionalFields() {
-        val params =
-            EpisodeRemoveParams.builder()
-                .queryIds("7ouMYWpwJ422jRcDASZB7P,4VqPOruhp5EdPBeR92t6lQ,2takcwOaAZWiXQijPHIx7B")
-                .build()
-
-        val queryParams = params._queryParams()
-
-        assertThat(queryParams)
-            .isEqualTo(
-                QueryParams.builder()
-                    .put(
-                        "ids",
-                        "7ouMYWpwJ422jRcDASZB7P,4VqPOruhp5EdPBeR92t6lQ,2takcwOaAZWiXQijPHIx7B",
-                    )
-                    .build()
-            )
+        EpisodeRemoveParams.builder().addId("string").build()
     }
 
     @Test
     fun body() {
-        val params =
-            EpisodeRemoveParams.builder()
-                .queryIds("7ouMYWpwJ422jRcDASZB7P,4VqPOruhp5EdPBeR92t6lQ,2takcwOaAZWiXQijPHIx7B")
-                .addBodyId("string")
-                .build()
+        val params = EpisodeRemoveParams.builder().addId("string").build()
 
         val body = params._body()
 
-        assertThat(body.bodyIds().getOrNull()).containsExactly("string")
+        assertThat(body.ids().getOrNull()).containsExactly("string")
     }
 
     @Test
     fun bodyWithoutOptionalFields() {
-        val params =
-            EpisodeRemoveParams.builder()
-                .queryIds("7ouMYWpwJ422jRcDASZB7P,4VqPOruhp5EdPBeR92t6lQ,2takcwOaAZWiXQijPHIx7B")
-                .build()
+        val params = EpisodeRemoveParams.builder().build()
 
         val body = params._body()
     }

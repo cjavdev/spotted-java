@@ -58,10 +58,20 @@ interface TrackService {
     ): List<Boolean>
 
     /** Remove one or more tracks from the current user's 'Your Music' library. */
-    fun remove(params: TrackRemoveParams) = remove(params, RequestOptions.none())
+    fun remove() = remove(TrackRemoveParams.none())
 
     /** @see remove */
-    fun remove(params: TrackRemoveParams, requestOptions: RequestOptions = RequestOptions.none())
+    fun remove(
+        params: TrackRemoveParams = TrackRemoveParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    )
+
+    /** @see remove */
+    fun remove(params: TrackRemoveParams = TrackRemoveParams.none()) =
+        remove(params, RequestOptions.none())
+
+    /** @see remove */
+    fun remove(requestOptions: RequestOptions) = remove(TrackRemoveParams.none(), requestOptions)
 
     /** Save one or more tracks to the current user's 'Your Music' library. */
     fun save(params: TrackSaveParams) = save(params, RequestOptions.none())
@@ -121,15 +131,24 @@ interface TrackService {
          * Returns a raw HTTP response for `delete /me/tracks`, but is otherwise the same as
          * [TrackService.remove].
          */
-        @MustBeClosed
-        fun remove(params: TrackRemoveParams): HttpResponse = remove(params, RequestOptions.none())
+        @MustBeClosed fun remove(): HttpResponse = remove(TrackRemoveParams.none())
 
         /** @see remove */
         @MustBeClosed
         fun remove(
-            params: TrackRemoveParams,
+            params: TrackRemoveParams = TrackRemoveParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponse
+
+        /** @see remove */
+        @MustBeClosed
+        fun remove(params: TrackRemoveParams = TrackRemoveParams.none()): HttpResponse =
+            remove(params, RequestOptions.none())
+
+        /** @see remove */
+        @MustBeClosed
+        fun remove(requestOptions: RequestOptions): HttpResponse =
+            remove(TrackRemoveParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `put /me/tracks`, but is otherwise the same as

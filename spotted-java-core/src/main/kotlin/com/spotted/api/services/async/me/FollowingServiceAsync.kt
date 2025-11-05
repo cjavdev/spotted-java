@@ -59,14 +59,22 @@ interface FollowingServiceAsync {
     ): CompletableFuture<Void?>
 
     /** Remove the current user as a follower of one or more artists or other Spotify users. */
-    fun unfollow(params: FollowingUnfollowParams): CompletableFuture<Void?> =
-        unfollow(params, RequestOptions.none())
+    fun unfollow(): CompletableFuture<Void?> = unfollow(FollowingUnfollowParams.none())
 
     /** @see unfollow */
     fun unfollow(
-        params: FollowingUnfollowParams,
+        params: FollowingUnfollowParams = FollowingUnfollowParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Void?>
+
+    /** @see unfollow */
+    fun unfollow(
+        params: FollowingUnfollowParams = FollowingUnfollowParams.none()
+    ): CompletableFuture<Void?> = unfollow(params, RequestOptions.none())
+
+    /** @see unfollow */
+    fun unfollow(requestOptions: RequestOptions): CompletableFuture<Void?> =
+        unfollow(FollowingUnfollowParams.none(), requestOptions)
 
     /**
      * A view of [FollowingServiceAsync] that provides access to raw HTTP responses for each method.
@@ -127,13 +135,21 @@ interface FollowingServiceAsync {
          * Returns a raw HTTP response for `delete /me/following`, but is otherwise the same as
          * [FollowingServiceAsync.unfollow].
          */
-        fun unfollow(params: FollowingUnfollowParams): CompletableFuture<HttpResponse> =
-            unfollow(params, RequestOptions.none())
+        fun unfollow(): CompletableFuture<HttpResponse> = unfollow(FollowingUnfollowParams.none())
 
         /** @see unfollow */
         fun unfollow(
-            params: FollowingUnfollowParams,
+            params: FollowingUnfollowParams = FollowingUnfollowParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponse>
+
+        /** @see unfollow */
+        fun unfollow(
+            params: FollowingUnfollowParams = FollowingUnfollowParams.none()
+        ): CompletableFuture<HttpResponse> = unfollow(params, RequestOptions.none())
+
+        /** @see unfollow */
+        fun unfollow(requestOptions: RequestOptions): CompletableFuture<HttpResponse> =
+            unfollow(FollowingUnfollowParams.none(), requestOptions)
     }
 }

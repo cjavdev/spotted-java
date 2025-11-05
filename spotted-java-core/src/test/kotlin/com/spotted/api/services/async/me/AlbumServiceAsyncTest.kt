@@ -63,15 +63,7 @@ internal class AlbumServiceAsyncTest {
                 .build()
         val albumServiceAsync = client.me().albums()
 
-        val future =
-            albumServiceAsync.remove(
-                AlbumRemoveParams.builder()
-                    .queryIds(
-                        "382ObEPsp2rxGrnsizN5TX,1A2GTWGtFfWp7KSQTwWOyo,2noRn2Aes5aoNVsU6iWThc"
-                    )
-                    .addBodyId("string")
-                    .build()
-            )
+        val future = albumServiceAsync.remove(AlbumRemoveParams.builder().addId("string").build())
 
         val response = future.get()
     }
@@ -87,15 +79,7 @@ internal class AlbumServiceAsyncTest {
                 .build()
         val albumServiceAsync = client.me().albums()
 
-        val future =
-            albumServiceAsync.save(
-                AlbumSaveParams.builder()
-                    .queryIds(
-                        "382ObEPsp2rxGrnsizN5TX,1A2GTWGtFfWp7KSQTwWOyo,2noRn2Aes5aoNVsU6iWThc"
-                    )
-                    .addBodyId("string")
-                    .build()
-            )
+        val future = albumServiceAsync.save(AlbumSaveParams.builder().addId("string").build())
 
         val response = future.get()
     }

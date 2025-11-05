@@ -59,23 +59,38 @@ interface ShowServiceAsync {
     ): CompletableFuture<List<Boolean>>
 
     /** Delete one or more shows from current Spotify user's library. */
-    fun remove(params: ShowRemoveParams): CompletableFuture<Void?> =
-        remove(params, RequestOptions.none())
+    fun remove(): CompletableFuture<Void?> = remove(ShowRemoveParams.none())
 
     /** @see remove */
     fun remove(
-        params: ShowRemoveParams,
+        params: ShowRemoveParams = ShowRemoveParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Void?>
 
+    /** @see remove */
+    fun remove(params: ShowRemoveParams = ShowRemoveParams.none()): CompletableFuture<Void?> =
+        remove(params, RequestOptions.none())
+
+    /** @see remove */
+    fun remove(requestOptions: RequestOptions): CompletableFuture<Void?> =
+        remove(ShowRemoveParams.none(), requestOptions)
+
     /** Save one or more shows to current Spotify user's library. */
-    fun save(params: ShowSaveParams): CompletableFuture<Void?> = save(params, RequestOptions.none())
+    fun save(): CompletableFuture<Void?> = save(ShowSaveParams.none())
 
     /** @see save */
     fun save(
-        params: ShowSaveParams,
+        params: ShowSaveParams = ShowSaveParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Void?>
+
+    /** @see save */
+    fun save(params: ShowSaveParams = ShowSaveParams.none()): CompletableFuture<Void?> =
+        save(params, RequestOptions.none())
+
+    /** @see save */
+    fun save(requestOptions: RequestOptions): CompletableFuture<Void?> =
+        save(ShowSaveParams.none(), requestOptions)
 
     /** A view of [ShowServiceAsync] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
@@ -129,26 +144,41 @@ interface ShowServiceAsync {
          * Returns a raw HTTP response for `delete /me/shows`, but is otherwise the same as
          * [ShowServiceAsync.remove].
          */
-        fun remove(params: ShowRemoveParams): CompletableFuture<HttpResponse> =
-            remove(params, RequestOptions.none())
+        fun remove(): CompletableFuture<HttpResponse> = remove(ShowRemoveParams.none())
 
         /** @see remove */
         fun remove(
-            params: ShowRemoveParams,
+            params: ShowRemoveParams = ShowRemoveParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponse>
+
+        /** @see remove */
+        fun remove(
+            params: ShowRemoveParams = ShowRemoveParams.none()
+        ): CompletableFuture<HttpResponse> = remove(params, RequestOptions.none())
+
+        /** @see remove */
+        fun remove(requestOptions: RequestOptions): CompletableFuture<HttpResponse> =
+            remove(ShowRemoveParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `put /me/shows`, but is otherwise the same as
          * [ShowServiceAsync.save].
          */
-        fun save(params: ShowSaveParams): CompletableFuture<HttpResponse> =
-            save(params, RequestOptions.none())
+        fun save(): CompletableFuture<HttpResponse> = save(ShowSaveParams.none())
 
         /** @see save */
         fun save(
-            params: ShowSaveParams,
+            params: ShowSaveParams = ShowSaveParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponse>
+
+        /** @see save */
+        fun save(params: ShowSaveParams = ShowSaveParams.none()): CompletableFuture<HttpResponse> =
+            save(params, RequestOptions.none())
+
+        /** @see save */
+        fun save(requestOptions: RequestOptions): CompletableFuture<HttpResponse> =
+            save(ShowSaveParams.none(), requestOptions)
     }
 }

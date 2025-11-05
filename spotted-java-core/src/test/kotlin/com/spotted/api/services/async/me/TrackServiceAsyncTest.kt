@@ -64,15 +64,7 @@ internal class TrackServiceAsyncTest {
                 .build()
         val trackServiceAsync = client.me().tracks()
 
-        val future =
-            trackServiceAsync.remove(
-                TrackRemoveParams.builder()
-                    .queryIds(
-                        "7ouMYWpwJ422jRcDASZB7P,4VqPOruhp5EdPBeR92t6lQ,2takcwOaAZWiXQijPHIx7B"
-                    )
-                    .addBodyId("string")
-                    .build()
-            )
+        val future = trackServiceAsync.remove(TrackRemoveParams.builder().addId("string").build())
 
         val response = future.get()
     }
