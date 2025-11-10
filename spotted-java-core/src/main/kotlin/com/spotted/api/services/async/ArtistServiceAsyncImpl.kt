@@ -16,13 +16,13 @@ import com.spotted.api.core.http.HttpResponseFor
 import com.spotted.api.core.http.parseable
 import com.spotted.api.core.prepareAsync
 import com.spotted.api.models.ArtistObject
+import com.spotted.api.models.artists.ArtistBulkRetrieveParams
+import com.spotted.api.models.artists.ArtistBulkRetrieveResponse
 import com.spotted.api.models.artists.ArtistListAlbumsPageAsync
 import com.spotted.api.models.artists.ArtistListAlbumsPageResponse
 import com.spotted.api.models.artists.ArtistListAlbumsParams
-import com.spotted.api.models.artists.ArtistListParams
 import com.spotted.api.models.artists.ArtistListRelatedArtistsParams
 import com.spotted.api.models.artists.ArtistListRelatedArtistsResponse
-import com.spotted.api.models.artists.ArtistListResponse
 import com.spotted.api.models.artists.ArtistListTopTracksParams
 import com.spotted.api.models.artists.ArtistListTopTracksResponse
 import com.spotted.api.models.artists.ArtistRetrieveParams
@@ -49,12 +49,12 @@ class ArtistServiceAsyncImpl internal constructor(private val clientOptions: Cli
         // get /artists/{id}
         withRawResponse().retrieve(params, requestOptions).thenApply { it.parse() }
 
-    override fun list(
-        params: ArtistListParams,
+    override fun bulkRetrieve(
+        params: ArtistBulkRetrieveParams,
         requestOptions: RequestOptions,
-    ): CompletableFuture<ArtistListResponse> =
+    ): CompletableFuture<ArtistBulkRetrieveResponse> =
         // get /artists
-        withRawResponse().list(params, requestOptions).thenApply { it.parse() }
+        withRawResponse().bulkRetrieve(params, requestOptions).thenApply { it.parse() }
 
     override fun listAlbums(
         params: ArtistListAlbumsParams,
@@ -124,13 +124,13 @@ class ArtistServiceAsyncImpl internal constructor(private val clientOptions: Cli
                 }
         }
 
-        private val listHandler: Handler<ArtistListResponse> =
-            jsonHandler<ArtistListResponse>(clientOptions.jsonMapper)
+        private val bulkRetrieveHandler: Handler<ArtistBulkRetrieveResponse> =
+            jsonHandler<ArtistBulkRetrieveResponse>(clientOptions.jsonMapper)
 
-        override fun list(
-            params: ArtistListParams,
+        override fun bulkRetrieve(
+            params: ArtistBulkRetrieveParams,
             requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<ArtistListResponse>> {
+        ): CompletableFuture<HttpResponseFor<ArtistBulkRetrieveResponse>> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -144,7 +144,7 @@ class ArtistServiceAsyncImpl internal constructor(private val clientOptions: Cli
                 .thenApply { response ->
                     errorHandler.handle(response).parseable {
                         response
-                            .use { listHandler.handle(it) }
+                            .use { bulkRetrieveHandler.handle(it) }
                             .also {
                                 if (requestOptions.responseValidation!!) {
                                     it.validate()

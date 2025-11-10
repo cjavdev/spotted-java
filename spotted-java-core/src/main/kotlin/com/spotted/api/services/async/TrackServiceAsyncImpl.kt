@@ -16,8 +16,8 @@ import com.spotted.api.core.http.HttpResponseFor
 import com.spotted.api.core.http.parseable
 import com.spotted.api.core.prepareAsync
 import com.spotted.api.models.TrackObject
-import com.spotted.api.models.tracks.TrackListParams
-import com.spotted.api.models.tracks.TrackListResponse
+import com.spotted.api.models.tracks.TrackBulkRetrieveParams
+import com.spotted.api.models.tracks.TrackBulkRetrieveResponse
 import com.spotted.api.models.tracks.TrackRetrieveParams
 import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
@@ -42,12 +42,12 @@ class TrackServiceAsyncImpl internal constructor(private val clientOptions: Clie
         // get /tracks/{id}
         withRawResponse().retrieve(params, requestOptions).thenApply { it.parse() }
 
-    override fun list(
-        params: TrackListParams,
+    override fun bulkRetrieve(
+        params: TrackBulkRetrieveParams,
         requestOptions: RequestOptions,
-    ): CompletableFuture<TrackListResponse> =
+    ): CompletableFuture<TrackBulkRetrieveResponse> =
         // get /tracks
-        withRawResponse().list(params, requestOptions).thenApply { it.parse() }
+        withRawResponse().bulkRetrieve(params, requestOptions).thenApply { it.parse() }
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         TrackServiceAsync.WithRawResponse {
@@ -95,13 +95,13 @@ class TrackServiceAsyncImpl internal constructor(private val clientOptions: Clie
                 }
         }
 
-        private val listHandler: Handler<TrackListResponse> =
-            jsonHandler<TrackListResponse>(clientOptions.jsonMapper)
+        private val bulkRetrieveHandler: Handler<TrackBulkRetrieveResponse> =
+            jsonHandler<TrackBulkRetrieveResponse>(clientOptions.jsonMapper)
 
-        override fun list(
-            params: TrackListParams,
+        override fun bulkRetrieve(
+            params: TrackBulkRetrieveParams,
             requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<TrackListResponse>> {
+        ): CompletableFuture<HttpResponseFor<TrackBulkRetrieveResponse>> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -115,7 +115,7 @@ class TrackServiceAsyncImpl internal constructor(private val clientOptions: Clie
                 .thenApply { response ->
                     errorHandler.handle(response).parseable {
                         response
-                            .use { listHandler.handle(it) }
+                            .use { bulkRetrieveHandler.handle(it) }
                             .also {
                                 if (requestOptions.responseValidation!!) {
                                     it.validate()

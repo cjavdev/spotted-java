@@ -15,8 +15,8 @@ import com.spotted.api.core.http.HttpResponse.Handler
 import com.spotted.api.core.http.HttpResponseFor
 import com.spotted.api.core.http.parseable
 import com.spotted.api.core.prepareAsync
-import com.spotted.api.models.audiofeatures.AudioFeatureListParams
-import com.spotted.api.models.audiofeatures.AudioFeatureListResponse
+import com.spotted.api.models.audiofeatures.AudioFeatureBulkRetrieveParams
+import com.spotted.api.models.audiofeatures.AudioFeatureBulkRetrieveResponse
 import com.spotted.api.models.audiofeatures.AudioFeatureRetrieveParams
 import com.spotted.api.models.audiofeatures.AudioFeatureRetrieveResponse
 import java.util.concurrent.CompletableFuture
@@ -44,12 +44,12 @@ class AudioFeatureServiceAsyncImpl internal constructor(private val clientOption
         withRawResponse().retrieve(params, requestOptions).thenApply { it.parse() }
 
     @Deprecated("deprecated")
-    override fun list(
-        params: AudioFeatureListParams,
+    override fun bulkRetrieve(
+        params: AudioFeatureBulkRetrieveParams,
         requestOptions: RequestOptions,
-    ): CompletableFuture<AudioFeatureListResponse> =
+    ): CompletableFuture<AudioFeatureBulkRetrieveResponse> =
         // get /audio-features
-        withRawResponse().list(params, requestOptions).thenApply { it.parse() }
+        withRawResponse().bulkRetrieve(params, requestOptions).thenApply { it.parse() }
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         AudioFeatureServiceAsync.WithRawResponse {
@@ -98,14 +98,14 @@ class AudioFeatureServiceAsyncImpl internal constructor(private val clientOption
                 }
         }
 
-        private val listHandler: Handler<AudioFeatureListResponse> =
-            jsonHandler<AudioFeatureListResponse>(clientOptions.jsonMapper)
+        private val bulkRetrieveHandler: Handler<AudioFeatureBulkRetrieveResponse> =
+            jsonHandler<AudioFeatureBulkRetrieveResponse>(clientOptions.jsonMapper)
 
         @Deprecated("deprecated")
-        override fun list(
-            params: AudioFeatureListParams,
+        override fun bulkRetrieve(
+            params: AudioFeatureBulkRetrieveParams,
             requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<AudioFeatureListResponse>> {
+        ): CompletableFuture<HttpResponseFor<AudioFeatureBulkRetrieveResponse>> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -119,7 +119,7 @@ class AudioFeatureServiceAsyncImpl internal constructor(private val clientOption
                 .thenApply { response ->
                     errorHandler.handle(response).parseable {
                         response
-                            .use { listHandler.handle(it) }
+                            .use { bulkRetrieveHandler.handle(it) }
                             .also {
                                 if (requestOptions.responseValidation!!) {
                                     it.validate()

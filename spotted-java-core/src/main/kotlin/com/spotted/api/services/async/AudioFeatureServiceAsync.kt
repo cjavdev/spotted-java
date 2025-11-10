@@ -5,8 +5,8 @@ package com.spotted.api.services.async
 import com.spotted.api.core.ClientOptions
 import com.spotted.api.core.RequestOptions
 import com.spotted.api.core.http.HttpResponseFor
-import com.spotted.api.models.audiofeatures.AudioFeatureListParams
-import com.spotted.api.models.audiofeatures.AudioFeatureListResponse
+import com.spotted.api.models.audiofeatures.AudioFeatureBulkRetrieveParams
+import com.spotted.api.models.audiofeatures.AudioFeatureBulkRetrieveResponse
 import com.spotted.api.models.audiofeatures.AudioFeatureRetrieveParams
 import com.spotted.api.models.audiofeatures.AudioFeatureRetrieveResponse
 import java.util.concurrent.CompletableFuture
@@ -70,15 +70,17 @@ interface AudioFeatureServiceAsync {
 
     /** Get audio features for multiple tracks based on their Spotify IDs. */
     @Deprecated("deprecated")
-    fun list(params: AudioFeatureListParams): CompletableFuture<AudioFeatureListResponse> =
-        list(params, RequestOptions.none())
+    fun bulkRetrieve(
+        params: AudioFeatureBulkRetrieveParams
+    ): CompletableFuture<AudioFeatureBulkRetrieveResponse> =
+        bulkRetrieve(params, RequestOptions.none())
 
-    /** @see list */
+    /** @see bulkRetrieve */
     @Deprecated("deprecated")
-    fun list(
-        params: AudioFeatureListParams,
+    fun bulkRetrieve(
+        params: AudioFeatureBulkRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<AudioFeatureListResponse>
+    ): CompletableFuture<AudioFeatureBulkRetrieveResponse>
 
     /**
      * A view of [AudioFeatureServiceAsync] that provides access to raw HTTP responses for each
@@ -144,19 +146,19 @@ interface AudioFeatureServiceAsync {
 
         /**
          * Returns a raw HTTP response for `get /audio-features`, but is otherwise the same as
-         * [AudioFeatureServiceAsync.list].
+         * [AudioFeatureServiceAsync.bulkRetrieve].
          */
         @Deprecated("deprecated")
-        fun list(
-            params: AudioFeatureListParams
-        ): CompletableFuture<HttpResponseFor<AudioFeatureListResponse>> =
-            list(params, RequestOptions.none())
+        fun bulkRetrieve(
+            params: AudioFeatureBulkRetrieveParams
+        ): CompletableFuture<HttpResponseFor<AudioFeatureBulkRetrieveResponse>> =
+            bulkRetrieve(params, RequestOptions.none())
 
-        /** @see list */
+        /** @see bulkRetrieve */
         @Deprecated("deprecated")
-        fun list(
-            params: AudioFeatureListParams,
+        fun bulkRetrieve(
+            params: AudioFeatureBulkRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<AudioFeatureListResponse>>
+        ): CompletableFuture<HttpResponseFor<AudioFeatureBulkRetrieveResponse>>
     }
 }

@@ -4,7 +4,7 @@ package com.spotted.api.services.async
 
 import com.spotted.api.TestServerExtension
 import com.spotted.api.client.okhttp.SpottedOkHttpClientAsync
-import com.spotted.api.models.tracks.TrackListParams
+import com.spotted.api.models.tracks.TrackBulkRetrieveParams
 import com.spotted.api.models.tracks.TrackRetrieveParams
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
@@ -35,7 +35,7 @@ internal class TrackServiceAsyncTest {
 
     @Disabled("Prism tests are disabled")
     @Test
-    fun list() {
+    fun bulkRetrieve() {
         val client =
             SpottedOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
@@ -44,15 +44,15 @@ internal class TrackServiceAsyncTest {
                 .build()
         val trackServiceAsync = client.tracks()
 
-        val tracksFuture =
-            trackServiceAsync.list(
-                TrackListParams.builder()
+        val responseFuture =
+            trackServiceAsync.bulkRetrieve(
+                TrackBulkRetrieveParams.builder()
                     .ids("7ouMYWpwJ422jRcDASZB7P,4VqPOruhp5EdPBeR92t6lQ,2takcwOaAZWiXQijPHIx7B")
                     .market("ES")
                     .build()
             )
 
-        val tracks = tracksFuture.get()
-        tracks.validate()
+        val response = responseFuture.get()
+        response.validate()
     }
 }

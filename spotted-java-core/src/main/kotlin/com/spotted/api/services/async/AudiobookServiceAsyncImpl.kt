@@ -15,11 +15,11 @@ import com.spotted.api.core.http.HttpResponse.Handler
 import com.spotted.api.core.http.HttpResponseFor
 import com.spotted.api.core.http.parseable
 import com.spotted.api.core.prepareAsync
+import com.spotted.api.models.audiobooks.AudiobookBulkRetrieveParams
+import com.spotted.api.models.audiobooks.AudiobookBulkRetrieveResponse
 import com.spotted.api.models.audiobooks.AudiobookListChaptersPageAsync
 import com.spotted.api.models.audiobooks.AudiobookListChaptersPageResponse
 import com.spotted.api.models.audiobooks.AudiobookListChaptersParams
-import com.spotted.api.models.audiobooks.AudiobookListParams
-import com.spotted.api.models.audiobooks.AudiobookListResponse
 import com.spotted.api.models.audiobooks.AudiobookRetrieveParams
 import com.spotted.api.models.audiobooks.AudiobookRetrieveResponse
 import java.util.concurrent.CompletableFuture
@@ -45,12 +45,12 @@ class AudiobookServiceAsyncImpl internal constructor(private val clientOptions: 
         // get /audiobooks/{id}
         withRawResponse().retrieve(params, requestOptions).thenApply { it.parse() }
 
-    override fun list(
-        params: AudiobookListParams,
+    override fun bulkRetrieve(
+        params: AudiobookBulkRetrieveParams,
         requestOptions: RequestOptions,
-    ): CompletableFuture<AudiobookListResponse> =
+    ): CompletableFuture<AudiobookBulkRetrieveResponse> =
         // get /audiobooks
-        withRawResponse().list(params, requestOptions).thenApply { it.parse() }
+        withRawResponse().bulkRetrieve(params, requestOptions).thenApply { it.parse() }
 
     override fun listChapters(
         params: AudiobookListChaptersParams,
@@ -105,13 +105,13 @@ class AudiobookServiceAsyncImpl internal constructor(private val clientOptions: 
                 }
         }
 
-        private val listHandler: Handler<AudiobookListResponse> =
-            jsonHandler<AudiobookListResponse>(clientOptions.jsonMapper)
+        private val bulkRetrieveHandler: Handler<AudiobookBulkRetrieveResponse> =
+            jsonHandler<AudiobookBulkRetrieveResponse>(clientOptions.jsonMapper)
 
-        override fun list(
-            params: AudiobookListParams,
+        override fun bulkRetrieve(
+            params: AudiobookBulkRetrieveParams,
             requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<AudiobookListResponse>> {
+        ): CompletableFuture<HttpResponseFor<AudiobookBulkRetrieveResponse>> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -125,7 +125,7 @@ class AudiobookServiceAsyncImpl internal constructor(private val clientOptions: 
                 .thenApply { response ->
                     errorHandler.handle(response).parseable {
                         response
-                            .use { listHandler.handle(it) }
+                            .use { bulkRetrieveHandler.handle(it) }
                             .also {
                                 if (requestOptions.responseValidation!!) {
                                     it.validate()

@@ -7,12 +7,12 @@ import com.spotted.api.core.ClientOptions
 import com.spotted.api.core.RequestOptions
 import com.spotted.api.core.http.HttpResponseFor
 import com.spotted.api.models.ArtistObject
+import com.spotted.api.models.artists.ArtistBulkRetrieveParams
+import com.spotted.api.models.artists.ArtistBulkRetrieveResponse
 import com.spotted.api.models.artists.ArtistListAlbumsPage
 import com.spotted.api.models.artists.ArtistListAlbumsParams
-import com.spotted.api.models.artists.ArtistListParams
 import com.spotted.api.models.artists.ArtistListRelatedArtistsParams
 import com.spotted.api.models.artists.ArtistListRelatedArtistsResponse
-import com.spotted.api.models.artists.ArtistListResponse
 import com.spotted.api.models.artists.ArtistListTopTracksParams
 import com.spotted.api.models.artists.ArtistListTopTracksResponse
 import com.spotted.api.models.artists.ArtistRetrieveParams
@@ -65,13 +65,14 @@ interface ArtistService {
         retrieve(id, ArtistRetrieveParams.none(), requestOptions)
 
     /** Get Spotify catalog information for several artists based on their Spotify IDs. */
-    fun list(params: ArtistListParams): ArtistListResponse = list(params, RequestOptions.none())
+    fun bulkRetrieve(params: ArtistBulkRetrieveParams): ArtistBulkRetrieveResponse =
+        bulkRetrieve(params, RequestOptions.none())
 
-    /** @see list */
-    fun list(
-        params: ArtistListParams,
+    /** @see bulkRetrieve */
+    fun bulkRetrieve(
+        params: ArtistBulkRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): ArtistListResponse
+    ): ArtistBulkRetrieveResponse
 
     /** Get Spotify catalog information about an artist's albums. */
     fun listAlbums(id: String): ArtistListAlbumsPage = listAlbums(id, ArtistListAlbumsParams.none())
@@ -233,18 +234,19 @@ interface ArtistService {
 
         /**
          * Returns a raw HTTP response for `get /artists`, but is otherwise the same as
-         * [ArtistService.list].
+         * [ArtistService.bulkRetrieve].
          */
         @MustBeClosed
-        fun list(params: ArtistListParams): HttpResponseFor<ArtistListResponse> =
-            list(params, RequestOptions.none())
+        fun bulkRetrieve(
+            params: ArtistBulkRetrieveParams
+        ): HttpResponseFor<ArtistBulkRetrieveResponse> = bulkRetrieve(params, RequestOptions.none())
 
-        /** @see list */
+        /** @see bulkRetrieve */
         @MustBeClosed
-        fun list(
-            params: ArtistListParams,
+        fun bulkRetrieve(
+            params: ArtistBulkRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<ArtistListResponse>
+        ): HttpResponseFor<ArtistBulkRetrieveResponse>
 
         /**
          * Returns a raw HTTP response for `get /artists/{id}/albums`, but is otherwise the same as

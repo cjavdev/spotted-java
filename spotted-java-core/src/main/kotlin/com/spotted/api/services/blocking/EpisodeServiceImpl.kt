@@ -16,8 +16,8 @@ import com.spotted.api.core.http.HttpResponseFor
 import com.spotted.api.core.http.parseable
 import com.spotted.api.core.prepare
 import com.spotted.api.models.EpisodeObject
-import com.spotted.api.models.episodes.EpisodeListParams
-import com.spotted.api.models.episodes.EpisodeListResponse
+import com.spotted.api.models.episodes.EpisodeBulkRetrieveParams
+import com.spotted.api.models.episodes.EpisodeBulkRetrieveResponse
 import com.spotted.api.models.episodes.EpisodeRetrieveParams
 import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
@@ -41,12 +41,12 @@ class EpisodeServiceImpl internal constructor(private val clientOptions: ClientO
         // get /episodes/{id}
         withRawResponse().retrieve(params, requestOptions).parse()
 
-    override fun list(
-        params: EpisodeListParams,
+    override fun bulkRetrieve(
+        params: EpisodeBulkRetrieveParams,
         requestOptions: RequestOptions,
-    ): EpisodeListResponse =
+    ): EpisodeBulkRetrieveResponse =
         // get /episodes
-        withRawResponse().list(params, requestOptions).parse()
+        withRawResponse().bulkRetrieve(params, requestOptions).parse()
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         EpisodeService.WithRawResponse {
@@ -91,13 +91,13 @@ class EpisodeServiceImpl internal constructor(private val clientOptions: ClientO
             }
         }
 
-        private val listHandler: Handler<EpisodeListResponse> =
-            jsonHandler<EpisodeListResponse>(clientOptions.jsonMapper)
+        private val bulkRetrieveHandler: Handler<EpisodeBulkRetrieveResponse> =
+            jsonHandler<EpisodeBulkRetrieveResponse>(clientOptions.jsonMapper)
 
-        override fun list(
-            params: EpisodeListParams,
+        override fun bulkRetrieve(
+            params: EpisodeBulkRetrieveParams,
             requestOptions: RequestOptions,
-        ): HttpResponseFor<EpisodeListResponse> {
+        ): HttpResponseFor<EpisodeBulkRetrieveResponse> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -109,7 +109,7 @@ class EpisodeServiceImpl internal constructor(private val clientOptions: ClientO
             val response = clientOptions.httpClient.execute(request, requestOptions)
             return errorHandler.handle(response).parseable {
                 response
-                    .use { listHandler.handle(it) }
+                    .use { bulkRetrieveHandler.handle(it) }
                     .also {
                         if (requestOptions.responseValidation!!) {
                             it.validate()

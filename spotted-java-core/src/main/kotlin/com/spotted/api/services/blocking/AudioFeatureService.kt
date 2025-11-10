@@ -6,8 +6,8 @@ import com.google.errorprone.annotations.MustBeClosed
 import com.spotted.api.core.ClientOptions
 import com.spotted.api.core.RequestOptions
 import com.spotted.api.core.http.HttpResponseFor
-import com.spotted.api.models.audiofeatures.AudioFeatureListParams
-import com.spotted.api.models.audiofeatures.AudioFeatureListResponse
+import com.spotted.api.models.audiofeatures.AudioFeatureBulkRetrieveParams
+import com.spotted.api.models.audiofeatures.AudioFeatureBulkRetrieveResponse
 import com.spotted.api.models.audiofeatures.AudioFeatureRetrieveParams
 import com.spotted.api.models.audiofeatures.AudioFeatureRetrieveResponse
 import java.util.function.Consumer
@@ -65,15 +65,15 @@ interface AudioFeatureService {
 
     /** Get audio features for multiple tracks based on their Spotify IDs. */
     @Deprecated("deprecated")
-    fun list(params: AudioFeatureListParams): AudioFeatureListResponse =
-        list(params, RequestOptions.none())
+    fun bulkRetrieve(params: AudioFeatureBulkRetrieveParams): AudioFeatureBulkRetrieveResponse =
+        bulkRetrieve(params, RequestOptions.none())
 
-    /** @see list */
+    /** @see bulkRetrieve */
     @Deprecated("deprecated")
-    fun list(
-        params: AudioFeatureListParams,
+    fun bulkRetrieve(
+        params: AudioFeatureBulkRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): AudioFeatureListResponse
+    ): AudioFeatureBulkRetrieveResponse
 
     /**
      * A view of [AudioFeatureService] that provides access to raw HTTP responses for each method.
@@ -143,19 +143,21 @@ interface AudioFeatureService {
 
         /**
          * Returns a raw HTTP response for `get /audio-features`, but is otherwise the same as
-         * [AudioFeatureService.list].
+         * [AudioFeatureService.bulkRetrieve].
          */
         @Deprecated("deprecated")
         @MustBeClosed
-        fun list(params: AudioFeatureListParams): HttpResponseFor<AudioFeatureListResponse> =
-            list(params, RequestOptions.none())
+        fun bulkRetrieve(
+            params: AudioFeatureBulkRetrieveParams
+        ): HttpResponseFor<AudioFeatureBulkRetrieveResponse> =
+            bulkRetrieve(params, RequestOptions.none())
 
-        /** @see list */
+        /** @see bulkRetrieve */
         @Deprecated("deprecated")
         @MustBeClosed
-        fun list(
-            params: AudioFeatureListParams,
+        fun bulkRetrieve(
+            params: AudioFeatureBulkRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<AudioFeatureListResponse>
+        ): HttpResponseFor<AudioFeatureBulkRetrieveResponse>
     }
 }

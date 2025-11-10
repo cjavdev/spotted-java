@@ -5,8 +5,8 @@ package com.spotted.api.services.async
 import com.spotted.api.core.ClientOptions
 import com.spotted.api.core.RequestOptions
 import com.spotted.api.core.http.HttpResponseFor
-import com.spotted.api.models.chapters.ChapterListParams
-import com.spotted.api.models.chapters.ChapterListResponse
+import com.spotted.api.models.chapters.ChapterBulkRetrieveParams
+import com.spotted.api.models.chapters.ChapterBulkRetrieveResponse
 import com.spotted.api.models.chapters.ChapterRetrieveParams
 import com.spotted.api.models.chapters.ChapterRetrieveResponse
 import java.util.concurrent.CompletableFuture
@@ -69,14 +69,15 @@ interface ChapterServiceAsync {
      * IDs. Chapters are only available within the US, UK, Canada, Ireland, New Zealand and
      * Australia markets.
      */
-    fun list(params: ChapterListParams): CompletableFuture<ChapterListResponse> =
-        list(params, RequestOptions.none())
+    fun bulkRetrieve(
+        params: ChapterBulkRetrieveParams
+    ): CompletableFuture<ChapterBulkRetrieveResponse> = bulkRetrieve(params, RequestOptions.none())
 
-    /** @see list */
-    fun list(
-        params: ChapterListParams,
+    /** @see bulkRetrieve */
+    fun bulkRetrieve(
+        params: ChapterBulkRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<ChapterListResponse>
+    ): CompletableFuture<ChapterBulkRetrieveResponse>
 
     /**
      * A view of [ChapterServiceAsync] that provides access to raw HTTP responses for each method.
@@ -135,17 +136,17 @@ interface ChapterServiceAsync {
 
         /**
          * Returns a raw HTTP response for `get /chapters`, but is otherwise the same as
-         * [ChapterServiceAsync.list].
+         * [ChapterServiceAsync.bulkRetrieve].
          */
-        fun list(
-            params: ChapterListParams
-        ): CompletableFuture<HttpResponseFor<ChapterListResponse>> =
-            list(params, RequestOptions.none())
+        fun bulkRetrieve(
+            params: ChapterBulkRetrieveParams
+        ): CompletableFuture<HttpResponseFor<ChapterBulkRetrieveResponse>> =
+            bulkRetrieve(params, RequestOptions.none())
 
-        /** @see list */
-        fun list(
-            params: ChapterListParams,
+        /** @see bulkRetrieve */
+        fun bulkRetrieve(
+            params: ChapterBulkRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<ChapterListResponse>>
+        ): CompletableFuture<HttpResponseFor<ChapterBulkRetrieveResponse>>
     }
 }

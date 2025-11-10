@@ -6,10 +6,10 @@ import com.google.errorprone.annotations.MustBeClosed
 import com.spotted.api.core.ClientOptions
 import com.spotted.api.core.RequestOptions
 import com.spotted.api.core.http.HttpResponseFor
+import com.spotted.api.models.shows.ShowBulkRetrieveParams
+import com.spotted.api.models.shows.ShowBulkRetrieveResponse
 import com.spotted.api.models.shows.ShowListEpisodesPage
 import com.spotted.api.models.shows.ShowListEpisodesParams
-import com.spotted.api.models.shows.ShowListParams
-import com.spotted.api.models.shows.ShowListResponse
 import com.spotted.api.models.shows.ShowRetrieveParams
 import com.spotted.api.models.shows.ShowRetrieveResponse
 import java.util.function.Consumer
@@ -59,13 +59,14 @@ interface ShowService {
         retrieve(id, ShowRetrieveParams.none(), requestOptions)
 
     /** Get Spotify catalog information for several shows based on their Spotify IDs. */
-    fun list(params: ShowListParams): ShowListResponse = list(params, RequestOptions.none())
+    fun bulkRetrieve(params: ShowBulkRetrieveParams): ShowBulkRetrieveResponse =
+        bulkRetrieve(params, RequestOptions.none())
 
-    /** @see list */
-    fun list(
-        params: ShowListParams,
+    /** @see bulkRetrieve */
+    fun bulkRetrieve(
+        params: ShowBulkRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): ShowListResponse
+    ): ShowBulkRetrieveResponse
 
     /**
      * Get Spotify catalog information about an show’s episodes. Optional parameters can be used to
@@ -157,18 +158,19 @@ interface ShowService {
 
         /**
          * Returns a raw HTTP response for `get /shows`, but is otherwise the same as
-         * [ShowService.list].
+         * [ShowService.bulkRetrieve].
          */
         @MustBeClosed
-        fun list(params: ShowListParams): HttpResponseFor<ShowListResponse> =
-            list(params, RequestOptions.none())
+        fun bulkRetrieve(
+            params: ShowBulkRetrieveParams
+        ): HttpResponseFor<ShowBulkRetrieveResponse> = bulkRetrieve(params, RequestOptions.none())
 
-        /** @see list */
+        /** @see bulkRetrieve */
         @MustBeClosed
-        fun list(
-            params: ShowListParams,
+        fun bulkRetrieve(
+            params: ShowBulkRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<ShowListResponse>
+        ): HttpResponseFor<ShowBulkRetrieveResponse>
 
         /**
          * Returns a raw HTTP response for `get /shows/{id}/episodes`, but is otherwise the same as

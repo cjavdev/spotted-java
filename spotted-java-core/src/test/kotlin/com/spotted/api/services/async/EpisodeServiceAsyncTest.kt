@@ -4,7 +4,7 @@ package com.spotted.api.services.async
 
 import com.spotted.api.TestServerExtension
 import com.spotted.api.client.okhttp.SpottedOkHttpClientAsync
-import com.spotted.api.models.episodes.EpisodeListParams
+import com.spotted.api.models.episodes.EpisodeBulkRetrieveParams
 import com.spotted.api.models.episodes.EpisodeRetrieveParams
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
@@ -35,7 +35,7 @@ internal class EpisodeServiceAsyncTest {
 
     @Disabled("Prism tests are disabled")
     @Test
-    fun list() {
+    fun bulkRetrieve() {
         val client =
             SpottedOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
@@ -44,15 +44,15 @@ internal class EpisodeServiceAsyncTest {
                 .build()
         val episodeServiceAsync = client.episodes()
 
-        val episodesFuture =
-            episodeServiceAsync.list(
-                EpisodeListParams.builder()
+        val responseFuture =
+            episodeServiceAsync.bulkRetrieve(
+                EpisodeBulkRetrieveParams.builder()
                     .ids("77o6BIVlYM3msb4MMIL1jH,0Q86acNRm6V9GYx55SXKwf")
                     .market("ES")
                     .build()
             )
 
-        val episodes = episodesFuture.get()
-        episodes.validate()
+        val response = responseFuture.get()
+        response.validate()
     }
 }
