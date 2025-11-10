@@ -12,9 +12,9 @@ import com.spotted.api.models.artists.ArtistListAlbumsPageAsync
 import com.spotted.api.models.artists.ArtistListAlbumsParams
 import com.spotted.api.models.artists.ArtistListRelatedArtistsParams
 import com.spotted.api.models.artists.ArtistListRelatedArtistsResponse
-import com.spotted.api.models.artists.ArtistListTopTracksParams
-import com.spotted.api.models.artists.ArtistListTopTracksResponse
 import com.spotted.api.models.artists.ArtistRetrieveParams
+import com.spotted.api.models.artists.ArtistTopTracksParams
+import com.spotted.api.models.artists.ArtistTopTracksResponse
 import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
 
@@ -159,41 +159,39 @@ interface ArtistServiceAsync {
         listRelatedArtists(id, ArtistListRelatedArtistsParams.none(), requestOptions)
 
     /** Get Spotify catalog information about an artist's top tracks by country. */
-    fun listTopTracks(id: String): CompletableFuture<ArtistListTopTracksResponse> =
-        listTopTracks(id, ArtistListTopTracksParams.none())
+    fun topTracks(id: String): CompletableFuture<ArtistTopTracksResponse> =
+        topTracks(id, ArtistTopTracksParams.none())
 
-    /** @see listTopTracks */
-    fun listTopTracks(
+    /** @see topTracks */
+    fun topTracks(
         id: String,
-        params: ArtistListTopTracksParams = ArtistListTopTracksParams.none(),
+        params: ArtistTopTracksParams = ArtistTopTracksParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<ArtistListTopTracksResponse> =
-        listTopTracks(params.toBuilder().id(id).build(), requestOptions)
+    ): CompletableFuture<ArtistTopTracksResponse> =
+        topTracks(params.toBuilder().id(id).build(), requestOptions)
 
-    /** @see listTopTracks */
-    fun listTopTracks(
+    /** @see topTracks */
+    fun topTracks(
         id: String,
-        params: ArtistListTopTracksParams = ArtistListTopTracksParams.none(),
-    ): CompletableFuture<ArtistListTopTracksResponse> =
-        listTopTracks(id, params, RequestOptions.none())
+        params: ArtistTopTracksParams = ArtistTopTracksParams.none(),
+    ): CompletableFuture<ArtistTopTracksResponse> = topTracks(id, params, RequestOptions.none())
 
-    /** @see listTopTracks */
-    fun listTopTracks(
-        params: ArtistListTopTracksParams,
+    /** @see topTracks */
+    fun topTracks(
+        params: ArtistTopTracksParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<ArtistListTopTracksResponse>
+    ): CompletableFuture<ArtistTopTracksResponse>
 
-    /** @see listTopTracks */
-    fun listTopTracks(
-        params: ArtistListTopTracksParams
-    ): CompletableFuture<ArtistListTopTracksResponse> = listTopTracks(params, RequestOptions.none())
+    /** @see topTracks */
+    fun topTracks(params: ArtistTopTracksParams): CompletableFuture<ArtistTopTracksResponse> =
+        topTracks(params, RequestOptions.none())
 
-    /** @see listTopTracks */
-    fun listTopTracks(
+    /** @see topTracks */
+    fun topTracks(
         id: String,
         requestOptions: RequestOptions,
-    ): CompletableFuture<ArtistListTopTracksResponse> =
-        listTopTracks(id, ArtistListTopTracksParams.none(), requestOptions)
+    ): CompletableFuture<ArtistTopTracksResponse> =
+        topTracks(id, ArtistTopTracksParams.none(), requestOptions)
 
     /**
      * A view of [ArtistServiceAsync] that provides access to raw HTTP responses for each method.
@@ -357,45 +355,43 @@ interface ArtistServiceAsync {
 
         /**
          * Returns a raw HTTP response for `get /artists/{id}/top-tracks`, but is otherwise the same
-         * as [ArtistServiceAsync.listTopTracks].
+         * as [ArtistServiceAsync.topTracks].
          */
-        fun listTopTracks(
-            id: String
-        ): CompletableFuture<HttpResponseFor<ArtistListTopTracksResponse>> =
-            listTopTracks(id, ArtistListTopTracksParams.none())
+        fun topTracks(id: String): CompletableFuture<HttpResponseFor<ArtistTopTracksResponse>> =
+            topTracks(id, ArtistTopTracksParams.none())
 
-        /** @see listTopTracks */
-        fun listTopTracks(
+        /** @see topTracks */
+        fun topTracks(
             id: String,
-            params: ArtistListTopTracksParams = ArtistListTopTracksParams.none(),
+            params: ArtistTopTracksParams = ArtistTopTracksParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<ArtistListTopTracksResponse>> =
-            listTopTracks(params.toBuilder().id(id).build(), requestOptions)
+        ): CompletableFuture<HttpResponseFor<ArtistTopTracksResponse>> =
+            topTracks(params.toBuilder().id(id).build(), requestOptions)
 
-        /** @see listTopTracks */
-        fun listTopTracks(
+        /** @see topTracks */
+        fun topTracks(
             id: String,
-            params: ArtistListTopTracksParams = ArtistListTopTracksParams.none(),
-        ): CompletableFuture<HttpResponseFor<ArtistListTopTracksResponse>> =
-            listTopTracks(id, params, RequestOptions.none())
+            params: ArtistTopTracksParams = ArtistTopTracksParams.none(),
+        ): CompletableFuture<HttpResponseFor<ArtistTopTracksResponse>> =
+            topTracks(id, params, RequestOptions.none())
 
-        /** @see listTopTracks */
-        fun listTopTracks(
-            params: ArtistListTopTracksParams,
+        /** @see topTracks */
+        fun topTracks(
+            params: ArtistTopTracksParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<ArtistListTopTracksResponse>>
+        ): CompletableFuture<HttpResponseFor<ArtistTopTracksResponse>>
 
-        /** @see listTopTracks */
-        fun listTopTracks(
-            params: ArtistListTopTracksParams
-        ): CompletableFuture<HttpResponseFor<ArtistListTopTracksResponse>> =
-            listTopTracks(params, RequestOptions.none())
+        /** @see topTracks */
+        fun topTracks(
+            params: ArtistTopTracksParams
+        ): CompletableFuture<HttpResponseFor<ArtistTopTracksResponse>> =
+            topTracks(params, RequestOptions.none())
 
-        /** @see listTopTracks */
-        fun listTopTracks(
+        /** @see topTracks */
+        fun topTracks(
             id: String,
             requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<ArtistListTopTracksResponse>> =
-            listTopTracks(id, ArtistListTopTracksParams.none(), requestOptions)
+        ): CompletableFuture<HttpResponseFor<ArtistTopTracksResponse>> =
+            topTracks(id, ArtistTopTracksParams.none(), requestOptions)
     }
 }

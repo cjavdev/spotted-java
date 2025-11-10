@@ -5,7 +5,7 @@ package com.spotted.api.services.async
 import com.spotted.api.TestServerExtension
 import com.spotted.api.client.okhttp.SpottedOkHttpClientAsync
 import com.spotted.api.models.artists.ArtistBulkRetrieveParams
-import com.spotted.api.models.artists.ArtistListTopTracksParams
+import com.spotted.api.models.artists.ArtistTopTracksParams
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -88,7 +88,7 @@ internal class ArtistServiceAsyncTest {
 
     @Disabled("Prism tests are disabled")
     @Test
-    fun listTopTracks() {
+    fun topTracks() {
         val client =
             SpottedOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
@@ -98,11 +98,8 @@ internal class ArtistServiceAsyncTest {
         val artistServiceAsync = client.artists()
 
         val responseFuture =
-            artistServiceAsync.listTopTracks(
-                ArtistListTopTracksParams.builder()
-                    .id("0TnOYISbd1XYRBk9myaseg")
-                    .market("ES")
-                    .build()
+            artistServiceAsync.topTracks(
+                ArtistTopTracksParams.builder().id("0TnOYISbd1XYRBk9myaseg").market("ES").build()
             )
 
         val response = responseFuture.get()

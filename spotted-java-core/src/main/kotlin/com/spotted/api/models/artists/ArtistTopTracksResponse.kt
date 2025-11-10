@@ -19,7 +19,7 @@ import java.util.Collections
 import java.util.Objects
 import kotlin.jvm.optionals.getOrNull
 
-class ArtistListTopTracksResponse
+class ArtistTopTracksResponse
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val tracks: JsonField<List<TrackObject>>,
@@ -61,7 +61,7 @@ private constructor(
     companion object {
 
         /**
-         * Returns a mutable builder for constructing an instance of [ArtistListTopTracksResponse].
+         * Returns a mutable builder for constructing an instance of [ArtistTopTracksResponse].
          *
          * The following fields are required:
          * ```java
@@ -71,16 +71,16 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
-    /** A builder for [ArtistListTopTracksResponse]. */
+    /** A builder for [ArtistTopTracksResponse]. */
     class Builder internal constructor() {
 
         private var tracks: JsonField<MutableList<TrackObject>>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
-        internal fun from(artistListTopTracksResponse: ArtistListTopTracksResponse) = apply {
-            tracks = artistListTopTracksResponse.tracks.map { it.toMutableList() }
-            additionalProperties = artistListTopTracksResponse.additionalProperties.toMutableMap()
+        internal fun from(artistTopTracksResponse: ArtistTopTracksResponse) = apply {
+            tracks = artistTopTracksResponse.tracks.map { it.toMutableList() }
+            additionalProperties = artistTopTracksResponse.additionalProperties.toMutableMap()
         }
 
         fun tracks(tracks: List<TrackObject>) = tracks(JsonField.of(tracks))
@@ -128,7 +128,7 @@ private constructor(
         }
 
         /**
-         * Returns an immutable instance of [ArtistListTopTracksResponse].
+         * Returns an immutable instance of [ArtistTopTracksResponse].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
          *
@@ -139,8 +139,8 @@ private constructor(
          *
          * @throws IllegalStateException if any required field is unset.
          */
-        fun build(): ArtistListTopTracksResponse =
-            ArtistListTopTracksResponse(
+        fun build(): ArtistTopTracksResponse =
+            ArtistTopTracksResponse(
                 checkRequired("tracks", tracks).map { it.toImmutable() },
                 additionalProperties.toMutableMap(),
             )
@@ -148,7 +148,7 @@ private constructor(
 
     private var validated: Boolean = false
 
-    fun validate(): ArtistListTopTracksResponse = apply {
+    fun validate(): ArtistTopTracksResponse = apply {
         if (validated) {
             return@apply
         }
@@ -179,7 +179,7 @@ private constructor(
             return true
         }
 
-        return other is ArtistListTopTracksResponse &&
+        return other is ArtistTopTracksResponse &&
             tracks == other.tracks &&
             additionalProperties == other.additionalProperties
     }
@@ -189,5 +189,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "ArtistListTopTracksResponse{tracks=$tracks, additionalProperties=$additionalProperties}"
+        "ArtistTopTracksResponse{tracks=$tracks, additionalProperties=$additionalProperties}"
 }

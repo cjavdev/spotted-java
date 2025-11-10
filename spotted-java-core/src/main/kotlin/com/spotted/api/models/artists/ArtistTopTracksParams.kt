@@ -10,7 +10,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /** Get Spotify catalog information about an artist's top tracks by country. */
-class ArtistListTopTracksParams
+class ArtistTopTracksParams
 private constructor(
     private val id: String?,
     private val market: String?,
@@ -42,15 +42,13 @@ private constructor(
 
     companion object {
 
-        @JvmStatic fun none(): ArtistListTopTracksParams = builder().build()
+        @JvmStatic fun none(): ArtistTopTracksParams = builder().build()
 
-        /**
-         * Returns a mutable builder for constructing an instance of [ArtistListTopTracksParams].
-         */
+        /** Returns a mutable builder for constructing an instance of [ArtistTopTracksParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
-    /** A builder for [ArtistListTopTracksParams]. */
+    /** A builder for [ArtistTopTracksParams]. */
     class Builder internal constructor() {
 
         private var id: String? = null
@@ -59,11 +57,11 @@ private constructor(
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
         @JvmSynthetic
-        internal fun from(artistListTopTracksParams: ArtistListTopTracksParams) = apply {
-            id = artistListTopTracksParams.id
-            market = artistListTopTracksParams.market
-            additionalHeaders = artistListTopTracksParams.additionalHeaders.toBuilder()
-            additionalQueryParams = artistListTopTracksParams.additionalQueryParams.toBuilder()
+        internal fun from(artistTopTracksParams: ArtistTopTracksParams) = apply {
+            id = artistTopTracksParams.id
+            market = artistTopTracksParams.market
+            additionalHeaders = artistTopTracksParams.additionalHeaders.toBuilder()
+            additionalQueryParams = artistTopTracksParams.additionalQueryParams.toBuilder()
         }
 
         /** The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) of the artist. */
@@ -185,12 +183,12 @@ private constructor(
         }
 
         /**
-         * Returns an immutable instance of [ArtistListTopTracksParams].
+         * Returns an immutable instance of [ArtistTopTracksParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
          */
-        fun build(): ArtistListTopTracksParams =
-            ArtistListTopTracksParams(
+        fun build(): ArtistTopTracksParams =
+            ArtistTopTracksParams(
                 id,
                 market,
                 additionalHeaders.build(),
@@ -219,7 +217,7 @@ private constructor(
             return true
         }
 
-        return other is ArtistListTopTracksParams &&
+        return other is ArtistTopTracksParams &&
             id == other.id &&
             market == other.market &&
             additionalHeaders == other.additionalHeaders &&
@@ -230,5 +228,5 @@ private constructor(
         Objects.hash(id, market, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
-        "ArtistListTopTracksParams{id=$id, market=$market, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "ArtistTopTracksParams{id=$id, market=$market, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }
