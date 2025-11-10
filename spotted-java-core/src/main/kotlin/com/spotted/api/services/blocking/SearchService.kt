@@ -6,8 +6,8 @@ import com.google.errorprone.annotations.MustBeClosed
 import com.spotted.api.core.ClientOptions
 import com.spotted.api.core.RequestOptions
 import com.spotted.api.core.http.HttpResponseFor
-import com.spotted.api.models.search.SearchRetrieveParams
-import com.spotted.api.models.search.SearchRetrieveResponse
+import com.spotted.api.models.search.SearchSearchParams
+import com.spotted.api.models.search.SearchSearchResponse
 import java.util.function.Consumer
 
 interface SearchService {
@@ -29,14 +29,14 @@ interface SearchService {
      * audiobooks that match a keyword string. Audiobooks are only available within the US, UK,
      * Canada, Ireland, New Zealand and Australia markets.
      */
-    fun retrieve(params: SearchRetrieveParams): SearchRetrieveResponse =
-        retrieve(params, RequestOptions.none())
+    fun search(params: SearchSearchParams): SearchSearchResponse =
+        search(params, RequestOptions.none())
 
-    /** @see retrieve */
-    fun retrieve(
-        params: SearchRetrieveParams,
+    /** @see search */
+    fun search(
+        params: SearchSearchParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): SearchRetrieveResponse
+    ): SearchSearchResponse
 
     /** A view of [SearchService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
@@ -50,17 +50,17 @@ interface SearchService {
 
         /**
          * Returns a raw HTTP response for `get /search`, but is otherwise the same as
-         * [SearchService.retrieve].
+         * [SearchService.search].
          */
         @MustBeClosed
-        fun retrieve(params: SearchRetrieveParams): HttpResponseFor<SearchRetrieveResponse> =
-            retrieve(params, RequestOptions.none())
+        fun search(params: SearchSearchParams): HttpResponseFor<SearchSearchResponse> =
+            search(params, RequestOptions.none())
 
-        /** @see retrieve */
+        /** @see search */
         @MustBeClosed
-        fun retrieve(
-            params: SearchRetrieveParams,
+        fun search(
+            params: SearchSearchParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<SearchRetrieveResponse>
+        ): HttpResponseFor<SearchSearchResponse>
     }
 }

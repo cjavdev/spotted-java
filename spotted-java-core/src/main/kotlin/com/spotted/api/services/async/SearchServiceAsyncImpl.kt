@@ -14,8 +14,8 @@ import com.spotted.api.core.http.HttpResponse.Handler
 import com.spotted.api.core.http.HttpResponseFor
 import com.spotted.api.core.http.parseable
 import com.spotted.api.core.prepareAsync
-import com.spotted.api.models.search.SearchRetrieveParams
-import com.spotted.api.models.search.SearchRetrieveResponse
+import com.spotted.api.models.search.SearchSearchParams
+import com.spotted.api.models.search.SearchSearchResponse
 import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
 
@@ -31,12 +31,12 @@ class SearchServiceAsyncImpl internal constructor(private val clientOptions: Cli
     override fun withOptions(modifier: Consumer<ClientOptions.Builder>): SearchServiceAsync =
         SearchServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
-    override fun retrieve(
-        params: SearchRetrieveParams,
+    override fun search(
+        params: SearchSearchParams,
         requestOptions: RequestOptions,
-    ): CompletableFuture<SearchRetrieveResponse> =
+    ): CompletableFuture<SearchSearchResponse> =
         // get /search
-        withRawResponse().retrieve(params, requestOptions).thenApply { it.parse() }
+        withRawResponse().search(params, requestOptions).thenApply { it.parse() }
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         SearchServiceAsync.WithRawResponse {
@@ -51,13 +51,13 @@ class SearchServiceAsyncImpl internal constructor(private val clientOptions: Cli
                 clientOptions.toBuilder().apply(modifier::accept).build()
             )
 
-        private val retrieveHandler: Handler<SearchRetrieveResponse> =
-            jsonHandler<SearchRetrieveResponse>(clientOptions.jsonMapper)
+        private val searchHandler: Handler<SearchSearchResponse> =
+            jsonHandler<SearchSearchResponse>(clientOptions.jsonMapper)
 
-        override fun retrieve(
-            params: SearchRetrieveParams,
+        override fun search(
+            params: SearchSearchParams,
             requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<SearchRetrieveResponse>> {
+        ): CompletableFuture<HttpResponseFor<SearchSearchResponse>> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -71,7 +71,7 @@ class SearchServiceAsyncImpl internal constructor(private val clientOptions: Cli
                 .thenApply { response ->
                     errorHandler.handle(response).parseable {
                         response
-                            .use { retrieveHandler.handle(it) }
+                            .use { searchHandler.handle(it) }
                             .also {
                                 if (requestOptions.responseValidation!!) {
                                     it.validate()

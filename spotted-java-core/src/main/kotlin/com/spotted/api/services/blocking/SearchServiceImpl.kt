@@ -14,8 +14,8 @@ import com.spotted.api.core.http.HttpResponse.Handler
 import com.spotted.api.core.http.HttpResponseFor
 import com.spotted.api.core.http.parseable
 import com.spotted.api.core.prepare
-import com.spotted.api.models.search.SearchRetrieveParams
-import com.spotted.api.models.search.SearchRetrieveResponse
+import com.spotted.api.models.search.SearchSearchParams
+import com.spotted.api.models.search.SearchSearchResponse
 import java.util.function.Consumer
 
 class SearchServiceImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -30,12 +30,12 @@ class SearchServiceImpl internal constructor(private val clientOptions: ClientOp
     override fun withOptions(modifier: Consumer<ClientOptions.Builder>): SearchService =
         SearchServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
-    override fun retrieve(
-        params: SearchRetrieveParams,
+    override fun search(
+        params: SearchSearchParams,
         requestOptions: RequestOptions,
-    ): SearchRetrieveResponse =
+    ): SearchSearchResponse =
         // get /search
-        withRawResponse().retrieve(params, requestOptions).parse()
+        withRawResponse().search(params, requestOptions).parse()
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         SearchService.WithRawResponse {
@@ -50,13 +50,13 @@ class SearchServiceImpl internal constructor(private val clientOptions: ClientOp
                 clientOptions.toBuilder().apply(modifier::accept).build()
             )
 
-        private val retrieveHandler: Handler<SearchRetrieveResponse> =
-            jsonHandler<SearchRetrieveResponse>(clientOptions.jsonMapper)
+        private val searchHandler: Handler<SearchSearchResponse> =
+            jsonHandler<SearchSearchResponse>(clientOptions.jsonMapper)
 
-        override fun retrieve(
-            params: SearchRetrieveParams,
+        override fun search(
+            params: SearchSearchParams,
             requestOptions: RequestOptions,
-        ): HttpResponseFor<SearchRetrieveResponse> {
+        ): HttpResponseFor<SearchSearchResponse> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -68,7 +68,7 @@ class SearchServiceImpl internal constructor(private val clientOptions: ClientOp
             val response = clientOptions.httpClient.execute(request, requestOptions)
             return errorHandler.handle(response).parseable {
                 response
-                    .use { retrieveHandler.handle(it) }
+                    .use { searchHandler.handle(it) }
                     .also {
                         if (requestOptions.responseValidation!!) {
                             it.validate()
