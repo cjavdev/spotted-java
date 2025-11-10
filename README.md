@@ -215,6 +215,106 @@ The SDK throws custom unchecked exception types:
 
 - [`SpottedException`](spotted-java-core/src/main/kotlin/com/spotted/api/errors/SpottedException.kt): Base class for all exceptions. Most errors will result in one of the previously mentioned ones, but completely generic errors may be thrown using the base class.
 
+## Pagination
+
+The SDK defines methods that return a paginated lists of results. It provides convenient ways to access the results either one page at a time or item-by-item across all pages.
+
+### Auto-pagination
+
+To iterate through all results across all pages, use the `autoPager()` method, which automatically fetches more pages as needed.
+
+When using the synchronous client, the method returns an [`Iterable`](https://docs.oracle.com/javase/8/docs/api/java/lang/Iterable.html)
+
+```java
+import com.spotted.api.models.SimplifiedEpisodeObject;
+import com.spotted.api.models.shows.ShowListEpisodesPage;
+
+ShowListEpisodesPage page = client.shows().listEpisodes();
+
+// Process as an Iterable
+for (SimplifiedEpisodeObject show : page.autoPager()) {
+    System.out.println(show);
+}
+
+// Process as a Stream
+page.autoPager()
+    .stream()
+    .limit(50)
+    .forEach(show -> System.out.println(show));
+```
+
+When using the asynchronous client, the method returns an [`AsyncStreamResponse`](spotted-java-core/src/main/kotlin/com/spotted/api/core/http/AsyncStreamResponse.kt):
+
+```java
+import com.spotted.api.core.http.AsyncStreamResponse;
+import com.spotted.api.models.SimplifiedEpisodeObject;
+import com.spotted.api.models.shows.ShowListEpisodesPageAsync;
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+
+CompletableFuture<ShowListEpisodesPageAsync> pageFuture = client.async().shows().listEpisodes();
+
+pageFuture.thenRun(page -> page.autoPager().subscribe(show -> {
+    System.out.println(show);
+}));
+
+// If you need to handle errors or completion of the stream
+pageFuture.thenRun(page -> page.autoPager().subscribe(new AsyncStreamResponse.Handler<>() {
+    @Override
+    public void onNext(SimplifiedEpisodeObject show) {
+        System.out.println(show);
+    }
+
+    @Override
+    public void onComplete(Optional<Throwable> error) {
+        if (error.isPresent()) {
+            System.out.println("Something went wrong!");
+            throw new RuntimeException(error.get());
+        } else {
+            System.out.println("No more!");
+        }
+    }
+}));
+
+// Or use futures
+pageFuture.thenRun(page -> page.autoPager()
+    .subscribe(show -> {
+        System.out.println(show);
+    })
+    .onCompleteFuture()
+    .whenComplete((unused, error) -> {
+        if (error != null) {
+            System.out.println("Something went wrong!");
+            throw new RuntimeException(error);
+        } else {
+            System.out.println("No more!");
+        }
+    }));
+```
+
+### Manual pagination
+
+To access individual page items and manually request the next page, use the `items()`,
+`hasNextPage()`, and `nextPage()` methods:
+
+```java
+import com.spotted.api.models.SimplifiedEpisodeObject;
+import com.spotted.api.models.shows.ShowListEpisodesPage;
+
+ShowListEpisodesPage page = client.shows().listEpisodes();
+while (true) {
+    for (SimplifiedEpisodeObject show : page.items()) {
+        System.out.println(show);
+    }
+
+    if (!page.hasNextPage()) {
+        break;
+    }
+
+    page = page.nextPage();
+}
+```
+
 ## Logging
 
 The SDK uses the standard [OkHttp logging interceptor](https://github.com/square/okhttp/tree/master/okhttp-logging-interceptor).

@@ -23,9 +23,9 @@ import com.spotted.api.models.artists.ArtistListAlbumsPageResponse
 import com.spotted.api.models.artists.ArtistListAlbumsParams
 import com.spotted.api.models.artists.ArtistListRelatedArtistsParams
 import com.spotted.api.models.artists.ArtistListRelatedArtistsResponse
-import com.spotted.api.models.artists.ArtistListTopTracksParams
-import com.spotted.api.models.artists.ArtistListTopTracksResponse
 import com.spotted.api.models.artists.ArtistRetrieveParams
+import com.spotted.api.models.artists.ArtistTopTracksParams
+import com.spotted.api.models.artists.ArtistTopTracksResponse
 import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
@@ -70,12 +70,12 @@ class ArtistServiceImpl internal constructor(private val clientOptions: ClientOp
         // get /artists/{id}/related-artists
         withRawResponse().listRelatedArtists(params, requestOptions).parse()
 
-    override fun listTopTracks(
-        params: ArtistListTopTracksParams,
+    override fun topTracks(
+        params: ArtistTopTracksParams,
         requestOptions: RequestOptions,
-    ): ArtistListTopTracksResponse =
+    ): ArtistTopTracksResponse =
         // get /artists/{id}/top-tracks
-        withRawResponse().listTopTracks(params, requestOptions).parse()
+        withRawResponse().topTracks(params, requestOptions).parse()
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         ArtistService.WithRawResponse {
@@ -215,13 +215,13 @@ class ArtistServiceImpl internal constructor(private val clientOptions: ClientOp
             }
         }
 
-        private val listTopTracksHandler: Handler<ArtistListTopTracksResponse> =
-            jsonHandler<ArtistListTopTracksResponse>(clientOptions.jsonMapper)
+        private val topTracksHandler: Handler<ArtistTopTracksResponse> =
+            jsonHandler<ArtistTopTracksResponse>(clientOptions.jsonMapper)
 
-        override fun listTopTracks(
-            params: ArtistListTopTracksParams,
+        override fun topTracks(
+            params: ArtistTopTracksParams,
             requestOptions: RequestOptions,
-        ): HttpResponseFor<ArtistListTopTracksResponse> {
+        ): HttpResponseFor<ArtistTopTracksResponse> {
             // We check here instead of in the params builder because this can be specified
             // positionally or in the params class.
             checkRequired("id", params.id().getOrNull())
@@ -236,7 +236,7 @@ class ArtistServiceImpl internal constructor(private val clientOptions: ClientOp
             val response = clientOptions.httpClient.execute(request, requestOptions)
             return errorHandler.handle(response).parseable {
                 response
-                    .use { listTopTracksHandler.handle(it) }
+                    .use { topTracksHandler.handle(it) }
                     .also {
                         if (requestOptions.responseValidation!!) {
                             it.validate()
