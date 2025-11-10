@@ -16,8 +16,8 @@ import com.spotted.api.core.http.HttpResponseFor
 import com.spotted.api.core.http.parseable
 import com.spotted.api.core.prepareAsync
 import com.spotted.api.models.EpisodeObject
-import com.spotted.api.models.episodes.EpisodeListParams
-import com.spotted.api.models.episodes.EpisodeListResponse
+import com.spotted.api.models.episodes.EpisodeBulkRetrieveParams
+import com.spotted.api.models.episodes.EpisodeBulkRetrieveResponse
 import com.spotted.api.models.episodes.EpisodeRetrieveParams
 import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
@@ -42,12 +42,12 @@ class EpisodeServiceAsyncImpl internal constructor(private val clientOptions: Cl
         // get /episodes/{id}
         withRawResponse().retrieve(params, requestOptions).thenApply { it.parse() }
 
-    override fun list(
-        params: EpisodeListParams,
+    override fun bulkRetrieve(
+        params: EpisodeBulkRetrieveParams,
         requestOptions: RequestOptions,
-    ): CompletableFuture<EpisodeListResponse> =
+    ): CompletableFuture<EpisodeBulkRetrieveResponse> =
         // get /episodes
-        withRawResponse().list(params, requestOptions).thenApply { it.parse() }
+        withRawResponse().bulkRetrieve(params, requestOptions).thenApply { it.parse() }
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         EpisodeServiceAsync.WithRawResponse {
@@ -95,13 +95,13 @@ class EpisodeServiceAsyncImpl internal constructor(private val clientOptions: Cl
                 }
         }
 
-        private val listHandler: Handler<EpisodeListResponse> =
-            jsonHandler<EpisodeListResponse>(clientOptions.jsonMapper)
+        private val bulkRetrieveHandler: Handler<EpisodeBulkRetrieveResponse> =
+            jsonHandler<EpisodeBulkRetrieveResponse>(clientOptions.jsonMapper)
 
-        override fun list(
-            params: EpisodeListParams,
+        override fun bulkRetrieve(
+            params: EpisodeBulkRetrieveParams,
             requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<EpisodeListResponse>> {
+        ): CompletableFuture<HttpResponseFor<EpisodeBulkRetrieveResponse>> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -115,7 +115,7 @@ class EpisodeServiceAsyncImpl internal constructor(private val clientOptions: Cl
                 .thenApply { response ->
                     errorHandler.handle(response).parseable {
                         response
-                            .use { listHandler.handle(it) }
+                            .use { bulkRetrieveHandler.handle(it) }
                             .also {
                                 if (requestOptions.responseValidation!!) {
                                     it.validate()

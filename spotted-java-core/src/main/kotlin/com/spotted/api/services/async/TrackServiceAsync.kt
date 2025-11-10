@@ -6,8 +6,8 @@ import com.spotted.api.core.ClientOptions
 import com.spotted.api.core.RequestOptions
 import com.spotted.api.core.http.HttpResponseFor
 import com.spotted.api.models.TrackObject
-import com.spotted.api.models.tracks.TrackListParams
-import com.spotted.api.models.tracks.TrackListResponse
+import com.spotted.api.models.tracks.TrackBulkRetrieveParams
+import com.spotted.api.models.tracks.TrackBulkRetrieveResponse
 import com.spotted.api.models.tracks.TrackRetrieveParams
 import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
@@ -58,14 +58,15 @@ interface TrackServiceAsync {
         retrieve(id, TrackRetrieveParams.none(), requestOptions)
 
     /** Get Spotify catalog information for multiple tracks based on their Spotify IDs. */
-    fun list(params: TrackListParams): CompletableFuture<TrackListResponse> =
-        list(params, RequestOptions.none())
+    fun bulkRetrieve(
+        params: TrackBulkRetrieveParams
+    ): CompletableFuture<TrackBulkRetrieveResponse> = bulkRetrieve(params, RequestOptions.none())
 
-    /** @see list */
-    fun list(
-        params: TrackListParams,
+    /** @see bulkRetrieve */
+    fun bulkRetrieve(
+        params: TrackBulkRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<TrackListResponse>
+    ): CompletableFuture<TrackBulkRetrieveResponse>
 
     /** A view of [TrackServiceAsync] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
@@ -120,15 +121,17 @@ interface TrackServiceAsync {
 
         /**
          * Returns a raw HTTP response for `get /tracks`, but is otherwise the same as
-         * [TrackServiceAsync.list].
+         * [TrackServiceAsync.bulkRetrieve].
          */
-        fun list(params: TrackListParams): CompletableFuture<HttpResponseFor<TrackListResponse>> =
-            list(params, RequestOptions.none())
+        fun bulkRetrieve(
+            params: TrackBulkRetrieveParams
+        ): CompletableFuture<HttpResponseFor<TrackBulkRetrieveResponse>> =
+            bulkRetrieve(params, RequestOptions.none())
 
-        /** @see list */
-        fun list(
-            params: TrackListParams,
+        /** @see bulkRetrieve */
+        fun bulkRetrieve(
+            params: TrackBulkRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<TrackListResponse>>
+        ): CompletableFuture<HttpResponseFor<TrackBulkRetrieveResponse>>
     }
 }

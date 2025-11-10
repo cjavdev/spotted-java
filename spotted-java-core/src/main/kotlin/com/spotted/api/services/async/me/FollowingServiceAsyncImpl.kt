@@ -16,10 +16,10 @@ import com.spotted.api.core.http.HttpResponseFor
 import com.spotted.api.core.http.json
 import com.spotted.api.core.http.parseable
 import com.spotted.api.core.prepareAsync
+import com.spotted.api.models.me.following.FollowingBulkRetrieveParams
+import com.spotted.api.models.me.following.FollowingBulkRetrieveResponse
 import com.spotted.api.models.me.following.FollowingCheckParams
 import com.spotted.api.models.me.following.FollowingFollowParams
-import com.spotted.api.models.me.following.FollowingListParams
-import com.spotted.api.models.me.following.FollowingListResponse
 import com.spotted.api.models.me.following.FollowingUnfollowParams
 import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
@@ -36,12 +36,12 @@ class FollowingServiceAsyncImpl internal constructor(private val clientOptions: 
     override fun withOptions(modifier: Consumer<ClientOptions.Builder>): FollowingServiceAsync =
         FollowingServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
-    override fun list(
-        params: FollowingListParams,
+    override fun bulkRetrieve(
+        params: FollowingBulkRetrieveParams,
         requestOptions: RequestOptions,
-    ): CompletableFuture<FollowingListResponse> =
+    ): CompletableFuture<FollowingBulkRetrieveResponse> =
         // get /me/following
-        withRawResponse().list(params, requestOptions).thenApply { it.parse() }
+        withRawResponse().bulkRetrieve(params, requestOptions).thenApply { it.parse() }
 
     override fun check(
         params: FollowingCheckParams,
@@ -77,13 +77,13 @@ class FollowingServiceAsyncImpl internal constructor(private val clientOptions: 
                 clientOptions.toBuilder().apply(modifier::accept).build()
             )
 
-        private val listHandler: Handler<FollowingListResponse> =
-            jsonHandler<FollowingListResponse>(clientOptions.jsonMapper)
+        private val bulkRetrieveHandler: Handler<FollowingBulkRetrieveResponse> =
+            jsonHandler<FollowingBulkRetrieveResponse>(clientOptions.jsonMapper)
 
-        override fun list(
-            params: FollowingListParams,
+        override fun bulkRetrieve(
+            params: FollowingBulkRetrieveParams,
             requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<FollowingListResponse>> {
+        ): CompletableFuture<HttpResponseFor<FollowingBulkRetrieveResponse>> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -97,7 +97,7 @@ class FollowingServiceAsyncImpl internal constructor(private val clientOptions: 
                 .thenApply { response ->
                     errorHandler.handle(response).parseable {
                         response
-                            .use { listHandler.handle(it) }
+                            .use { bulkRetrieveHandler.handle(it) }
                             .also {
                                 if (requestOptions.responseValidation!!) {
                                     it.validate()

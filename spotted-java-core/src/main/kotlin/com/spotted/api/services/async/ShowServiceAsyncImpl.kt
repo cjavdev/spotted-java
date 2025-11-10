@@ -15,11 +15,11 @@ import com.spotted.api.core.http.HttpResponse.Handler
 import com.spotted.api.core.http.HttpResponseFor
 import com.spotted.api.core.http.parseable
 import com.spotted.api.core.prepareAsync
+import com.spotted.api.models.shows.ShowBulkRetrieveParams
+import com.spotted.api.models.shows.ShowBulkRetrieveResponse
 import com.spotted.api.models.shows.ShowListEpisodesPageAsync
 import com.spotted.api.models.shows.ShowListEpisodesPageResponse
 import com.spotted.api.models.shows.ShowListEpisodesParams
-import com.spotted.api.models.shows.ShowListParams
-import com.spotted.api.models.shows.ShowListResponse
 import com.spotted.api.models.shows.ShowRetrieveParams
 import com.spotted.api.models.shows.ShowRetrieveResponse
 import java.util.concurrent.CompletableFuture
@@ -45,12 +45,12 @@ class ShowServiceAsyncImpl internal constructor(private val clientOptions: Clien
         // get /shows/{id}
         withRawResponse().retrieve(params, requestOptions).thenApply { it.parse() }
 
-    override fun list(
-        params: ShowListParams,
+    override fun bulkRetrieve(
+        params: ShowBulkRetrieveParams,
         requestOptions: RequestOptions,
-    ): CompletableFuture<ShowListResponse> =
+    ): CompletableFuture<ShowBulkRetrieveResponse> =
         // get /shows
-        withRawResponse().list(params, requestOptions).thenApply { it.parse() }
+        withRawResponse().bulkRetrieve(params, requestOptions).thenApply { it.parse() }
 
     override fun listEpisodes(
         params: ShowListEpisodesParams,
@@ -105,13 +105,13 @@ class ShowServiceAsyncImpl internal constructor(private val clientOptions: Clien
                 }
         }
 
-        private val listHandler: Handler<ShowListResponse> =
-            jsonHandler<ShowListResponse>(clientOptions.jsonMapper)
+        private val bulkRetrieveHandler: Handler<ShowBulkRetrieveResponse> =
+            jsonHandler<ShowBulkRetrieveResponse>(clientOptions.jsonMapper)
 
-        override fun list(
-            params: ShowListParams,
+        override fun bulkRetrieve(
+            params: ShowBulkRetrieveParams,
             requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<ShowListResponse>> {
+        ): CompletableFuture<HttpResponseFor<ShowBulkRetrieveResponse>> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -125,7 +125,7 @@ class ShowServiceAsyncImpl internal constructor(private val clientOptions: Clien
                 .thenApply { response ->
                     errorHandler.handle(response).parseable {
                         response
-                            .use { listHandler.handle(it) }
+                            .use { bulkRetrieveHandler.handle(it) }
                             .also {
                                 if (requestOptions.responseValidation!!) {
                                     it.validate()

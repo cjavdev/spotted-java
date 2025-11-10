@@ -4,9 +4,9 @@ package com.spotted.api.services.async.me
 
 import com.spotted.api.TestServerExtension
 import com.spotted.api.client.okhttp.SpottedOkHttpClientAsync
+import com.spotted.api.models.me.following.FollowingBulkRetrieveParams
 import com.spotted.api.models.me.following.FollowingCheckParams
 import com.spotted.api.models.me.following.FollowingFollowParams
-import com.spotted.api.models.me.following.FollowingListParams
 import com.spotted.api.models.me.following.FollowingUnfollowParams
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
@@ -17,7 +17,7 @@ internal class FollowingServiceAsyncTest {
 
     @Disabled("Prism tests are disabled")
     @Test
-    fun list() {
+    fun bulkRetrieve() {
         val client =
             SpottedOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
@@ -26,17 +26,17 @@ internal class FollowingServiceAsyncTest {
                 .build()
         val followingServiceAsync = client.me().following()
 
-        val followingsFuture =
-            followingServiceAsync.list(
-                FollowingListParams.builder()
-                    .type(FollowingListParams.Type.ARTIST)
+        val responseFuture =
+            followingServiceAsync.bulkRetrieve(
+                FollowingBulkRetrieveParams.builder()
+                    .type(FollowingBulkRetrieveParams.Type.ARTIST)
                     .after("0I2XqVXqHScXjHhk6AYYRe")
                     .limit(10L)
                     .build()
             )
 
-        val followings = followingsFuture.get()
-        followings.validate()
+        val response = responseFuture.get()
+        response.validate()
     }
 
     @Disabled("Prism tests are disabled")

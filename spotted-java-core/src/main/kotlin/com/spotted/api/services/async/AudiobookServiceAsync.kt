@@ -5,10 +5,10 @@ package com.spotted.api.services.async
 import com.spotted.api.core.ClientOptions
 import com.spotted.api.core.RequestOptions
 import com.spotted.api.core.http.HttpResponseFor
+import com.spotted.api.models.audiobooks.AudiobookBulkRetrieveParams
+import com.spotted.api.models.audiobooks.AudiobookBulkRetrieveResponse
 import com.spotted.api.models.audiobooks.AudiobookListChaptersPageAsync
 import com.spotted.api.models.audiobooks.AudiobookListChaptersParams
-import com.spotted.api.models.audiobooks.AudiobookListParams
-import com.spotted.api.models.audiobooks.AudiobookListResponse
 import com.spotted.api.models.audiobooks.AudiobookRetrieveParams
 import com.spotted.api.models.audiobooks.AudiobookRetrieveResponse
 import java.util.concurrent.CompletableFuture
@@ -71,14 +71,16 @@ interface AudiobookServiceAsync {
      * Audiobooks are only available within the US, UK, Canada, Ireland, New Zealand and Australia
      * markets.
      */
-    fun list(params: AudiobookListParams): CompletableFuture<AudiobookListResponse> =
-        list(params, RequestOptions.none())
+    fun bulkRetrieve(
+        params: AudiobookBulkRetrieveParams
+    ): CompletableFuture<AudiobookBulkRetrieveResponse> =
+        bulkRetrieve(params, RequestOptions.none())
 
-    /** @see list */
-    fun list(
-        params: AudiobookListParams,
+    /** @see bulkRetrieve */
+    fun bulkRetrieve(
+        params: AudiobookBulkRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<AudiobookListResponse>
+    ): CompletableFuture<AudiobookBulkRetrieveResponse>
 
     /**
      * Get Spotify catalog information about an audiobook's chapters. Audiobooks are only available
@@ -178,18 +180,18 @@ interface AudiobookServiceAsync {
 
         /**
          * Returns a raw HTTP response for `get /audiobooks`, but is otherwise the same as
-         * [AudiobookServiceAsync.list].
+         * [AudiobookServiceAsync.bulkRetrieve].
          */
-        fun list(
-            params: AudiobookListParams
-        ): CompletableFuture<HttpResponseFor<AudiobookListResponse>> =
-            list(params, RequestOptions.none())
+        fun bulkRetrieve(
+            params: AudiobookBulkRetrieveParams
+        ): CompletableFuture<HttpResponseFor<AudiobookBulkRetrieveResponse>> =
+            bulkRetrieve(params, RequestOptions.none())
 
-        /** @see list */
-        fun list(
-            params: AudiobookListParams,
+        /** @see bulkRetrieve */
+        fun bulkRetrieve(
+            params: AudiobookBulkRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<AudiobookListResponse>>
+        ): CompletableFuture<HttpResponseFor<AudiobookBulkRetrieveResponse>>
 
         /**
          * Returns a raw HTTP response for `get /audiobooks/{id}/chapters`, but is otherwise the

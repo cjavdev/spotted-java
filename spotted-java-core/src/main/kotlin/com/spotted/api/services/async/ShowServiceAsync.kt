@@ -5,10 +5,10 @@ package com.spotted.api.services.async
 import com.spotted.api.core.ClientOptions
 import com.spotted.api.core.RequestOptions
 import com.spotted.api.core.http.HttpResponseFor
+import com.spotted.api.models.shows.ShowBulkRetrieveParams
+import com.spotted.api.models.shows.ShowBulkRetrieveResponse
 import com.spotted.api.models.shows.ShowListEpisodesPageAsync
 import com.spotted.api.models.shows.ShowListEpisodesParams
-import com.spotted.api.models.shows.ShowListParams
-import com.spotted.api.models.shows.ShowListResponse
 import com.spotted.api.models.shows.ShowRetrieveParams
 import com.spotted.api.models.shows.ShowRetrieveResponse
 import java.util.concurrent.CompletableFuture
@@ -64,14 +64,14 @@ interface ShowServiceAsync {
         retrieve(id, ShowRetrieveParams.none(), requestOptions)
 
     /** Get Spotify catalog information for several shows based on their Spotify IDs. */
-    fun list(params: ShowListParams): CompletableFuture<ShowListResponse> =
-        list(params, RequestOptions.none())
+    fun bulkRetrieve(params: ShowBulkRetrieveParams): CompletableFuture<ShowBulkRetrieveResponse> =
+        bulkRetrieve(params, RequestOptions.none())
 
-    /** @see list */
-    fun list(
-        params: ShowListParams,
+    /** @see bulkRetrieve */
+    fun bulkRetrieve(
+        params: ShowBulkRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<ShowListResponse>
+    ): CompletableFuture<ShowBulkRetrieveResponse>
 
     /**
      * Get Spotify catalog information about an show’s episodes. Optional parameters can be used to
@@ -165,16 +165,18 @@ interface ShowServiceAsync {
 
         /**
          * Returns a raw HTTP response for `get /shows`, but is otherwise the same as
-         * [ShowServiceAsync.list].
+         * [ShowServiceAsync.bulkRetrieve].
          */
-        fun list(params: ShowListParams): CompletableFuture<HttpResponseFor<ShowListResponse>> =
-            list(params, RequestOptions.none())
+        fun bulkRetrieve(
+            params: ShowBulkRetrieveParams
+        ): CompletableFuture<HttpResponseFor<ShowBulkRetrieveResponse>> =
+            bulkRetrieve(params, RequestOptions.none())
 
-        /** @see list */
-        fun list(
-            params: ShowListParams,
+        /** @see bulkRetrieve */
+        fun bulkRetrieve(
+            params: ShowBulkRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<ShowListResponse>>
+        ): CompletableFuture<HttpResponseFor<ShowBulkRetrieveResponse>>
 
         /**
          * Returns a raw HTTP response for `get /shows/{id}/episodes`, but is otherwise the same as

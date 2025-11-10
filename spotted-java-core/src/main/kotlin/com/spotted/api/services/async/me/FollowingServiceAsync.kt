@@ -6,10 +6,10 @@ import com.spotted.api.core.ClientOptions
 import com.spotted.api.core.RequestOptions
 import com.spotted.api.core.http.HttpResponse
 import com.spotted.api.core.http.HttpResponseFor
+import com.spotted.api.models.me.following.FollowingBulkRetrieveParams
+import com.spotted.api.models.me.following.FollowingBulkRetrieveResponse
 import com.spotted.api.models.me.following.FollowingCheckParams
 import com.spotted.api.models.me.following.FollowingFollowParams
-import com.spotted.api.models.me.following.FollowingListParams
-import com.spotted.api.models.me.following.FollowingListResponse
 import com.spotted.api.models.me.following.FollowingUnfollowParams
 import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
@@ -29,14 +29,16 @@ interface FollowingServiceAsync {
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): FollowingServiceAsync
 
     /** Get the current user's followed artists. */
-    fun list(params: FollowingListParams): CompletableFuture<FollowingListResponse> =
-        list(params, RequestOptions.none())
+    fun bulkRetrieve(
+        params: FollowingBulkRetrieveParams
+    ): CompletableFuture<FollowingBulkRetrieveResponse> =
+        bulkRetrieve(params, RequestOptions.none())
 
-    /** @see list */
-    fun list(
-        params: FollowingListParams,
+    /** @see bulkRetrieve */
+    fun bulkRetrieve(
+        params: FollowingBulkRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<FollowingListResponse>
+    ): CompletableFuture<FollowingBulkRetrieveResponse>
 
     /** Check to see if the current user is following one or more artists or other Spotify users. */
     fun check(params: FollowingCheckParams): CompletableFuture<List<Boolean>> =
@@ -92,18 +94,18 @@ interface FollowingServiceAsync {
 
         /**
          * Returns a raw HTTP response for `get /me/following`, but is otherwise the same as
-         * [FollowingServiceAsync.list].
+         * [FollowingServiceAsync.bulkRetrieve].
          */
-        fun list(
-            params: FollowingListParams
-        ): CompletableFuture<HttpResponseFor<FollowingListResponse>> =
-            list(params, RequestOptions.none())
+        fun bulkRetrieve(
+            params: FollowingBulkRetrieveParams
+        ): CompletableFuture<HttpResponseFor<FollowingBulkRetrieveResponse>> =
+            bulkRetrieve(params, RequestOptions.none())
 
-        /** @see list */
-        fun list(
-            params: FollowingListParams,
+        /** @see bulkRetrieve */
+        fun bulkRetrieve(
+            params: FollowingBulkRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<FollowingListResponse>>
+        ): CompletableFuture<HttpResponseFor<FollowingBulkRetrieveResponse>>
 
         /**
          * Returns a raw HTTP response for `get /me/following/contains`, but is otherwise the same

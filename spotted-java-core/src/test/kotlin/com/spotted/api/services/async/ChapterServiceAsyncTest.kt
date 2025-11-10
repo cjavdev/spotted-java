@@ -4,7 +4,7 @@ package com.spotted.api.services.async
 
 import com.spotted.api.TestServerExtension
 import com.spotted.api.client.okhttp.SpottedOkHttpClientAsync
-import com.spotted.api.models.chapters.ChapterListParams
+import com.spotted.api.models.chapters.ChapterBulkRetrieveParams
 import com.spotted.api.models.chapters.ChapterRetrieveParams
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
@@ -35,7 +35,7 @@ internal class ChapterServiceAsyncTest {
 
     @Disabled("Prism tests are disabled")
     @Test
-    fun list() {
+    fun bulkRetrieve() {
         val client =
             SpottedOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
@@ -44,15 +44,15 @@ internal class ChapterServiceAsyncTest {
                 .build()
         val chapterServiceAsync = client.chapters()
 
-        val chaptersFuture =
-            chapterServiceAsync.list(
-                ChapterListParams.builder()
+        val responseFuture =
+            chapterServiceAsync.bulkRetrieve(
+                ChapterBulkRetrieveParams.builder()
                     .ids("0IsXVP0JmcB2adSE338GkK,3ZXb8FKZGU0EHALYX6uCzU,0D5wENdkdwbqlrHoaJ9g29")
                     .market("ES")
                     .build()
             )
 
-        val chapters = chaptersFuture.get()
-        chapters.validate()
+        val response = responseFuture.get()
+        response.validate()
     }
 }
