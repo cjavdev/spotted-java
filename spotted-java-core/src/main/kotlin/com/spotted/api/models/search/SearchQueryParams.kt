@@ -20,7 +20,7 @@ import kotlin.jvm.optionals.getOrNull
  * audiobooks that match a keyword string. Audiobooks are only available within the US, UK, Canada,
  * Ireland, New Zealand and Australia markets.
  */
-class SearchSearchParams
+class SearchQueryParams
 private constructor(
     private val q: String,
     private val type: List<Type>,
@@ -94,7 +94,7 @@ private constructor(
     companion object {
 
         /**
-         * Returns a mutable builder for constructing an instance of [SearchSearchParams].
+         * Returns a mutable builder for constructing an instance of [SearchQueryParams].
          *
          * The following fields are required:
          * ```java
@@ -105,7 +105,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
-    /** A builder for [SearchSearchParams]. */
+    /** A builder for [SearchQueryParams]. */
     class Builder internal constructor() {
 
         private var q: String? = null
@@ -118,15 +118,15 @@ private constructor(
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
         @JvmSynthetic
-        internal fun from(searchSearchParams: SearchSearchParams) = apply {
-            q = searchSearchParams.q
-            type = searchSearchParams.type.toMutableList()
-            includeExternal = searchSearchParams.includeExternal
-            limit = searchSearchParams.limit
-            market = searchSearchParams.market
-            offset = searchSearchParams.offset
-            additionalHeaders = searchSearchParams.additionalHeaders.toBuilder()
-            additionalQueryParams = searchSearchParams.additionalQueryParams.toBuilder()
+        internal fun from(searchQueryParams: SearchQueryParams) = apply {
+            q = searchQueryParams.q
+            type = searchQueryParams.type.toMutableList()
+            includeExternal = searchQueryParams.includeExternal
+            limit = searchQueryParams.limit
+            market = searchQueryParams.market
+            offset = searchQueryParams.offset
+            additionalHeaders = searchQueryParams.additionalHeaders.toBuilder()
+            additionalQueryParams = searchQueryParams.additionalQueryParams.toBuilder()
         }
 
         /**
@@ -318,7 +318,7 @@ private constructor(
         }
 
         /**
-         * Returns an immutable instance of [SearchSearchParams].
+         * Returns an immutable instance of [SearchQueryParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
          *
@@ -330,8 +330,8 @@ private constructor(
          *
          * @throws IllegalStateException if any required field is unset.
          */
-        fun build(): SearchSearchParams =
-            SearchSearchParams(
+        fun build(): SearchQueryParams =
+            SearchQueryParams(
                 checkRequired("q", q),
                 checkRequired("type", type).toImmutable(),
                 includeExternal,
@@ -646,7 +646,7 @@ private constructor(
             return true
         }
 
-        return other is SearchSearchParams &&
+        return other is SearchQueryParams &&
             q == other.q &&
             type == other.type &&
             includeExternal == other.includeExternal &&
@@ -670,5 +670,5 @@ private constructor(
         )
 
     override fun toString() =
-        "SearchSearchParams{q=$q, type=$type, includeExternal=$includeExternal, limit=$limit, market=$market, offset=$offset, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "SearchQueryParams{q=$q, type=$type, includeExternal=$includeExternal, limit=$limit, market=$market, offset=$offset, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

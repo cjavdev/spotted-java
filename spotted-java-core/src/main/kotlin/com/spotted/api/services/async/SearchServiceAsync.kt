@@ -5,8 +5,8 @@ package com.spotted.api.services.async
 import com.spotted.api.core.ClientOptions
 import com.spotted.api.core.RequestOptions
 import com.spotted.api.core.http.HttpResponseFor
-import com.spotted.api.models.search.SearchSearchParams
-import com.spotted.api.models.search.SearchSearchResponse
+import com.spotted.api.models.search.SearchQueryParams
+import com.spotted.api.models.search.SearchQueryResponse
 import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
 
@@ -29,14 +29,14 @@ interface SearchServiceAsync {
      * audiobooks that match a keyword string. Audiobooks are only available within the US, UK,
      * Canada, Ireland, New Zealand and Australia markets.
      */
-    fun search(params: SearchSearchParams): CompletableFuture<SearchSearchResponse> =
-        search(params, RequestOptions.none())
+    fun query(params: SearchQueryParams): CompletableFuture<SearchQueryResponse> =
+        query(params, RequestOptions.none())
 
-    /** @see search */
-    fun search(
-        params: SearchSearchParams,
+    /** @see query */
+    fun query(
+        params: SearchQueryParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<SearchSearchResponse>
+    ): CompletableFuture<SearchQueryResponse>
 
     /**
      * A view of [SearchServiceAsync] that provides access to raw HTTP responses for each method.
@@ -54,17 +54,17 @@ interface SearchServiceAsync {
 
         /**
          * Returns a raw HTTP response for `get /search`, but is otherwise the same as
-         * [SearchServiceAsync.search].
+         * [SearchServiceAsync.query].
          */
-        fun search(
-            params: SearchSearchParams
-        ): CompletableFuture<HttpResponseFor<SearchSearchResponse>> =
-            search(params, RequestOptions.none())
+        fun query(
+            params: SearchQueryParams
+        ): CompletableFuture<HttpResponseFor<SearchQueryResponse>> =
+            query(params, RequestOptions.none())
 
-        /** @see search */
-        fun search(
-            params: SearchSearchParams,
+        /** @see query */
+        fun query(
+            params: SearchQueryParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<SearchSearchResponse>>
+        ): CompletableFuture<HttpResponseFor<SearchQueryResponse>>
     }
 }
