@@ -39,7 +39,6 @@ internal class AlbumRetrieveResponseTest {
                 .releaseDate("1981-12")
                 .releaseDatePrecision(AlbumRetrieveResponse.ReleaseDatePrecision.YEAR)
                 .totalTracks(9L)
-                .type(AlbumRetrieveResponse.Type.ALBUM)
                 .uri("spotify:album:2up3OPMp9Tb4dAKM2erWXQ")
                 .addArtist(
                     SimplifiedArtistObject.builder()
@@ -139,7 +138,6 @@ internal class AlbumRetrieveResponseTest {
         assertThat(albumRetrieveResponse.releaseDatePrecision())
             .isEqualTo(AlbumRetrieveResponse.ReleaseDatePrecision.YEAR)
         assertThat(albumRetrieveResponse.totalTracks()).isEqualTo(9L)
-        assertThat(albumRetrieveResponse.type()).isEqualTo(AlbumRetrieveResponse.Type.ALBUM)
         assertThat(albumRetrieveResponse.uri()).isEqualTo("spotify:album:2up3OPMp9Tb4dAKM2erWXQ")
         assertThat(albumRetrieveResponse.artists().getOrNull())
             .containsExactly(
@@ -241,7 +239,6 @@ internal class AlbumRetrieveResponseTest {
                 .releaseDate("1981-12")
                 .releaseDatePrecision(AlbumRetrieveResponse.ReleaseDatePrecision.YEAR)
                 .totalTracks(9L)
-                .type(AlbumRetrieveResponse.Type.ALBUM)
                 .uri("spotify:album:2up3OPMp9Tb4dAKM2erWXQ")
                 .addArtist(
                     SimplifiedArtistObject.builder()
