@@ -175,11 +175,9 @@ These methods return [`HttpResponse`](spotted-java-core/src/main/kotlin/com/spot
 import com.spotted.api.core.http.HttpResponse;
 import com.spotted.api.models.playlists.images.ImageUpdateParams;
 
-ImageUpdateParams params = ImageUpdateParams.builder()
-    .playlistId("3cEYpjA9oz9GiPac4AsH4n")
-    .body("/9j/2wCEABoZGSccJz4lJT5CLy8vQkc9Ozs9R0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0cBHCcnMyYzPSYmPUc9Mj1HR0dEREdHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR//dAAQAAf/uAA5BZG9iZQBkwAAAAAH/wAARCAABAAEDACIAAREBAhEB/8QASwABAQAAAAAAAAAAAAAAAAAAAAYBAQAAAAAAAAAAAAAAAAAAAAAQAQAAAAAAAAAAAAAAAAAAAAARAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwAAARECEQA/AJgAH//Z")
-    .build();
-HttpResponse image = client.playlists().images().update(params);
+HttpResponse image = client.playlists().images().update(
+  "3cEYpjA9oz9GiPac4AsH4n", "some content"
+);
 ```
 
 To save the response content to a file, use the [`Files.copy(...)`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#copy-java.io.InputStream-java.nio.file.Path-java.nio.file.CopyOption...-) method:

@@ -27,16 +27,30 @@ interface ImageServiceAsync {
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): ImageServiceAsync
 
     /** Replace the image used to represent a specific playlist. */
-    fun update(playlistId: String, params: ImageUpdateParams): CompletableFuture<HttpResponse> =
-        update(playlistId, params, RequestOptions.none())
+    fun update(playlistId: String, body: String): CompletableFuture<HttpResponse> =
+        update(playlistId, body, ImageUpdateParams.none())
 
     /** @see update */
     fun update(
         playlistId: String,
-        params: ImageUpdateParams,
+        body: String,
+        params: ImageUpdateParams = ImageUpdateParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<HttpResponse> =
-        update(params.toBuilder().playlistId(playlistId).build(), requestOptions)
+        update(params.toBuilder().playlistId(playlistId).body(body).build(), requestOptions)
+
+    /** @see update */
+    fun update(
+        playlistId: String,
+        body: String,
+        params: ImageUpdateParams = ImageUpdateParams.none(),
+    ): CompletableFuture<HttpResponse> = update(playlistId, body, params, RequestOptions.none())
+
+    /** @see update */
+    fun update(
+        params: ImageUpdateParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<HttpResponse>
 
     /** @see update */
     fun update(params: ImageUpdateParams): CompletableFuture<HttpResponse> =
@@ -44,9 +58,11 @@ interface ImageServiceAsync {
 
     /** @see update */
     fun update(
-        params: ImageUpdateParams,
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<HttpResponse>
+        playlistId: String,
+        body: String,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<HttpResponse> =
+        update(playlistId, body, ImageUpdateParams.none(), requestOptions)
 
     /** Get the current image associated with a specific playlist. */
     fun list(playlistId: String): CompletableFuture<List<ImageObject>> =
@@ -99,16 +115,30 @@ interface ImageServiceAsync {
          * Returns a raw HTTP response for `put /playlists/{playlist_id}/images`, but is otherwise
          * the same as [ImageServiceAsync.update].
          */
-        fun update(playlistId: String, params: ImageUpdateParams): CompletableFuture<HttpResponse> =
-            update(playlistId, params, RequestOptions.none())
+        fun update(playlistId: String, body: String): CompletableFuture<HttpResponse> =
+            update(playlistId, body, ImageUpdateParams.none())
 
         /** @see update */
         fun update(
             playlistId: String,
-            params: ImageUpdateParams,
+            body: String,
+            params: ImageUpdateParams = ImageUpdateParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponse> =
-            update(params.toBuilder().playlistId(playlistId).build(), requestOptions)
+            update(params.toBuilder().playlistId(playlistId).body(body).build(), requestOptions)
+
+        /** @see update */
+        fun update(
+            playlistId: String,
+            body: String,
+            params: ImageUpdateParams = ImageUpdateParams.none(),
+        ): CompletableFuture<HttpResponse> = update(playlistId, body, params, RequestOptions.none())
+
+        /** @see update */
+        fun update(
+            params: ImageUpdateParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponse>
 
         /** @see update */
         fun update(params: ImageUpdateParams): CompletableFuture<HttpResponse> =
@@ -116,9 +146,11 @@ interface ImageServiceAsync {
 
         /** @see update */
         fun update(
-            params: ImageUpdateParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponse>
+            playlistId: String,
+            body: String,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponse> =
+            update(playlistId, body, ImageUpdateParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `get /playlists/{playlist_id}/images`, but is otherwise
