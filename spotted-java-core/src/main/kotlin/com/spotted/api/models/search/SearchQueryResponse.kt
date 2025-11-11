@@ -351,19 +351,18 @@ private constructor(
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val href: JsonField<String>,
-        private val items: JsonField<List<Item>>,
         private val limit: JsonField<Long>,
         private val next: JsonField<String>,
         private val offset: JsonField<Long>,
         private val previous: JsonField<String>,
         private val total: JsonField<Long>,
+        private val items: JsonField<List<Item>>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
         @JsonCreator
         private constructor(
             @JsonProperty("href") @ExcludeMissing href: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("items") @ExcludeMissing items: JsonField<List<Item>> = JsonMissing.of(),
             @JsonProperty("limit") @ExcludeMissing limit: JsonField<Long> = JsonMissing.of(),
             @JsonProperty("next") @ExcludeMissing next: JsonField<String> = JsonMissing.of(),
             @JsonProperty("offset") @ExcludeMissing offset: JsonField<Long> = JsonMissing.of(),
@@ -371,7 +370,8 @@ private constructor(
             @ExcludeMissing
             previous: JsonField<String> = JsonMissing.of(),
             @JsonProperty("total") @ExcludeMissing total: JsonField<Long> = JsonMissing.of(),
-        ) : this(href, items, limit, next, offset, previous, total, mutableMapOf())
+            @JsonProperty("items") @ExcludeMissing items: JsonField<List<Item>> = JsonMissing.of(),
+        ) : this(href, limit, next, offset, previous, total, items, mutableMapOf())
 
         /**
          * A link to the Web API endpoint returning the full result of the request
@@ -380,12 +380,6 @@ private constructor(
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
         fun href(): String = href.getRequired("href")
-
-        /**
-         * @throws SpottedInvalidDataException if the JSON field has an unexpected type or is
-         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-         */
-        fun items(): List<Item> = items.getRequired("items")
 
         /**
          * The maximum number of items in the response (as set in the query or by default).
@@ -428,18 +422,17 @@ private constructor(
         fun total(): Long = total.getRequired("total")
 
         /**
+         * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun items(): Optional<List<Item>> = items.getOptional("items")
+
+        /**
          * Returns the raw JSON value of [href].
          *
          * Unlike [href], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("href") @ExcludeMissing fun _href(): JsonField<String> = href
-
-        /**
-         * Returns the raw JSON value of [items].
-         *
-         * Unlike [items], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("items") @ExcludeMissing fun _items(): JsonField<List<Item>> = items
 
         /**
          * Returns the raw JSON value of [limit].
@@ -476,6 +469,13 @@ private constructor(
          */
         @JsonProperty("total") @ExcludeMissing fun _total(): JsonField<Long> = total
 
+        /**
+         * Returns the raw JSON value of [items].
+         *
+         * Unlike [items], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("items") @ExcludeMissing fun _items(): JsonField<List<Item>> = items
+
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
             additionalProperties.put(key, value)
@@ -496,7 +496,6 @@ private constructor(
              * The following fields are required:
              * ```java
              * .href()
-             * .items()
              * .limit()
              * .next()
              * .offset()
@@ -511,23 +510,23 @@ private constructor(
         class Builder internal constructor() {
 
             private var href: JsonField<String>? = null
-            private var items: JsonField<MutableList<Item>>? = null
             private var limit: JsonField<Long>? = null
             private var next: JsonField<String>? = null
             private var offset: JsonField<Long>? = null
             private var previous: JsonField<String>? = null
             private var total: JsonField<Long>? = null
+            private var items: JsonField<MutableList<Item>>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(albums: Albums) = apply {
                 href = albums.href
-                items = albums.items.map { it.toMutableList() }
                 limit = albums.limit
                 next = albums.next
                 offset = albums.offset
                 previous = albums.previous
                 total = albums.total
+                items = albums.items.map { it.toMutableList() }
                 additionalProperties = albums.additionalProperties.toMutableMap()
             }
 
@@ -542,31 +541,6 @@ private constructor(
              * value.
              */
             fun href(href: JsonField<String>) = apply { this.href = href }
-
-            fun items(items: List<Item>) = items(JsonField.of(items))
-
-            /**
-             * Sets [Builder.items] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.items] with a well-typed `List<Item>` value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun items(items: JsonField<List<Item>>) = apply {
-                this.items = items.map { it.toMutableList() }
-            }
-
-            /**
-             * Adds a single [Item] to [items].
-             *
-             * @throws IllegalStateException if the field was previously set to a non-list.
-             */
-            fun addItem(item: Item) = apply {
-                items =
-                    (items ?: JsonField.of(mutableListOf())).also {
-                        checkKnown("items", it).add(item)
-                    }
-            }
 
             /** The maximum number of items in the response (as set in the query or by default). */
             fun limit(limit: Long) = limit(JsonField.of(limit))
@@ -634,6 +608,31 @@ private constructor(
              */
             fun total(total: JsonField<Long>) = apply { this.total = total }
 
+            fun items(items: List<Item>) = items(JsonField.of(items))
+
+            /**
+             * Sets [Builder.items] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.items] with a well-typed `List<Item>` value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun items(items: JsonField<List<Item>>) = apply {
+                this.items = items.map { it.toMutableList() }
+            }
+
+            /**
+             * Adds a single [Item] to [items].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
+            fun addItem(item: Item) = apply {
+                items =
+                    (items ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("items", it).add(item)
+                    }
+            }
+
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
                 putAllAdditionalProperties(additionalProperties)
@@ -661,7 +660,6 @@ private constructor(
              * The following fields are required:
              * ```java
              * .href()
-             * .items()
              * .limit()
              * .next()
              * .offset()
@@ -674,12 +672,12 @@ private constructor(
             fun build(): Albums =
                 Albums(
                     checkRequired("href", href),
-                    checkRequired("items", items).map { it.toImmutable() },
                     checkRequired("limit", limit),
                     checkRequired("next", next),
                     checkRequired("offset", offset),
                     checkRequired("previous", previous),
                     checkRequired("total", total),
+                    (items ?: JsonMissing.of()).map { it.toImmutable() },
                     additionalProperties.toMutableMap(),
                 )
         }
@@ -692,12 +690,12 @@ private constructor(
             }
 
             href()
-            items().forEach { it.validate() }
             limit()
             next()
             offset()
             previous()
             total()
+            items().ifPresent { it.forEach { it.validate() } }
             validated = true
         }
 
@@ -718,12 +716,12 @@ private constructor(
         @JvmSynthetic
         internal fun validity(): Int =
             (if (href.asKnown().isPresent) 1 else 0) +
-                (items.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
                 (if (limit.asKnown().isPresent) 1 else 0) +
                 (if (next.asKnown().isPresent) 1 else 0) +
                 (if (offset.asKnown().isPresent) 1 else 0) +
                 (if (previous.asKnown().isPresent) 1 else 0) +
-                (if (total.asKnown().isPresent) 1 else 0)
+                (if (total.asKnown().isPresent) 1 else 0) +
+                (items.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
 
         class Item
         @JsonCreator(mode = JsonCreator.Mode.DISABLED)
@@ -1956,44 +1954,41 @@ private constructor(
 
             return other is Albums &&
                 href == other.href &&
-                items == other.items &&
                 limit == other.limit &&
                 next == other.next &&
                 offset == other.offset &&
                 previous == other.previous &&
                 total == other.total &&
+                items == other.items &&
                 additionalProperties == other.additionalProperties
         }
 
         private val hashCode: Int by lazy {
-            Objects.hash(href, items, limit, next, offset, previous, total, additionalProperties)
+            Objects.hash(href, limit, next, offset, previous, total, items, additionalProperties)
         }
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Albums{href=$href, items=$items, limit=$limit, next=$next, offset=$offset, previous=$previous, total=$total, additionalProperties=$additionalProperties}"
+            "Albums{href=$href, limit=$limit, next=$next, offset=$offset, previous=$previous, total=$total, items=$items, additionalProperties=$additionalProperties}"
     }
 
     class Artists
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val href: JsonField<String>,
-        private val items: JsonField<List<ArtistObject>>,
         private val limit: JsonField<Long>,
         private val next: JsonField<String>,
         private val offset: JsonField<Long>,
         private val previous: JsonField<String>,
         private val total: JsonField<Long>,
+        private val items: JsonField<List<ArtistObject>>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
         @JsonCreator
         private constructor(
             @JsonProperty("href") @ExcludeMissing href: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("items")
-            @ExcludeMissing
-            items: JsonField<List<ArtistObject>> = JsonMissing.of(),
             @JsonProperty("limit") @ExcludeMissing limit: JsonField<Long> = JsonMissing.of(),
             @JsonProperty("next") @ExcludeMissing next: JsonField<String> = JsonMissing.of(),
             @JsonProperty("offset") @ExcludeMissing offset: JsonField<Long> = JsonMissing.of(),
@@ -2001,7 +1996,10 @@ private constructor(
             @ExcludeMissing
             previous: JsonField<String> = JsonMissing.of(),
             @JsonProperty("total") @ExcludeMissing total: JsonField<Long> = JsonMissing.of(),
-        ) : this(href, items, limit, next, offset, previous, total, mutableMapOf())
+            @JsonProperty("items")
+            @ExcludeMissing
+            items: JsonField<List<ArtistObject>> = JsonMissing.of(),
+        ) : this(href, limit, next, offset, previous, total, items, mutableMapOf())
 
         /**
          * A link to the Web API endpoint returning the full result of the request
@@ -2010,12 +2008,6 @@ private constructor(
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
         fun href(): String = href.getRequired("href")
-
-        /**
-         * @throws SpottedInvalidDataException if the JSON field has an unexpected type or is
-         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-         */
-        fun items(): List<ArtistObject> = items.getRequired("items")
 
         /**
          * The maximum number of items in the response (as set in the query or by default).
@@ -2058,18 +2050,17 @@ private constructor(
         fun total(): Long = total.getRequired("total")
 
         /**
+         * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun items(): Optional<List<ArtistObject>> = items.getOptional("items")
+
+        /**
          * Returns the raw JSON value of [href].
          *
          * Unlike [href], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("href") @ExcludeMissing fun _href(): JsonField<String> = href
-
-        /**
-         * Returns the raw JSON value of [items].
-         *
-         * Unlike [items], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("items") @ExcludeMissing fun _items(): JsonField<List<ArtistObject>> = items
 
         /**
          * Returns the raw JSON value of [limit].
@@ -2106,6 +2097,13 @@ private constructor(
          */
         @JsonProperty("total") @ExcludeMissing fun _total(): JsonField<Long> = total
 
+        /**
+         * Returns the raw JSON value of [items].
+         *
+         * Unlike [items], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("items") @ExcludeMissing fun _items(): JsonField<List<ArtistObject>> = items
+
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
             additionalProperties.put(key, value)
@@ -2126,7 +2124,6 @@ private constructor(
              * The following fields are required:
              * ```java
              * .href()
-             * .items()
              * .limit()
              * .next()
              * .offset()
@@ -2141,23 +2138,23 @@ private constructor(
         class Builder internal constructor() {
 
             private var href: JsonField<String>? = null
-            private var items: JsonField<MutableList<ArtistObject>>? = null
             private var limit: JsonField<Long>? = null
             private var next: JsonField<String>? = null
             private var offset: JsonField<Long>? = null
             private var previous: JsonField<String>? = null
             private var total: JsonField<Long>? = null
+            private var items: JsonField<MutableList<ArtistObject>>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(artists: Artists) = apply {
                 href = artists.href
-                items = artists.items.map { it.toMutableList() }
                 limit = artists.limit
                 next = artists.next
                 offset = artists.offset
                 previous = artists.previous
                 total = artists.total
+                items = artists.items.map { it.toMutableList() }
                 additionalProperties = artists.additionalProperties.toMutableMap()
             }
 
@@ -2172,31 +2169,6 @@ private constructor(
              * value.
              */
             fun href(href: JsonField<String>) = apply { this.href = href }
-
-            fun items(items: List<ArtistObject>) = items(JsonField.of(items))
-
-            /**
-             * Sets [Builder.items] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.items] with a well-typed `List<ArtistObject>` value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun items(items: JsonField<List<ArtistObject>>) = apply {
-                this.items = items.map { it.toMutableList() }
-            }
-
-            /**
-             * Adds a single [ArtistObject] to [items].
-             *
-             * @throws IllegalStateException if the field was previously set to a non-list.
-             */
-            fun addItem(item: ArtistObject) = apply {
-                items =
-                    (items ?: JsonField.of(mutableListOf())).also {
-                        checkKnown("items", it).add(item)
-                    }
-            }
 
             /** The maximum number of items in the response (as set in the query or by default). */
             fun limit(limit: Long) = limit(JsonField.of(limit))
@@ -2263,6 +2235,31 @@ private constructor(
              * value.
              */
             fun total(total: JsonField<Long>) = apply { this.total = total }
+
+            fun items(items: List<ArtistObject>) = items(JsonField.of(items))
+
+            /**
+             * Sets [Builder.items] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.items] with a well-typed `List<ArtistObject>` value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun items(items: JsonField<List<ArtistObject>>) = apply {
+                this.items = items.map { it.toMutableList() }
+            }
+
+            /**
+             * Adds a single [ArtistObject] to [items].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
+            fun addItem(item: ArtistObject) = apply {
+                items =
+                    (items ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("items", it).add(item)
+                    }
+            }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -2291,7 +2288,6 @@ private constructor(
              * The following fields are required:
              * ```java
              * .href()
-             * .items()
              * .limit()
              * .next()
              * .offset()
@@ -2304,12 +2300,12 @@ private constructor(
             fun build(): Artists =
                 Artists(
                     checkRequired("href", href),
-                    checkRequired("items", items).map { it.toImmutable() },
                     checkRequired("limit", limit),
                     checkRequired("next", next),
                     checkRequired("offset", offset),
                     checkRequired("previous", previous),
                     checkRequired("total", total),
+                    (items ?: JsonMissing.of()).map { it.toImmutable() },
                     additionalProperties.toMutableMap(),
                 )
         }
@@ -2322,12 +2318,12 @@ private constructor(
             }
 
             href()
-            items().forEach { it.validate() }
             limit()
             next()
             offset()
             previous()
             total()
+            items().ifPresent { it.forEach { it.validate() } }
             validated = true
         }
 
@@ -2348,12 +2344,12 @@ private constructor(
         @JvmSynthetic
         internal fun validity(): Int =
             (if (href.asKnown().isPresent) 1 else 0) +
-                (items.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
                 (if (limit.asKnown().isPresent) 1 else 0) +
                 (if (next.asKnown().isPresent) 1 else 0) +
                 (if (offset.asKnown().isPresent) 1 else 0) +
                 (if (previous.asKnown().isPresent) 1 else 0) +
-                (if (total.asKnown().isPresent) 1 else 0)
+                (if (total.asKnown().isPresent) 1 else 0) +
+                (items.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -2362,44 +2358,41 @@ private constructor(
 
             return other is Artists &&
                 href == other.href &&
-                items == other.items &&
                 limit == other.limit &&
                 next == other.next &&
                 offset == other.offset &&
                 previous == other.previous &&
                 total == other.total &&
+                items == other.items &&
                 additionalProperties == other.additionalProperties
         }
 
         private val hashCode: Int by lazy {
-            Objects.hash(href, items, limit, next, offset, previous, total, additionalProperties)
+            Objects.hash(href, limit, next, offset, previous, total, items, additionalProperties)
         }
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Artists{href=$href, items=$items, limit=$limit, next=$next, offset=$offset, previous=$previous, total=$total, additionalProperties=$additionalProperties}"
+            "Artists{href=$href, limit=$limit, next=$next, offset=$offset, previous=$previous, total=$total, items=$items, additionalProperties=$additionalProperties}"
     }
 
     class Audiobooks
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val href: JsonField<String>,
-        private val items: JsonField<List<AudiobookBase>>,
         private val limit: JsonField<Long>,
         private val next: JsonField<String>,
         private val offset: JsonField<Long>,
         private val previous: JsonField<String>,
         private val total: JsonField<Long>,
+        private val items: JsonField<List<AudiobookBase>>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
         @JsonCreator
         private constructor(
             @JsonProperty("href") @ExcludeMissing href: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("items")
-            @ExcludeMissing
-            items: JsonField<List<AudiobookBase>> = JsonMissing.of(),
             @JsonProperty("limit") @ExcludeMissing limit: JsonField<Long> = JsonMissing.of(),
             @JsonProperty("next") @ExcludeMissing next: JsonField<String> = JsonMissing.of(),
             @JsonProperty("offset") @ExcludeMissing offset: JsonField<Long> = JsonMissing.of(),
@@ -2407,7 +2400,10 @@ private constructor(
             @ExcludeMissing
             previous: JsonField<String> = JsonMissing.of(),
             @JsonProperty("total") @ExcludeMissing total: JsonField<Long> = JsonMissing.of(),
-        ) : this(href, items, limit, next, offset, previous, total, mutableMapOf())
+            @JsonProperty("items")
+            @ExcludeMissing
+            items: JsonField<List<AudiobookBase>> = JsonMissing.of(),
+        ) : this(href, limit, next, offset, previous, total, items, mutableMapOf())
 
         /**
          * A link to the Web API endpoint returning the full result of the request
@@ -2416,12 +2412,6 @@ private constructor(
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
         fun href(): String = href.getRequired("href")
-
-        /**
-         * @throws SpottedInvalidDataException if the JSON field has an unexpected type or is
-         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-         */
-        fun items(): List<AudiobookBase> = items.getRequired("items")
 
         /**
          * The maximum number of items in the response (as set in the query or by default).
@@ -2464,18 +2454,17 @@ private constructor(
         fun total(): Long = total.getRequired("total")
 
         /**
+         * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun items(): Optional<List<AudiobookBase>> = items.getOptional("items")
+
+        /**
          * Returns the raw JSON value of [href].
          *
          * Unlike [href], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("href") @ExcludeMissing fun _href(): JsonField<String> = href
-
-        /**
-         * Returns the raw JSON value of [items].
-         *
-         * Unlike [items], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("items") @ExcludeMissing fun _items(): JsonField<List<AudiobookBase>> = items
 
         /**
          * Returns the raw JSON value of [limit].
@@ -2512,6 +2501,13 @@ private constructor(
          */
         @JsonProperty("total") @ExcludeMissing fun _total(): JsonField<Long> = total
 
+        /**
+         * Returns the raw JSON value of [items].
+         *
+         * Unlike [items], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("items") @ExcludeMissing fun _items(): JsonField<List<AudiobookBase>> = items
+
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
             additionalProperties.put(key, value)
@@ -2532,7 +2528,6 @@ private constructor(
              * The following fields are required:
              * ```java
              * .href()
-             * .items()
              * .limit()
              * .next()
              * .offset()
@@ -2547,23 +2542,23 @@ private constructor(
         class Builder internal constructor() {
 
             private var href: JsonField<String>? = null
-            private var items: JsonField<MutableList<AudiobookBase>>? = null
             private var limit: JsonField<Long>? = null
             private var next: JsonField<String>? = null
             private var offset: JsonField<Long>? = null
             private var previous: JsonField<String>? = null
             private var total: JsonField<Long>? = null
+            private var items: JsonField<MutableList<AudiobookBase>>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(audiobooks: Audiobooks) = apply {
                 href = audiobooks.href
-                items = audiobooks.items.map { it.toMutableList() }
                 limit = audiobooks.limit
                 next = audiobooks.next
                 offset = audiobooks.offset
                 previous = audiobooks.previous
                 total = audiobooks.total
+                items = audiobooks.items.map { it.toMutableList() }
                 additionalProperties = audiobooks.additionalProperties.toMutableMap()
             }
 
@@ -2578,31 +2573,6 @@ private constructor(
              * value.
              */
             fun href(href: JsonField<String>) = apply { this.href = href }
-
-            fun items(items: List<AudiobookBase>) = items(JsonField.of(items))
-
-            /**
-             * Sets [Builder.items] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.items] with a well-typed `List<AudiobookBase>` value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun items(items: JsonField<List<AudiobookBase>>) = apply {
-                this.items = items.map { it.toMutableList() }
-            }
-
-            /**
-             * Adds a single [AudiobookBase] to [items].
-             *
-             * @throws IllegalStateException if the field was previously set to a non-list.
-             */
-            fun addItem(item: AudiobookBase) = apply {
-                items =
-                    (items ?: JsonField.of(mutableListOf())).also {
-                        checkKnown("items", it).add(item)
-                    }
-            }
 
             /** The maximum number of items in the response (as set in the query or by default). */
             fun limit(limit: Long) = limit(JsonField.of(limit))
@@ -2669,6 +2639,31 @@ private constructor(
              * value.
              */
             fun total(total: JsonField<Long>) = apply { this.total = total }
+
+            fun items(items: List<AudiobookBase>) = items(JsonField.of(items))
+
+            /**
+             * Sets [Builder.items] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.items] with a well-typed `List<AudiobookBase>` value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun items(items: JsonField<List<AudiobookBase>>) = apply {
+                this.items = items.map { it.toMutableList() }
+            }
+
+            /**
+             * Adds a single [AudiobookBase] to [items].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
+            fun addItem(item: AudiobookBase) = apply {
+                items =
+                    (items ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("items", it).add(item)
+                    }
+            }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -2697,7 +2692,6 @@ private constructor(
              * The following fields are required:
              * ```java
              * .href()
-             * .items()
              * .limit()
              * .next()
              * .offset()
@@ -2710,12 +2704,12 @@ private constructor(
             fun build(): Audiobooks =
                 Audiobooks(
                     checkRequired("href", href),
-                    checkRequired("items", items).map { it.toImmutable() },
                     checkRequired("limit", limit),
                     checkRequired("next", next),
                     checkRequired("offset", offset),
                     checkRequired("previous", previous),
                     checkRequired("total", total),
+                    (items ?: JsonMissing.of()).map { it.toImmutable() },
                     additionalProperties.toMutableMap(),
                 )
         }
@@ -2728,12 +2722,12 @@ private constructor(
             }
 
             href()
-            items().forEach { it.validate() }
             limit()
             next()
             offset()
             previous()
             total()
+            items().ifPresent { it.forEach { it.validate() } }
             validated = true
         }
 
@@ -2754,12 +2748,12 @@ private constructor(
         @JvmSynthetic
         internal fun validity(): Int =
             (if (href.asKnown().isPresent) 1 else 0) +
-                (items.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
                 (if (limit.asKnown().isPresent) 1 else 0) +
                 (if (next.asKnown().isPresent) 1 else 0) +
                 (if (offset.asKnown().isPresent) 1 else 0) +
                 (if (previous.asKnown().isPresent) 1 else 0) +
-                (if (total.asKnown().isPresent) 1 else 0)
+                (if (total.asKnown().isPresent) 1 else 0) +
+                (items.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -2768,44 +2762,41 @@ private constructor(
 
             return other is Audiobooks &&
                 href == other.href &&
-                items == other.items &&
                 limit == other.limit &&
                 next == other.next &&
                 offset == other.offset &&
                 previous == other.previous &&
                 total == other.total &&
+                items == other.items &&
                 additionalProperties == other.additionalProperties
         }
 
         private val hashCode: Int by lazy {
-            Objects.hash(href, items, limit, next, offset, previous, total, additionalProperties)
+            Objects.hash(href, limit, next, offset, previous, total, items, additionalProperties)
         }
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Audiobooks{href=$href, items=$items, limit=$limit, next=$next, offset=$offset, previous=$previous, total=$total, additionalProperties=$additionalProperties}"
+            "Audiobooks{href=$href, limit=$limit, next=$next, offset=$offset, previous=$previous, total=$total, items=$items, additionalProperties=$additionalProperties}"
     }
 
     class Episodes
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val href: JsonField<String>,
-        private val items: JsonField<List<SimplifiedEpisodeObject>>,
         private val limit: JsonField<Long>,
         private val next: JsonField<String>,
         private val offset: JsonField<Long>,
         private val previous: JsonField<String>,
         private val total: JsonField<Long>,
+        private val items: JsonField<List<SimplifiedEpisodeObject>>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
         @JsonCreator
         private constructor(
             @JsonProperty("href") @ExcludeMissing href: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("items")
-            @ExcludeMissing
-            items: JsonField<List<SimplifiedEpisodeObject>> = JsonMissing.of(),
             @JsonProperty("limit") @ExcludeMissing limit: JsonField<Long> = JsonMissing.of(),
             @JsonProperty("next") @ExcludeMissing next: JsonField<String> = JsonMissing.of(),
             @JsonProperty("offset") @ExcludeMissing offset: JsonField<Long> = JsonMissing.of(),
@@ -2813,7 +2804,10 @@ private constructor(
             @ExcludeMissing
             previous: JsonField<String> = JsonMissing.of(),
             @JsonProperty("total") @ExcludeMissing total: JsonField<Long> = JsonMissing.of(),
-        ) : this(href, items, limit, next, offset, previous, total, mutableMapOf())
+            @JsonProperty("items")
+            @ExcludeMissing
+            items: JsonField<List<SimplifiedEpisodeObject>> = JsonMissing.of(),
+        ) : this(href, limit, next, offset, previous, total, items, mutableMapOf())
 
         /**
          * A link to the Web API endpoint returning the full result of the request
@@ -2822,12 +2816,6 @@ private constructor(
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
         fun href(): String = href.getRequired("href")
-
-        /**
-         * @throws SpottedInvalidDataException if the JSON field has an unexpected type or is
-         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-         */
-        fun items(): List<SimplifiedEpisodeObject> = items.getRequired("items")
 
         /**
          * The maximum number of items in the response (as set in the query or by default).
@@ -2870,20 +2858,17 @@ private constructor(
         fun total(): Long = total.getRequired("total")
 
         /**
+         * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun items(): Optional<List<SimplifiedEpisodeObject>> = items.getOptional("items")
+
+        /**
          * Returns the raw JSON value of [href].
          *
          * Unlike [href], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("href") @ExcludeMissing fun _href(): JsonField<String> = href
-
-        /**
-         * Returns the raw JSON value of [items].
-         *
-         * Unlike [items], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("items")
-        @ExcludeMissing
-        fun _items(): JsonField<List<SimplifiedEpisodeObject>> = items
 
         /**
          * Returns the raw JSON value of [limit].
@@ -2920,6 +2905,15 @@ private constructor(
          */
         @JsonProperty("total") @ExcludeMissing fun _total(): JsonField<Long> = total
 
+        /**
+         * Returns the raw JSON value of [items].
+         *
+         * Unlike [items], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("items")
+        @ExcludeMissing
+        fun _items(): JsonField<List<SimplifiedEpisodeObject>> = items
+
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
             additionalProperties.put(key, value)
@@ -2940,7 +2934,6 @@ private constructor(
              * The following fields are required:
              * ```java
              * .href()
-             * .items()
              * .limit()
              * .next()
              * .offset()
@@ -2955,23 +2948,23 @@ private constructor(
         class Builder internal constructor() {
 
             private var href: JsonField<String>? = null
-            private var items: JsonField<MutableList<SimplifiedEpisodeObject>>? = null
             private var limit: JsonField<Long>? = null
             private var next: JsonField<String>? = null
             private var offset: JsonField<Long>? = null
             private var previous: JsonField<String>? = null
             private var total: JsonField<Long>? = null
+            private var items: JsonField<MutableList<SimplifiedEpisodeObject>>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(episodes: Episodes) = apply {
                 href = episodes.href
-                items = episodes.items.map { it.toMutableList() }
                 limit = episodes.limit
                 next = episodes.next
                 offset = episodes.offset
                 previous = episodes.previous
                 total = episodes.total
+                items = episodes.items.map { it.toMutableList() }
                 additionalProperties = episodes.additionalProperties.toMutableMap()
             }
 
@@ -2986,31 +2979,6 @@ private constructor(
              * value.
              */
             fun href(href: JsonField<String>) = apply { this.href = href }
-
-            fun items(items: List<SimplifiedEpisodeObject>) = items(JsonField.of(items))
-
-            /**
-             * Sets [Builder.items] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.items] with a well-typed
-             * `List<SimplifiedEpisodeObject>` value instead. This method is primarily for setting
-             * the field to an undocumented or not yet supported value.
-             */
-            fun items(items: JsonField<List<SimplifiedEpisodeObject>>) = apply {
-                this.items = items.map { it.toMutableList() }
-            }
-
-            /**
-             * Adds a single [SimplifiedEpisodeObject] to [items].
-             *
-             * @throws IllegalStateException if the field was previously set to a non-list.
-             */
-            fun addItem(item: SimplifiedEpisodeObject) = apply {
-                items =
-                    (items ?: JsonField.of(mutableListOf())).also {
-                        checkKnown("items", it).add(item)
-                    }
-            }
 
             /** The maximum number of items in the response (as set in the query or by default). */
             fun limit(limit: Long) = limit(JsonField.of(limit))
@@ -3077,6 +3045,31 @@ private constructor(
              * value.
              */
             fun total(total: JsonField<Long>) = apply { this.total = total }
+
+            fun items(items: List<SimplifiedEpisodeObject>) = items(JsonField.of(items))
+
+            /**
+             * Sets [Builder.items] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.items] with a well-typed
+             * `List<SimplifiedEpisodeObject>` value instead. This method is primarily for setting
+             * the field to an undocumented or not yet supported value.
+             */
+            fun items(items: JsonField<List<SimplifiedEpisodeObject>>) = apply {
+                this.items = items.map { it.toMutableList() }
+            }
+
+            /**
+             * Adds a single [SimplifiedEpisodeObject] to [items].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
+            fun addItem(item: SimplifiedEpisodeObject) = apply {
+                items =
+                    (items ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("items", it).add(item)
+                    }
+            }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -3105,7 +3098,6 @@ private constructor(
              * The following fields are required:
              * ```java
              * .href()
-             * .items()
              * .limit()
              * .next()
              * .offset()
@@ -3118,12 +3110,12 @@ private constructor(
             fun build(): Episodes =
                 Episodes(
                     checkRequired("href", href),
-                    checkRequired("items", items).map { it.toImmutable() },
                     checkRequired("limit", limit),
                     checkRequired("next", next),
                     checkRequired("offset", offset),
                     checkRequired("previous", previous),
                     checkRequired("total", total),
+                    (items ?: JsonMissing.of()).map { it.toImmutable() },
                     additionalProperties.toMutableMap(),
                 )
         }
@@ -3136,12 +3128,12 @@ private constructor(
             }
 
             href()
-            items().forEach { it.validate() }
             limit()
             next()
             offset()
             previous()
             total()
+            items().ifPresent { it.forEach { it.validate() } }
             validated = true
         }
 
@@ -3162,12 +3154,12 @@ private constructor(
         @JvmSynthetic
         internal fun validity(): Int =
             (if (href.asKnown().isPresent) 1 else 0) +
-                (items.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
                 (if (limit.asKnown().isPresent) 1 else 0) +
                 (if (next.asKnown().isPresent) 1 else 0) +
                 (if (offset.asKnown().isPresent) 1 else 0) +
                 (if (previous.asKnown().isPresent) 1 else 0) +
-                (if (total.asKnown().isPresent) 1 else 0)
+                (if (total.asKnown().isPresent) 1 else 0) +
+                (items.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -3176,44 +3168,41 @@ private constructor(
 
             return other is Episodes &&
                 href == other.href &&
-                items == other.items &&
                 limit == other.limit &&
                 next == other.next &&
                 offset == other.offset &&
                 previous == other.previous &&
                 total == other.total &&
+                items == other.items &&
                 additionalProperties == other.additionalProperties
         }
 
         private val hashCode: Int by lazy {
-            Objects.hash(href, items, limit, next, offset, previous, total, additionalProperties)
+            Objects.hash(href, limit, next, offset, previous, total, items, additionalProperties)
         }
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Episodes{href=$href, items=$items, limit=$limit, next=$next, offset=$offset, previous=$previous, total=$total, additionalProperties=$additionalProperties}"
+            "Episodes{href=$href, limit=$limit, next=$next, offset=$offset, previous=$previous, total=$total, items=$items, additionalProperties=$additionalProperties}"
     }
 
     class Shows
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val href: JsonField<String>,
-        private val items: JsonField<List<ShowBase>>,
         private val limit: JsonField<Long>,
         private val next: JsonField<String>,
         private val offset: JsonField<Long>,
         private val previous: JsonField<String>,
         private val total: JsonField<Long>,
+        private val items: JsonField<List<ShowBase>>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
         @JsonCreator
         private constructor(
             @JsonProperty("href") @ExcludeMissing href: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("items")
-            @ExcludeMissing
-            items: JsonField<List<ShowBase>> = JsonMissing.of(),
             @JsonProperty("limit") @ExcludeMissing limit: JsonField<Long> = JsonMissing.of(),
             @JsonProperty("next") @ExcludeMissing next: JsonField<String> = JsonMissing.of(),
             @JsonProperty("offset") @ExcludeMissing offset: JsonField<Long> = JsonMissing.of(),
@@ -3221,7 +3210,10 @@ private constructor(
             @ExcludeMissing
             previous: JsonField<String> = JsonMissing.of(),
             @JsonProperty("total") @ExcludeMissing total: JsonField<Long> = JsonMissing.of(),
-        ) : this(href, items, limit, next, offset, previous, total, mutableMapOf())
+            @JsonProperty("items")
+            @ExcludeMissing
+            items: JsonField<List<ShowBase>> = JsonMissing.of(),
+        ) : this(href, limit, next, offset, previous, total, items, mutableMapOf())
 
         /**
          * A link to the Web API endpoint returning the full result of the request
@@ -3230,12 +3222,6 @@ private constructor(
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
         fun href(): String = href.getRequired("href")
-
-        /**
-         * @throws SpottedInvalidDataException if the JSON field has an unexpected type or is
-         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-         */
-        fun items(): List<ShowBase> = items.getRequired("items")
 
         /**
          * The maximum number of items in the response (as set in the query or by default).
@@ -3278,18 +3264,17 @@ private constructor(
         fun total(): Long = total.getRequired("total")
 
         /**
+         * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun items(): Optional<List<ShowBase>> = items.getOptional("items")
+
+        /**
          * Returns the raw JSON value of [href].
          *
          * Unlike [href], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("href") @ExcludeMissing fun _href(): JsonField<String> = href
-
-        /**
-         * Returns the raw JSON value of [items].
-         *
-         * Unlike [items], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("items") @ExcludeMissing fun _items(): JsonField<List<ShowBase>> = items
 
         /**
          * Returns the raw JSON value of [limit].
@@ -3326,6 +3311,13 @@ private constructor(
          */
         @JsonProperty("total") @ExcludeMissing fun _total(): JsonField<Long> = total
 
+        /**
+         * Returns the raw JSON value of [items].
+         *
+         * Unlike [items], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("items") @ExcludeMissing fun _items(): JsonField<List<ShowBase>> = items
+
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
             additionalProperties.put(key, value)
@@ -3346,7 +3338,6 @@ private constructor(
              * The following fields are required:
              * ```java
              * .href()
-             * .items()
              * .limit()
              * .next()
              * .offset()
@@ -3361,23 +3352,23 @@ private constructor(
         class Builder internal constructor() {
 
             private var href: JsonField<String>? = null
-            private var items: JsonField<MutableList<ShowBase>>? = null
             private var limit: JsonField<Long>? = null
             private var next: JsonField<String>? = null
             private var offset: JsonField<Long>? = null
             private var previous: JsonField<String>? = null
             private var total: JsonField<Long>? = null
+            private var items: JsonField<MutableList<ShowBase>>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(shows: Shows) = apply {
                 href = shows.href
-                items = shows.items.map { it.toMutableList() }
                 limit = shows.limit
                 next = shows.next
                 offset = shows.offset
                 previous = shows.previous
                 total = shows.total
+                items = shows.items.map { it.toMutableList() }
                 additionalProperties = shows.additionalProperties.toMutableMap()
             }
 
@@ -3392,31 +3383,6 @@ private constructor(
              * value.
              */
             fun href(href: JsonField<String>) = apply { this.href = href }
-
-            fun items(items: List<ShowBase>) = items(JsonField.of(items))
-
-            /**
-             * Sets [Builder.items] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.items] with a well-typed `List<ShowBase>` value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun items(items: JsonField<List<ShowBase>>) = apply {
-                this.items = items.map { it.toMutableList() }
-            }
-
-            /**
-             * Adds a single [ShowBase] to [items].
-             *
-             * @throws IllegalStateException if the field was previously set to a non-list.
-             */
-            fun addItem(item: ShowBase) = apply {
-                items =
-                    (items ?: JsonField.of(mutableListOf())).also {
-                        checkKnown("items", it).add(item)
-                    }
-            }
 
             /** The maximum number of items in the response (as set in the query or by default). */
             fun limit(limit: Long) = limit(JsonField.of(limit))
@@ -3483,6 +3449,31 @@ private constructor(
              * value.
              */
             fun total(total: JsonField<Long>) = apply { this.total = total }
+
+            fun items(items: List<ShowBase>) = items(JsonField.of(items))
+
+            /**
+             * Sets [Builder.items] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.items] with a well-typed `List<ShowBase>` value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun items(items: JsonField<List<ShowBase>>) = apply {
+                this.items = items.map { it.toMutableList() }
+            }
+
+            /**
+             * Adds a single [ShowBase] to [items].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
+            fun addItem(item: ShowBase) = apply {
+                items =
+                    (items ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("items", it).add(item)
+                    }
+            }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -3511,7 +3502,6 @@ private constructor(
              * The following fields are required:
              * ```java
              * .href()
-             * .items()
              * .limit()
              * .next()
              * .offset()
@@ -3524,12 +3514,12 @@ private constructor(
             fun build(): Shows =
                 Shows(
                     checkRequired("href", href),
-                    checkRequired("items", items).map { it.toImmutable() },
                     checkRequired("limit", limit),
                     checkRequired("next", next),
                     checkRequired("offset", offset),
                     checkRequired("previous", previous),
                     checkRequired("total", total),
+                    (items ?: JsonMissing.of()).map { it.toImmutable() },
                     additionalProperties.toMutableMap(),
                 )
         }
@@ -3542,12 +3532,12 @@ private constructor(
             }
 
             href()
-            items().forEach { it.validate() }
             limit()
             next()
             offset()
             previous()
             total()
+            items().ifPresent { it.forEach { it.validate() } }
             validated = true
         }
 
@@ -3568,12 +3558,12 @@ private constructor(
         @JvmSynthetic
         internal fun validity(): Int =
             (if (href.asKnown().isPresent) 1 else 0) +
-                (items.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
                 (if (limit.asKnown().isPresent) 1 else 0) +
                 (if (next.asKnown().isPresent) 1 else 0) +
                 (if (offset.asKnown().isPresent) 1 else 0) +
                 (if (previous.asKnown().isPresent) 1 else 0) +
-                (if (total.asKnown().isPresent) 1 else 0)
+                (if (total.asKnown().isPresent) 1 else 0) +
+                (items.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -3582,44 +3572,41 @@ private constructor(
 
             return other is Shows &&
                 href == other.href &&
-                items == other.items &&
                 limit == other.limit &&
                 next == other.next &&
                 offset == other.offset &&
                 previous == other.previous &&
                 total == other.total &&
+                items == other.items &&
                 additionalProperties == other.additionalProperties
         }
 
         private val hashCode: Int by lazy {
-            Objects.hash(href, items, limit, next, offset, previous, total, additionalProperties)
+            Objects.hash(href, limit, next, offset, previous, total, items, additionalProperties)
         }
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Shows{href=$href, items=$items, limit=$limit, next=$next, offset=$offset, previous=$previous, total=$total, additionalProperties=$additionalProperties}"
+            "Shows{href=$href, limit=$limit, next=$next, offset=$offset, previous=$previous, total=$total, items=$items, additionalProperties=$additionalProperties}"
     }
 
     class Tracks
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val href: JsonField<String>,
-        private val items: JsonField<List<TrackObject>>,
         private val limit: JsonField<Long>,
         private val next: JsonField<String>,
         private val offset: JsonField<Long>,
         private val previous: JsonField<String>,
         private val total: JsonField<Long>,
+        private val items: JsonField<List<TrackObject>>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
         @JsonCreator
         private constructor(
             @JsonProperty("href") @ExcludeMissing href: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("items")
-            @ExcludeMissing
-            items: JsonField<List<TrackObject>> = JsonMissing.of(),
             @JsonProperty("limit") @ExcludeMissing limit: JsonField<Long> = JsonMissing.of(),
             @JsonProperty("next") @ExcludeMissing next: JsonField<String> = JsonMissing.of(),
             @JsonProperty("offset") @ExcludeMissing offset: JsonField<Long> = JsonMissing.of(),
@@ -3627,7 +3614,10 @@ private constructor(
             @ExcludeMissing
             previous: JsonField<String> = JsonMissing.of(),
             @JsonProperty("total") @ExcludeMissing total: JsonField<Long> = JsonMissing.of(),
-        ) : this(href, items, limit, next, offset, previous, total, mutableMapOf())
+            @JsonProperty("items")
+            @ExcludeMissing
+            items: JsonField<List<TrackObject>> = JsonMissing.of(),
+        ) : this(href, limit, next, offset, previous, total, items, mutableMapOf())
 
         /**
          * A link to the Web API endpoint returning the full result of the request
@@ -3636,12 +3626,6 @@ private constructor(
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
         fun href(): String = href.getRequired("href")
-
-        /**
-         * @throws SpottedInvalidDataException if the JSON field has an unexpected type or is
-         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-         */
-        fun items(): List<TrackObject> = items.getRequired("items")
 
         /**
          * The maximum number of items in the response (as set in the query or by default).
@@ -3684,18 +3668,17 @@ private constructor(
         fun total(): Long = total.getRequired("total")
 
         /**
+         * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun items(): Optional<List<TrackObject>> = items.getOptional("items")
+
+        /**
          * Returns the raw JSON value of [href].
          *
          * Unlike [href], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("href") @ExcludeMissing fun _href(): JsonField<String> = href
-
-        /**
-         * Returns the raw JSON value of [items].
-         *
-         * Unlike [items], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("items") @ExcludeMissing fun _items(): JsonField<List<TrackObject>> = items
 
         /**
          * Returns the raw JSON value of [limit].
@@ -3732,6 +3715,13 @@ private constructor(
          */
         @JsonProperty("total") @ExcludeMissing fun _total(): JsonField<Long> = total
 
+        /**
+         * Returns the raw JSON value of [items].
+         *
+         * Unlike [items], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("items") @ExcludeMissing fun _items(): JsonField<List<TrackObject>> = items
+
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
             additionalProperties.put(key, value)
@@ -3752,7 +3742,6 @@ private constructor(
              * The following fields are required:
              * ```java
              * .href()
-             * .items()
              * .limit()
              * .next()
              * .offset()
@@ -3767,23 +3756,23 @@ private constructor(
         class Builder internal constructor() {
 
             private var href: JsonField<String>? = null
-            private var items: JsonField<MutableList<TrackObject>>? = null
             private var limit: JsonField<Long>? = null
             private var next: JsonField<String>? = null
             private var offset: JsonField<Long>? = null
             private var previous: JsonField<String>? = null
             private var total: JsonField<Long>? = null
+            private var items: JsonField<MutableList<TrackObject>>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(tracks: Tracks) = apply {
                 href = tracks.href
-                items = tracks.items.map { it.toMutableList() }
                 limit = tracks.limit
                 next = tracks.next
                 offset = tracks.offset
                 previous = tracks.previous
                 total = tracks.total
+                items = tracks.items.map { it.toMutableList() }
                 additionalProperties = tracks.additionalProperties.toMutableMap()
             }
 
@@ -3798,31 +3787,6 @@ private constructor(
              * value.
              */
             fun href(href: JsonField<String>) = apply { this.href = href }
-
-            fun items(items: List<TrackObject>) = items(JsonField.of(items))
-
-            /**
-             * Sets [Builder.items] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.items] with a well-typed `List<TrackObject>` value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun items(items: JsonField<List<TrackObject>>) = apply {
-                this.items = items.map { it.toMutableList() }
-            }
-
-            /**
-             * Adds a single [TrackObject] to [items].
-             *
-             * @throws IllegalStateException if the field was previously set to a non-list.
-             */
-            fun addItem(item: TrackObject) = apply {
-                items =
-                    (items ?: JsonField.of(mutableListOf())).also {
-                        checkKnown("items", it).add(item)
-                    }
-            }
 
             /** The maximum number of items in the response (as set in the query or by default). */
             fun limit(limit: Long) = limit(JsonField.of(limit))
@@ -3890,6 +3854,31 @@ private constructor(
              */
             fun total(total: JsonField<Long>) = apply { this.total = total }
 
+            fun items(items: List<TrackObject>) = items(JsonField.of(items))
+
+            /**
+             * Sets [Builder.items] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.items] with a well-typed `List<TrackObject>` value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun items(items: JsonField<List<TrackObject>>) = apply {
+                this.items = items.map { it.toMutableList() }
+            }
+
+            /**
+             * Adds a single [TrackObject] to [items].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
+            fun addItem(item: TrackObject) = apply {
+                items =
+                    (items ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("items", it).add(item)
+                    }
+            }
+
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
                 putAllAdditionalProperties(additionalProperties)
@@ -3917,7 +3906,6 @@ private constructor(
              * The following fields are required:
              * ```java
              * .href()
-             * .items()
              * .limit()
              * .next()
              * .offset()
@@ -3930,12 +3918,12 @@ private constructor(
             fun build(): Tracks =
                 Tracks(
                     checkRequired("href", href),
-                    checkRequired("items", items).map { it.toImmutable() },
                     checkRequired("limit", limit),
                     checkRequired("next", next),
                     checkRequired("offset", offset),
                     checkRequired("previous", previous),
                     checkRequired("total", total),
+                    (items ?: JsonMissing.of()).map { it.toImmutable() },
                     additionalProperties.toMutableMap(),
                 )
         }
@@ -3948,12 +3936,12 @@ private constructor(
             }
 
             href()
-            items().forEach { it.validate() }
             limit()
             next()
             offset()
             previous()
             total()
+            items().ifPresent { it.forEach { it.validate() } }
             validated = true
         }
 
@@ -3974,12 +3962,12 @@ private constructor(
         @JvmSynthetic
         internal fun validity(): Int =
             (if (href.asKnown().isPresent) 1 else 0) +
-                (items.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
                 (if (limit.asKnown().isPresent) 1 else 0) +
                 (if (next.asKnown().isPresent) 1 else 0) +
                 (if (offset.asKnown().isPresent) 1 else 0) +
                 (if (previous.asKnown().isPresent) 1 else 0) +
-                (if (total.asKnown().isPresent) 1 else 0)
+                (if (total.asKnown().isPresent) 1 else 0) +
+                (items.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -3988,23 +3976,23 @@ private constructor(
 
             return other is Tracks &&
                 href == other.href &&
-                items == other.items &&
                 limit == other.limit &&
                 next == other.next &&
                 offset == other.offset &&
                 previous == other.previous &&
                 total == other.total &&
+                items == other.items &&
                 additionalProperties == other.additionalProperties
         }
 
         private val hashCode: Int by lazy {
-            Objects.hash(href, items, limit, next, offset, previous, total, additionalProperties)
+            Objects.hash(href, limit, next, offset, previous, total, items, additionalProperties)
         }
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Tracks{href=$href, items=$items, limit=$limit, next=$next, offset=$offset, previous=$previous, total=$total, additionalProperties=$additionalProperties}"
+            "Tracks{href=$href, limit=$limit, next=$next, offset=$offset, previous=$previous, total=$total, items=$items, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {

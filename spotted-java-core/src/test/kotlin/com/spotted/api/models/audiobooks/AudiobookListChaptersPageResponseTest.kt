@@ -8,6 +8,7 @@ import com.spotted.api.models.ChapterRestrictionObject
 import com.spotted.api.models.ExternalUrlObject
 import com.spotted.api.models.ImageObject
 import com.spotted.api.models.ResumePointObject
+import kotlin.jvm.optionals.getOrNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -18,6 +19,11 @@ internal class AudiobookListChaptersPageResponseTest {
         val audiobookListChaptersPageResponse =
             AudiobookListChaptersPageResponse.builder()
                 .href("https://api.spotify.com/v1/me/shows?offset=0&limit=20\n")
+                .limit(20L)
+                .next("https://api.spotify.com/v1/me/shows?offset=1&limit=1")
+                .offset(0L)
+                .previous("https://api.spotify.com/v1/me/shows?offset=1&limit=1")
+                .total(4L)
                 .addItem(
                     SimplifiedChapterObject.builder()
                         .id("5Xt5DXGzch68nYYamXrNxZ")
@@ -64,16 +70,18 @@ internal class AudiobookListChaptersPageResponseTest {
                         )
                         .build()
                 )
-                .limit(20L)
-                .next("https://api.spotify.com/v1/me/shows?offset=1&limit=1")
-                .offset(0L)
-                .previous("https://api.spotify.com/v1/me/shows?offset=1&limit=1")
-                .total(4L)
                 .build()
 
         assertThat(audiobookListChaptersPageResponse.href())
             .isEqualTo("https://api.spotify.com/v1/me/shows?offset=0&limit=20\n")
-        assertThat(audiobookListChaptersPageResponse.items())
+        assertThat(audiobookListChaptersPageResponse.limit()).isEqualTo(20L)
+        assertThat(audiobookListChaptersPageResponse.next())
+            .contains("https://api.spotify.com/v1/me/shows?offset=1&limit=1")
+        assertThat(audiobookListChaptersPageResponse.offset()).isEqualTo(0L)
+        assertThat(audiobookListChaptersPageResponse.previous())
+            .contains("https://api.spotify.com/v1/me/shows?offset=1&limit=1")
+        assertThat(audiobookListChaptersPageResponse.total()).isEqualTo(4L)
+        assertThat(audiobookListChaptersPageResponse.items().getOrNull())
             .containsExactly(
                 SimplifiedChapterObject.builder()
                     .id("5Xt5DXGzch68nYYamXrNxZ")
@@ -117,13 +125,6 @@ internal class AudiobookListChaptersPageResponseTest {
                     )
                     .build()
             )
-        assertThat(audiobookListChaptersPageResponse.limit()).isEqualTo(20L)
-        assertThat(audiobookListChaptersPageResponse.next())
-            .contains("https://api.spotify.com/v1/me/shows?offset=1&limit=1")
-        assertThat(audiobookListChaptersPageResponse.offset()).isEqualTo(0L)
-        assertThat(audiobookListChaptersPageResponse.previous())
-            .contains("https://api.spotify.com/v1/me/shows?offset=1&limit=1")
-        assertThat(audiobookListChaptersPageResponse.total()).isEqualTo(4L)
     }
 
     @Test
@@ -132,6 +133,11 @@ internal class AudiobookListChaptersPageResponseTest {
         val audiobookListChaptersPageResponse =
             AudiobookListChaptersPageResponse.builder()
                 .href("https://api.spotify.com/v1/me/shows?offset=0&limit=20\n")
+                .limit(20L)
+                .next("https://api.spotify.com/v1/me/shows?offset=1&limit=1")
+                .offset(0L)
+                .previous("https://api.spotify.com/v1/me/shows?offset=1&limit=1")
+                .total(4L)
                 .addItem(
                     SimplifiedChapterObject.builder()
                         .id("5Xt5DXGzch68nYYamXrNxZ")
@@ -178,11 +184,6 @@ internal class AudiobookListChaptersPageResponseTest {
                         )
                         .build()
                 )
-                .limit(20L)
-                .next("https://api.spotify.com/v1/me/shows?offset=1&limit=1")
-                .offset(0L)
-                .previous("https://api.spotify.com/v1/me/shows?offset=1&limit=1")
-                .total(4L)
                 .build()
 
         val roundtrippedAudiobookListChaptersPageResponse =

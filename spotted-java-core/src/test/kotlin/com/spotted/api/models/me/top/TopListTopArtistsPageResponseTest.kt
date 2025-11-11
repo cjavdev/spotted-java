@@ -8,6 +8,7 @@ import com.spotted.api.models.ArtistObject
 import com.spotted.api.models.ExternalUrlObject
 import com.spotted.api.models.FollowersObject
 import com.spotted.api.models.ImageObject
+import kotlin.jvm.optionals.getOrNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -18,6 +19,11 @@ internal class TopListTopArtistsPageResponseTest {
         val topListTopArtistsPageResponse =
             TopListTopArtistsPageResponse.builder()
                 .href("https://api.spotify.com/v1/me/shows?offset=0&limit=20\n")
+                .limit(20L)
+                .next("https://api.spotify.com/v1/me/shows?offset=1&limit=1")
+                .offset(0L)
+                .previous("https://api.spotify.com/v1/me/shows?offset=1&limit=1")
+                .total(4L)
                 .addItem(
                     ArtistObject.builder()
                         .id("id")
@@ -41,16 +47,18 @@ internal class TopListTopArtistsPageResponseTest {
                         .uri("uri")
                         .build()
                 )
-                .limit(20L)
-                .next("https://api.spotify.com/v1/me/shows?offset=1&limit=1")
-                .offset(0L)
-                .previous("https://api.spotify.com/v1/me/shows?offset=1&limit=1")
-                .total(4L)
                 .build()
 
         assertThat(topListTopArtistsPageResponse.href())
             .isEqualTo("https://api.spotify.com/v1/me/shows?offset=0&limit=20\n")
-        assertThat(topListTopArtistsPageResponse.items())
+        assertThat(topListTopArtistsPageResponse.limit()).isEqualTo(20L)
+        assertThat(topListTopArtistsPageResponse.next())
+            .contains("https://api.spotify.com/v1/me/shows?offset=1&limit=1")
+        assertThat(topListTopArtistsPageResponse.offset()).isEqualTo(0L)
+        assertThat(topListTopArtistsPageResponse.previous())
+            .contains("https://api.spotify.com/v1/me/shows?offset=1&limit=1")
+        assertThat(topListTopArtistsPageResponse.total()).isEqualTo(4L)
+        assertThat(topListTopArtistsPageResponse.items().getOrNull())
             .containsExactly(
                 ArtistObject.builder()
                     .id("id")
@@ -74,13 +82,6 @@ internal class TopListTopArtistsPageResponseTest {
                     .uri("uri")
                     .build()
             )
-        assertThat(topListTopArtistsPageResponse.limit()).isEqualTo(20L)
-        assertThat(topListTopArtistsPageResponse.next())
-            .contains("https://api.spotify.com/v1/me/shows?offset=1&limit=1")
-        assertThat(topListTopArtistsPageResponse.offset()).isEqualTo(0L)
-        assertThat(topListTopArtistsPageResponse.previous())
-            .contains("https://api.spotify.com/v1/me/shows?offset=1&limit=1")
-        assertThat(topListTopArtistsPageResponse.total()).isEqualTo(4L)
     }
 
     @Test
@@ -89,6 +90,11 @@ internal class TopListTopArtistsPageResponseTest {
         val topListTopArtistsPageResponse =
             TopListTopArtistsPageResponse.builder()
                 .href("https://api.spotify.com/v1/me/shows?offset=0&limit=20\n")
+                .limit(20L)
+                .next("https://api.spotify.com/v1/me/shows?offset=1&limit=1")
+                .offset(0L)
+                .previous("https://api.spotify.com/v1/me/shows?offset=1&limit=1")
+                .total(4L)
                 .addItem(
                     ArtistObject.builder()
                         .id("id")
@@ -112,11 +118,6 @@ internal class TopListTopArtistsPageResponseTest {
                         .uri("uri")
                         .build()
                 )
-                .limit(20L)
-                .next("https://api.spotify.com/v1/me/shows?offset=1&limit=1")
-                .offset(0L)
-                .previous("https://api.spotify.com/v1/me/shows?offset=1&limit=1")
-                .total(4L)
                 .build()
 
         val roundtrippedTopListTopArtistsPageResponse =
