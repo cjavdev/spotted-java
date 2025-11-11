@@ -5,7 +5,6 @@ package com.spotted.api.services.blocking.playlists
 import com.spotted.api.core.ClientOptions
 import com.spotted.api.core.RequestOptions
 import com.spotted.api.core.checkRequired
-import com.spotted.api.core.handlers.emptyHandler
 import com.spotted.api.core.handlers.errorBodyHandler
 import com.spotted.api.core.handlers.errorHandler
 import com.spotted.api.core.handlers.jsonHandler
@@ -35,10 +34,9 @@ class ImageServiceImpl internal constructor(private val clientOptions: ClientOpt
     override fun withOptions(modifier: Consumer<ClientOptions.Builder>): ImageService =
         ImageServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
-    override fun update(params: ImageUpdateParams, requestOptions: RequestOptions) {
+    override fun update(params: ImageUpdateParams, requestOptions: RequestOptions): HttpResponse =
         // put /playlists/{playlist_id}/images
         withRawResponse().update(params, requestOptions)
-    }
 
     override fun list(params: ImageListParams, requestOptions: RequestOptions): List<ImageObject> =
         // get /playlists/{playlist_id}/images
@@ -57,8 +55,6 @@ class ImageServiceImpl internal constructor(private val clientOptions: ClientOpt
                 clientOptions.toBuilder().apply(modifier::accept).build()
             )
 
-        private val updateHandler: Handler<Void?> = emptyHandler()
-
         override fun update(
             params: ImageUpdateParams,
             requestOptions: RequestOptions,
@@ -66,20 +62,17 @@ class ImageServiceImpl internal constructor(private val clientOptions: ClientOpt
             // We check here instead of in the params builder because this can be specified
             // positionally or in the params class.
             checkRequired("playlistId", params.playlistId().getOrNull())
-            checkRequired("body", params._body().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PUT)
                     .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("playlists", params._pathParam(0), "images")
-                    .apply { params._body().ifPresent { body(json(clientOptions.jsonMapper, it)) } }
+                    .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
                     .prepare(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.execute(request, requestOptions)
-            return errorHandler.handle(response).parseable {
-                response.use { updateHandler.handle(it) }
-            }
+            return errorHandler.handle(response)
         }
 
         private val listHandler: Handler<List<ImageObject>> =

@@ -27,33 +27,28 @@ interface ImageService {
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): ImageService
 
     /** Replace the image used to represent a specific playlist. */
-    fun update(playlistId: String, body: String) =
-        update(playlistId, body, ImageUpdateParams.none())
+    @MustBeClosed
+    fun update(playlistId: String, params: ImageUpdateParams): HttpResponse =
+        update(playlistId, params, RequestOptions.none())
 
     /** @see update */
+    @MustBeClosed
     fun update(
         playlistId: String,
-        body: String,
-        params: ImageUpdateParams = ImageUpdateParams.none(),
+        params: ImageUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ) = update(params.toBuilder().playlistId(playlistId).body(body).build(), requestOptions)
+    ): HttpResponse = update(params.toBuilder().playlistId(playlistId).build(), requestOptions)
 
     /** @see update */
+    @MustBeClosed
+    fun update(params: ImageUpdateParams): HttpResponse = update(params, RequestOptions.none())
+
+    /** @see update */
+    @MustBeClosed
     fun update(
-        playlistId: String,
-        body: String,
-        params: ImageUpdateParams = ImageUpdateParams.none(),
-    ) = update(playlistId, body, params, RequestOptions.none())
-
-    /** @see update */
-    fun update(params: ImageUpdateParams, requestOptions: RequestOptions = RequestOptions.none())
-
-    /** @see update */
-    fun update(params: ImageUpdateParams) = update(params, RequestOptions.none())
-
-    /** @see update */
-    fun update(playlistId: String, body: String, requestOptions: RequestOptions) =
-        update(playlistId, body, ImageUpdateParams.none(), requestOptions)
+        params: ImageUpdateParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): HttpResponse
 
     /** Get the current image associated with a specific playlist. */
     fun list(playlistId: String): List<ImageObject> = list(playlistId, ImageListParams.none())
@@ -99,33 +94,16 @@ interface ImageService {
          * the same as [ImageService.update].
          */
         @MustBeClosed
-        fun update(playlistId: String, body: String): HttpResponse =
-            update(playlistId, body, ImageUpdateParams.none())
+        fun update(playlistId: String, params: ImageUpdateParams): HttpResponse =
+            update(playlistId, params, RequestOptions.none())
 
         /** @see update */
         @MustBeClosed
         fun update(
             playlistId: String,
-            body: String,
-            params: ImageUpdateParams = ImageUpdateParams.none(),
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponse =
-            update(params.toBuilder().playlistId(playlistId).body(body).build(), requestOptions)
-
-        /** @see update */
-        @MustBeClosed
-        fun update(
-            playlistId: String,
-            body: String,
-            params: ImageUpdateParams = ImageUpdateParams.none(),
-        ): HttpResponse = update(playlistId, body, params, RequestOptions.none())
-
-        /** @see update */
-        @MustBeClosed
-        fun update(
             params: ImageUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponse
+        ): HttpResponse = update(params.toBuilder().playlistId(playlistId).build(), requestOptions)
 
         /** @see update */
         @MustBeClosed
@@ -133,8 +111,10 @@ interface ImageService {
 
         /** @see update */
         @MustBeClosed
-        fun update(playlistId: String, body: String, requestOptions: RequestOptions): HttpResponse =
-            update(playlistId, body, ImageUpdateParams.none(), requestOptions)
+        fun update(
+            params: ImageUpdateParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponse
 
         /**
          * Returns a raw HTTP response for `get /playlists/{playlist_id}/images`, but is otherwise
