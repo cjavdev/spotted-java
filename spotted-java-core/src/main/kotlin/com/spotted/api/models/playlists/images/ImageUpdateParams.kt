@@ -3,6 +3,7 @@
 package com.spotted.api.models.playlists.images
 
 import com.spotted.api.core.Params
+import com.spotted.api.core.checkRequired
 import com.spotted.api.core.http.Headers
 import com.spotted.api.core.http.QueryParams
 import java.util.Objects
@@ -13,7 +14,7 @@ import kotlin.jvm.optionals.getOrNull
 class ImageUpdateParams
 private constructor(
     private val playlistId: String?,
-    private val body: String?,
+    private val body: String,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
@@ -22,7 +23,7 @@ private constructor(
     fun playlistId(): Optional<String> = Optional.ofNullable(playlistId)
 
     /** Base64 encoded JPEG image data, maximum payload size is 256 KB. */
-    fun body(): Optional<String> = Optional.ofNullable(body)
+    fun body(): String = body
 
     /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
@@ -34,9 +35,14 @@ private constructor(
 
     companion object {
 
-        @JvmStatic fun none(): ImageUpdateParams = builder().build()
-
-        /** Returns a mutable builder for constructing an instance of [ImageUpdateParams]. */
+        /**
+         * Returns a mutable builder for constructing an instance of [ImageUpdateParams].
+         *
+         * The following fields are required:
+         * ```java
+         * .body()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -63,10 +69,7 @@ private constructor(
         fun playlistId(playlistId: Optional<String>) = playlistId(playlistId.getOrNull())
 
         /** Base64 encoded JPEG image data, maximum payload size is 256 KB. */
-        fun body(body: String?) = apply { this.body = body }
-
-        /** Alias for calling [Builder.body] with `body.orElse(null)`. */
-        fun body(body: Optional<String>) = body(body.getOrNull())
+        fun body(body: String) = apply { this.body = body }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -170,17 +173,24 @@ private constructor(
          * Returns an immutable instance of [ImageUpdateParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .body()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): ImageUpdateParams =
             ImageUpdateParams(
                 playlistId,
-                body,
+                checkRequired("body", body),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )
     }
 
-    fun _body(): Optional<String> = Optional.ofNullable(body)
+    fun _body(): String = body
 
     fun _pathParam(index: Int): String =
         when (index) {

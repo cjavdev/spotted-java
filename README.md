@@ -165,6 +165,58 @@ CompletableFuture<AlbumRetrieveResponse> album = client.albums().retrieve("4aawy
 
 The asynchronous client supports the same options as the synchronous one, except most methods return `CompletableFuture`s.
 
+## Binary responses
+
+The SDK defines methods that return binary responses, which are used for API responses that shouldn't necessarily be parsed, like non-JSON data.
+
+These methods return [`HttpResponse`](spotted-java-core/src/main/kotlin/com/spotted/api/core/http/HttpResponse.kt):
+
+```java
+import com.spotted.api.core.http.HttpResponse;
+import com.spotted.api.models.playlists.images.ImageUpdateParams;
+
+ImageUpdateParams params = ImageUpdateParams.builder()
+    .playlistId("3cEYpjA9oz9GiPac4AsH4n")
+    .body("/9j/2wCEABoZGSccJz4lJT5CLy8vQkc9Ozs9R0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0cBHCcnMyYzPSYmPUc9Mj1HR0dEREdHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR//dAAQAAf/uAA5BZG9iZQBkwAAAAAH/wAARCAABAAEDACIAAREBAhEB/8QASwABAQAAAAAAAAAAAAAAAAAAAAYBAQAAAAAAAAAAAAAAAAAAAAAQAQAAAAAAAAAAAAAAAAAAAAARAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwAAARECEQA/AJgAH//Z")
+    .build();
+HttpResponse image = client.playlists().images().update(params);
+```
+
+To save the response content to a file, use the [`Files.copy(...)`](https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#copy-java.io.InputStream-java.nio.file.Path-java.nio.file.CopyOption...-) method:
+
+```java
+import com.spotted.api.core.http.HttpResponse;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+
+try (HttpResponse response = client.playlists().images().update(params)) {
+    Files.copy(
+        response.body(),
+        Paths.get(path),
+        StandardCopyOption.REPLACE_EXISTING
+    );
+} catch (Exception e) {
+    System.out.println("Something went wrong!");
+    throw new RuntimeException(e);
+}
+```
+
+Or transfer the response content to any [`OutputStream`](https://docs.oracle.com/javase/8/docs/api/java/io/OutputStream.html):
+
+```java
+import com.spotted.api.core.http.HttpResponse;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+try (HttpResponse response = client.playlists().images().update(params)) {
+    response.body().transferTo(Files.newOutputStream(Paths.get(path)));
+} catch (Exception e) {
+    System.out.println("Something went wrong!");
+    throw new RuntimeException(e);
+}
+```
+
 ## Raw responses
 
 The SDK defines methods that deserialize responses into instances of Java classes. However, these methods don't provide access to the response headers, status code, or the raw response body.
