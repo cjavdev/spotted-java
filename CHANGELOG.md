@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.1 (2025-11-19)
+
+Full Changelog: [v0.2.0...v0.2.1](https://github.com/cjavdev/spotted-java/compare/v0.2.0...v0.2.1)
+
 ## 0.2.0 (2025-11-19)
 
 Full Changelog: [v0.1.0...v0.2.0](https://github.com/cjavdev/spotted-java/compare/v0.1.0...v0.2.0)
