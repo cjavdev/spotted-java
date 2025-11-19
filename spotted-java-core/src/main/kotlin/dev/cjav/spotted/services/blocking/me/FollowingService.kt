@@ -1,0 +1,157 @@
+// File generated from our OpenAPI spec by Stainless.
+
+package dev.cjav.spotted.services.blocking.me
+
+import com.google.errorprone.annotations.MustBeClosed
+import dev.cjav.spotted.core.ClientOptions
+import dev.cjav.spotted.core.RequestOptions
+import dev.cjav.spotted.core.http.HttpResponse
+import dev.cjav.spotted.core.http.HttpResponseFor
+import dev.cjav.spotted.models.me.following.FollowingBulkRetrieveParams
+import dev.cjav.spotted.models.me.following.FollowingBulkRetrieveResponse
+import dev.cjav.spotted.models.me.following.FollowingCheckParams
+import dev.cjav.spotted.models.me.following.FollowingFollowParams
+import dev.cjav.spotted.models.me.following.FollowingUnfollowParams
+import java.util.function.Consumer
+
+interface FollowingService {
+
+    /**
+     * Returns a view of this service that provides access to raw HTTP responses for each method.
+     */
+    fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: Consumer<ClientOptions.Builder>): FollowingService
+
+    /** Get the current user's followed artists. */
+    fun bulkRetrieve(params: FollowingBulkRetrieveParams): FollowingBulkRetrieveResponse =
+        bulkRetrieve(params, RequestOptions.none())
+
+    /** @see bulkRetrieve */
+    fun bulkRetrieve(
+        params: FollowingBulkRetrieveParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): FollowingBulkRetrieveResponse
+
+    /** Check to see if the current user is following one or more artists or other Spotify users. */
+    fun check(params: FollowingCheckParams): List<Boolean> = check(params, RequestOptions.none())
+
+    /** @see check */
+    fun check(
+        params: FollowingCheckParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): List<Boolean>
+
+    /** Add the current user as a follower of one or more artists or other Spotify users. */
+    fun follow(params: FollowingFollowParams) = follow(params, RequestOptions.none())
+
+    /** @see follow */
+    fun follow(
+        params: FollowingFollowParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    )
+
+    /** Remove the current user as a follower of one or more artists or other Spotify users. */
+    fun unfollow() = unfollow(FollowingUnfollowParams.none())
+
+    /** @see unfollow */
+    fun unfollow(
+        params: FollowingUnfollowParams = FollowingUnfollowParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    )
+
+    /** @see unfollow */
+    fun unfollow(params: FollowingUnfollowParams = FollowingUnfollowParams.none()) =
+        unfollow(params, RequestOptions.none())
+
+    /** @see unfollow */
+    fun unfollow(requestOptions: RequestOptions) =
+        unfollow(FollowingUnfollowParams.none(), requestOptions)
+
+    /** A view of [FollowingService] that provides access to raw HTTP responses for each method. */
+    interface WithRawResponse {
+
+        /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(modifier: Consumer<ClientOptions.Builder>): FollowingService.WithRawResponse
+
+        /**
+         * Returns a raw HTTP response for `get /me/following`, but is otherwise the same as
+         * [FollowingService.bulkRetrieve].
+         */
+        @MustBeClosed
+        fun bulkRetrieve(
+            params: FollowingBulkRetrieveParams
+        ): HttpResponseFor<FollowingBulkRetrieveResponse> =
+            bulkRetrieve(params, RequestOptions.none())
+
+        /** @see bulkRetrieve */
+        @MustBeClosed
+        fun bulkRetrieve(
+            params: FollowingBulkRetrieveParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<FollowingBulkRetrieveResponse>
+
+        /**
+         * Returns a raw HTTP response for `get /me/following/contains`, but is otherwise the same
+         * as [FollowingService.check].
+         */
+        @MustBeClosed
+        fun check(params: FollowingCheckParams): HttpResponseFor<List<Boolean>> =
+            check(params, RequestOptions.none())
+
+        /** @see check */
+        @MustBeClosed
+        fun check(
+            params: FollowingCheckParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<List<Boolean>>
+
+        /**
+         * Returns a raw HTTP response for `put /me/following`, but is otherwise the same as
+         * [FollowingService.follow].
+         */
+        @MustBeClosed
+        fun follow(params: FollowingFollowParams): HttpResponse =
+            follow(params, RequestOptions.none())
+
+        /** @see follow */
+        @MustBeClosed
+        fun follow(
+            params: FollowingFollowParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponse
+
+        /**
+         * Returns a raw HTTP response for `delete /me/following`, but is otherwise the same as
+         * [FollowingService.unfollow].
+         */
+        @MustBeClosed fun unfollow(): HttpResponse = unfollow(FollowingUnfollowParams.none())
+
+        /** @see unfollow */
+        @MustBeClosed
+        fun unfollow(
+            params: FollowingUnfollowParams = FollowingUnfollowParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponse
+
+        /** @see unfollow */
+        @MustBeClosed
+        fun unfollow(
+            params: FollowingUnfollowParams = FollowingUnfollowParams.none()
+        ): HttpResponse = unfollow(params, RequestOptions.none())
+
+        /** @see unfollow */
+        @MustBeClosed
+        fun unfollow(requestOptions: RequestOptions): HttpResponse =
+            unfollow(FollowingUnfollowParams.none(), requestOptions)
+    }
+}
