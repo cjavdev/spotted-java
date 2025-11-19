@@ -21,8 +21,7 @@ internal class ClientOptionsTest {
         var clientOptions =
             ClientOptions.builder()
                 .httpClient(httpClient)
-                .clientId("My Client ID")
-                .clientSecret("My Client Secret")
+                .accessToken("My Access Token")
                 .build()
         verify(httpClient, never()).close()
 
