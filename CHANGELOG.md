@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.0 (2025-11-19)
+
+Full Changelog: [v0.1.0...v0.2.0](https://github.com/cjavdev/spotted-java/compare/v0.1.0...v0.2.0)
+
+### Features
+
+* **api:** add portal to Stainless config for java ([03d4749](https://github.com/cjavdev/spotted-java/commit/03d474904d990a7a0d3e1ad99f1e83cd05634325))
+
 ## 0.1.0 (2025-11-19)
 
 Full Changelog: [v0.0.1...v0.1.0](https://github.com/cjavdev/spotted-java/compare/v0.0.1...v0.1.0)
