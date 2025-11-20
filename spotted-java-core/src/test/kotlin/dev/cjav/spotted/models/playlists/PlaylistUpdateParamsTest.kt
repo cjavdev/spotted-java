@@ -11,10 +11,10 @@ internal class PlaylistUpdateParamsTest {
     fun create() {
         PlaylistUpdateParams.builder()
             .playlistId("3cEYpjA9oz9GiPac4AsH4n")
-            .pathsRequestBodyContentApplicationJsonSchemaPropertiesPublished(true)
             .collaborative(true)
             .description("Updated playlist description")
             .name("Updated Playlist Name")
+            .public_(false)
             .build()
     }
 
@@ -32,19 +32,18 @@ internal class PlaylistUpdateParamsTest {
         val params =
             PlaylistUpdateParams.builder()
                 .playlistId("3cEYpjA9oz9GiPac4AsH4n")
-                .pathsRequestBodyContentApplicationJsonSchemaPropertiesPublished(true)
                 .collaborative(true)
                 .description("Updated playlist description")
                 .name("Updated Playlist Name")
+                .public_(false)
                 .build()
 
         val body = params._body()
 
-        assertThat(body.pathsRequestBodyContentApplicationJsonSchemaPropertiesPublished())
-            .contains(true)
         assertThat(body.collaborative()).contains(true)
         assertThat(body.description()).contains("Updated playlist description")
         assertThat(body.name()).contains("Updated Playlist Name")
+        assertThat(body.public_()).contains(false)
     }
 
     @Test
