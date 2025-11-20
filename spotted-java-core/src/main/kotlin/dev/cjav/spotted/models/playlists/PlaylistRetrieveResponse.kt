@@ -28,7 +28,7 @@ class PlaylistRetrieveResponse
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val id: JsonField<String>,
-    private val componentsSchemasPropertiesIsPublic: JsonField<Boolean>,
+    private val componentsSchemasPropertiesPublished: JsonField<Boolean>,
     private val collaborative: JsonField<Boolean>,
     private val description: JsonField<String>,
     private val externalUrls: JsonField<ExternalUrlObject>,
@@ -47,9 +47,9 @@ private constructor(
     @JsonCreator
     private constructor(
         @JsonProperty("id") @ExcludeMissing id: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("\$.components.schemas.*.properties.is_public")
+        @JsonProperty("\$.components.schemas.*.properties.published")
         @ExcludeMissing
-        componentsSchemasPropertiesIsPublic: JsonField<Boolean> = JsonMissing.of(),
+        componentsSchemasPropertiesPublished: JsonField<Boolean> = JsonMissing.of(),
         @JsonProperty("collaborative")
         @ExcludeMissing
         collaborative: JsonField<Boolean> = JsonMissing.of(),
@@ -76,7 +76,7 @@ private constructor(
         @JsonProperty("uri") @ExcludeMissing uri: JsonField<String> = JsonMissing.of(),
     ) : this(
         id,
-        componentsSchemasPropertiesIsPublic,
+        componentsSchemasPropertiesPublished,
         collaborative,
         description,
         externalUrls,
@@ -109,9 +109,9 @@ private constructor(
      * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun componentsSchemasPropertiesIsPublic(): Optional<Boolean> =
-        componentsSchemasPropertiesIsPublic.getOptional(
-            "\$.components.schemas.*.properties.is_public"
+    fun componentsSchemasPropertiesPublished(): Optional<Boolean> =
+        componentsSchemasPropertiesPublished.getOptional(
+            "\$.components.schemas.*.properties.published"
         )
 
     /**
@@ -222,15 +222,15 @@ private constructor(
     @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
 
     /**
-     * Returns the raw JSON value of [componentsSchemasPropertiesIsPublic].
+     * Returns the raw JSON value of [componentsSchemasPropertiesPublished].
      *
-     * Unlike [componentsSchemasPropertiesIsPublic], this method doesn't throw if the JSON field has
-     * an unexpected type.
+     * Unlike [componentsSchemasPropertiesPublished], this method doesn't throw if the JSON field
+     * has an unexpected type.
      */
-    @JsonProperty("\$.components.schemas.*.properties.is_public")
+    @JsonProperty("\$.components.schemas.*.properties.published")
     @ExcludeMissing
-    fun _componentsSchemasPropertiesIsPublic(): JsonField<Boolean> =
-        componentsSchemasPropertiesIsPublic
+    fun _componentsSchemasPropertiesPublished(): JsonField<Boolean> =
+        componentsSchemasPropertiesPublished
 
     /**
      * Returns the raw JSON value of [collaborative].
@@ -344,7 +344,7 @@ private constructor(
     class Builder internal constructor() {
 
         private var id: JsonField<String> = JsonMissing.of()
-        private var componentsSchemasPropertiesIsPublic: JsonField<Boolean> = JsonMissing.of()
+        private var componentsSchemasPropertiesPublished: JsonField<Boolean> = JsonMissing.of()
         private var collaborative: JsonField<Boolean> = JsonMissing.of()
         private var description: JsonField<String> = JsonMissing.of()
         private var externalUrls: JsonField<ExternalUrlObject> = JsonMissing.of()
@@ -362,8 +362,8 @@ private constructor(
         @JvmSynthetic
         internal fun from(playlistRetrieveResponse: PlaylistRetrieveResponse) = apply {
             id = playlistRetrieveResponse.id
-            componentsSchemasPropertiesIsPublic =
-                playlistRetrieveResponse.componentsSchemasPropertiesIsPublic
+            componentsSchemasPropertiesPublished =
+                playlistRetrieveResponse.componentsSchemasPropertiesPublished
             collaborative = playlistRetrieveResponse.collaborative
             description = playlistRetrieveResponse.description
             externalUrls = playlistRetrieveResponse.externalUrls
@@ -396,19 +396,21 @@ private constructor(
          * relevant. For more about public/private status, see
          * [Working with Playlists](/documentation/web-api/concepts/playlists)
          */
-        fun componentsSchemasPropertiesIsPublic(componentsSchemasPropertiesIsPublic: Boolean) =
-            componentsSchemasPropertiesIsPublic(JsonField.of(componentsSchemasPropertiesIsPublic))
+        fun componentsSchemasPropertiesPublished(componentsSchemasPropertiesPublished: Boolean) =
+            componentsSchemasPropertiesPublished(JsonField.of(componentsSchemasPropertiesPublished))
 
         /**
-         * Sets [Builder.componentsSchemasPropertiesIsPublic] to an arbitrary JSON value.
+         * Sets [Builder.componentsSchemasPropertiesPublished] to an arbitrary JSON value.
          *
-         * You should usually call [Builder.componentsSchemasPropertiesIsPublic] with a well-typed
+         * You should usually call [Builder.componentsSchemasPropertiesPublished] with a well-typed
          * [Boolean] value instead. This method is primarily for setting the field to an
          * undocumented or not yet supported value.
          */
-        fun componentsSchemasPropertiesIsPublic(
-            componentsSchemasPropertiesIsPublic: JsonField<Boolean>
-        ) = apply { this.componentsSchemasPropertiesIsPublic = componentsSchemasPropertiesIsPublic }
+        fun componentsSchemasPropertiesPublished(
+            componentsSchemasPropertiesPublished: JsonField<Boolean>
+        ) = apply {
+            this.componentsSchemasPropertiesPublished = componentsSchemasPropertiesPublished
+        }
 
         /** `true` if the owner allows other users to modify the playlist. */
         fun collaborative(collaborative: Boolean) = collaborative(JsonField.of(collaborative))
@@ -608,7 +610,7 @@ private constructor(
         fun build(): PlaylistRetrieveResponse =
             PlaylistRetrieveResponse(
                 id,
-                componentsSchemasPropertiesIsPublic,
+                componentsSchemasPropertiesPublished,
                 collaborative,
                 description,
                 externalUrls,
@@ -633,7 +635,7 @@ private constructor(
         }
 
         id()
-        componentsSchemasPropertiesIsPublic()
+        componentsSchemasPropertiesPublished()
         collaborative()
         description()
         externalUrls().ifPresent { it.validate() }
@@ -665,7 +667,7 @@ private constructor(
     @JvmSynthetic
     internal fun validity(): Int =
         (if (id.asKnown().isPresent) 1 else 0) +
-            (if (componentsSchemasPropertiesIsPublic.asKnown().isPresent) 1 else 0) +
+            (if (componentsSchemasPropertiesPublished.asKnown().isPresent) 1 else 0) +
             (if (collaborative.asKnown().isPresent) 1 else 0) +
             (if (description.asKnown().isPresent) 1 else 0) +
             (externalUrls.asKnown().getOrNull()?.validity() ?: 0) +
@@ -1451,7 +1453,7 @@ private constructor(
 
         return other is PlaylistRetrieveResponse &&
             id == other.id &&
-            componentsSchemasPropertiesIsPublic == other.componentsSchemasPropertiesIsPublic &&
+            componentsSchemasPropertiesPublished == other.componentsSchemasPropertiesPublished &&
             collaborative == other.collaborative &&
             description == other.description &&
             externalUrls == other.externalUrls &&
@@ -1470,7 +1472,7 @@ private constructor(
     private val hashCode: Int by lazy {
         Objects.hash(
             id,
-            componentsSchemasPropertiesIsPublic,
+            componentsSchemasPropertiesPublished,
             collaborative,
             description,
             externalUrls,
@@ -1490,5 +1492,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "PlaylistRetrieveResponse{id=$id, componentsSchemasPropertiesIsPublic=$componentsSchemasPropertiesIsPublic, collaborative=$collaborative, description=$description, externalUrls=$externalUrls, followers=$followers, href=$href, images=$images, name=$name, owner=$owner, snapshotId=$snapshotId, tracks=$tracks, type=$type, uri=$uri, additionalProperties=$additionalProperties}"
+        "PlaylistRetrieveResponse{id=$id, componentsSchemasPropertiesPublished=$componentsSchemasPropertiesPublished, collaborative=$collaborative, description=$description, externalUrls=$externalUrls, followers=$followers, href=$href, images=$images, name=$name, owner=$owner, snapshotId=$snapshotId, tracks=$tracks, type=$type, uri=$uri, additionalProperties=$additionalProperties}"
 }

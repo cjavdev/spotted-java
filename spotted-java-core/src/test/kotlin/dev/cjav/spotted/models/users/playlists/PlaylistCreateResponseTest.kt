@@ -27,7 +27,7 @@ internal class PlaylistCreateResponseTest {
         val playlistCreateResponse =
             PlaylistCreateResponse.builder()
                 .id("id")
-                .componentsSchemasPropertiesIsPublic(true)
+                .componentsSchemasPropertiesPublished(true)
                 .collaborative(true)
                 .description("description")
                 .externalUrls(ExternalUrlObject.builder().spotify("spotify").build())
@@ -194,7 +194,7 @@ internal class PlaylistCreateResponseTest {
                 .build()
 
         assertThat(playlistCreateResponse.id()).contains("id")
-        assertThat(playlistCreateResponse.componentsSchemasPropertiesIsPublic()).contains(true)
+        assertThat(playlistCreateResponse.componentsSchemasPropertiesPublished()).contains(true)
         assertThat(playlistCreateResponse.collaborative()).contains(true)
         assertThat(playlistCreateResponse.description()).contains("description")
         assertThat(playlistCreateResponse.externalUrls())
@@ -367,7 +367,7 @@ internal class PlaylistCreateResponseTest {
         val playlistCreateResponse =
             PlaylistCreateResponse.builder()
                 .id("id")
-                .componentsSchemasPropertiesIsPublic(true)
+                .componentsSchemasPropertiesPublished(true)
                 .collaborative(true)
                 .description("description")
                 .externalUrls(ExternalUrlObject.builder().spotify("spotify").build())
