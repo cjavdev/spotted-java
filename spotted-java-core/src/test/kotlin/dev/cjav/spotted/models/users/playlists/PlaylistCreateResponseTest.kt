@@ -27,7 +27,6 @@ internal class PlaylistCreateResponseTest {
         val playlistCreateResponse =
             PlaylistCreateResponse.builder()
                 .id("id")
-                .componentsSchemasPropertiesPublished(true)
                 .collaborative(true)
                 .description("description")
                 .externalUrls(ExternalUrlObject.builder().spotify("spotify").build())
@@ -51,6 +50,7 @@ internal class PlaylistCreateResponseTest {
                         .displayName("display_name")
                         .build()
                 )
+                .published(true)
                 .snapshotId("snapshot_id")
                 .tracks(
                     PlaylistCreateResponse.Tracks.builder()
@@ -194,7 +194,6 @@ internal class PlaylistCreateResponseTest {
                 .build()
 
         assertThat(playlistCreateResponse.id()).contains("id")
-        assertThat(playlistCreateResponse.componentsSchemasPropertiesPublished()).contains(true)
         assertThat(playlistCreateResponse.collaborative()).contains(true)
         assertThat(playlistCreateResponse.description()).contains("description")
         assertThat(playlistCreateResponse.externalUrls())
@@ -222,6 +221,7 @@ internal class PlaylistCreateResponseTest {
                     .displayName("display_name")
                     .build()
             )
+        assertThat(playlistCreateResponse.published()).contains(true)
         assertThat(playlistCreateResponse.snapshotId()).contains("snapshot_id")
         assertThat(playlistCreateResponse.tracks())
             .contains(
@@ -367,7 +367,6 @@ internal class PlaylistCreateResponseTest {
         val playlistCreateResponse =
             PlaylistCreateResponse.builder()
                 .id("id")
-                .componentsSchemasPropertiesPublished(true)
                 .collaborative(true)
                 .description("description")
                 .externalUrls(ExternalUrlObject.builder().spotify("spotify").build())
@@ -391,6 +390,7 @@ internal class PlaylistCreateResponseTest {
                         .displayName("display_name")
                         .build()
                 )
+                .published(true)
                 .snapshotId("snapshot_id")
                 .tracks(
                     PlaylistCreateResponse.Tracks.builder()
