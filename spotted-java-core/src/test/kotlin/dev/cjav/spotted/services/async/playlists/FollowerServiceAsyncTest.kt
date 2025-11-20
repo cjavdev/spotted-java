@@ -48,7 +48,7 @@ internal class FollowerServiceAsyncTest {
             followerServiceAsync.follow(
                 FollowerFollowParams.builder()
                     .playlistId("3cEYpjA9oz9GiPac4AsH4n")
-                    .componentsSchemasPropertiesPublished(true)
+                    .pathsRequestBodyContentApplicationJsonSchemaPropertiesPublished(true)
                     .build()
             )
 

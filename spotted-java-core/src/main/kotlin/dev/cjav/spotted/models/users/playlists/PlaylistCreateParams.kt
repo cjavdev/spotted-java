@@ -56,8 +56,8 @@ private constructor(
      * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun componentsSchemasPropertiesPublished(): Optional<Boolean> =
-        body.componentsSchemasPropertiesPublished()
+    fun pathsRequestBodyContentApplicationJsonSchemaPropertiesPublished(): Optional<Boolean> =
+        body.pathsRequestBodyContentApplicationJsonSchemaPropertiesPublished()
 
     /**
      * Defaults to `false`. If `true` the playlist will be collaborative. _**Note**: to create a
@@ -86,13 +86,14 @@ private constructor(
     fun _name(): JsonField<String> = body._name()
 
     /**
-     * Returns the raw JSON value of [componentsSchemasPropertiesPublished].
+     * Returns the raw JSON value of
+     * [pathsRequestBodyContentApplicationJsonSchemaPropertiesPublished].
      *
-     * Unlike [componentsSchemasPropertiesPublished], this method doesn't throw if the JSON field
-     * has an unexpected type.
+     * Unlike [pathsRequestBodyContentApplicationJsonSchemaPropertiesPublished], this method doesn't
+     * throw if the JSON field has an unexpected type.
      */
-    fun _componentsSchemasPropertiesPublished(): JsonField<Boolean> =
-        body._componentsSchemasPropertiesPublished()
+    fun _pathsRequestBodyContentApplicationJsonSchemaPropertiesPublished(): JsonField<Boolean> =
+        body._pathsRequestBodyContentApplicationJsonSchemaPropertiesPublished()
 
     /**
      * Returns the raw JSON value of [collaborative].
@@ -159,7 +160,7 @@ private constructor(
          * This is generally only useful if you are already constructing the body separately.
          * Otherwise, it's more convenient to use the top-level setters instead:
          * - [name]
-         * - [componentsSchemasPropertiesPublished]
+         * - [pathsRequestBodyContentApplicationJsonSchemaPropertiesPublished]
          * - [collaborative]
          * - [description]
          */
@@ -188,22 +189,29 @@ private constructor(
          * public/private status, see
          * [Working with Playlists](/documentation/web-api/concepts/playlists)
          */
-        fun componentsSchemasPropertiesPublished(componentsSchemasPropertiesPublished: Boolean) =
-            apply {
-                body.componentsSchemasPropertiesPublished(componentsSchemasPropertiesPublished)
-            }
+        fun pathsRequestBodyContentApplicationJsonSchemaPropertiesPublished(
+            pathsRequestBodyContentApplicationJsonSchemaPropertiesPublished: Boolean
+        ) = apply {
+            body.pathsRequestBodyContentApplicationJsonSchemaPropertiesPublished(
+                pathsRequestBodyContentApplicationJsonSchemaPropertiesPublished
+            )
+        }
 
         /**
-         * Sets [Builder.componentsSchemasPropertiesPublished] to an arbitrary JSON value.
+         * Sets [Builder.pathsRequestBodyContentApplicationJsonSchemaPropertiesPublished] to an
+         * arbitrary JSON value.
          *
-         * You should usually call [Builder.componentsSchemasPropertiesPublished] with a well-typed
-         * [Boolean] value instead. This method is primarily for setting the field to an
+         * You should usually call
+         * [Builder.pathsRequestBodyContentApplicationJsonSchemaPropertiesPublished] with a
+         * well-typed [Boolean] value instead. This method is primarily for setting the field to an
          * undocumented or not yet supported value.
          */
-        fun componentsSchemasPropertiesPublished(
-            componentsSchemasPropertiesPublished: JsonField<Boolean>
+        fun pathsRequestBodyContentApplicationJsonSchemaPropertiesPublished(
+            pathsRequestBodyContentApplicationJsonSchemaPropertiesPublished: JsonField<Boolean>
         ) = apply {
-            body.componentsSchemasPropertiesPublished(componentsSchemasPropertiesPublished)
+            body.pathsRequestBodyContentApplicationJsonSchemaPropertiesPublished(
+                pathsRequestBodyContentApplicationJsonSchemaPropertiesPublished
+            )
         }
 
         /**
@@ -391,7 +399,8 @@ private constructor(
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val name: JsonField<String>,
-        private val componentsSchemasPropertiesPublished: JsonField<Boolean>,
+        private val pathsRequestBodyContentApplicationJsonSchemaPropertiesPublished:
+            JsonField<Boolean>,
         private val collaborative: JsonField<Boolean>,
         private val description: JsonField<String>,
         private val additionalProperties: MutableMap<String, JsonValue>,
@@ -400,9 +409,12 @@ private constructor(
         @JsonCreator
         private constructor(
             @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("\$.components.schemas.*.properties.published")
+            @JsonProperty(
+                "\$.paths['*'].*.requestBody.content['application/json'].schema.properties.published"
+            )
             @ExcludeMissing
-            componentsSchemasPropertiesPublished: JsonField<Boolean> = JsonMissing.of(),
+            pathsRequestBodyContentApplicationJsonSchemaPropertiesPublished: JsonField<Boolean> =
+                JsonMissing.of(),
             @JsonProperty("collaborative")
             @ExcludeMissing
             collaborative: JsonField<Boolean> = JsonMissing.of(),
@@ -411,7 +423,7 @@ private constructor(
             description: JsonField<String> = JsonMissing.of(),
         ) : this(
             name,
-            componentsSchemasPropertiesPublished,
+            pathsRequestBodyContentApplicationJsonSchemaPropertiesPublished,
             collaborative,
             description,
             mutableMapOf(),
@@ -438,9 +450,9 @@ private constructor(
          * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun componentsSchemasPropertiesPublished(): Optional<Boolean> =
-            componentsSchemasPropertiesPublished.getOptional(
-                "\$.components.schemas.*.properties.published"
+        fun pathsRequestBodyContentApplicationJsonSchemaPropertiesPublished(): Optional<Boolean> =
+            pathsRequestBodyContentApplicationJsonSchemaPropertiesPublished.getOptional(
+                "\$.paths['*'].*.requestBody.content['application/json'].schema.properties.published"
             )
 
         /**
@@ -470,15 +482,18 @@ private constructor(
         @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
         /**
-         * Returns the raw JSON value of [componentsSchemasPropertiesPublished].
+         * Returns the raw JSON value of
+         * [pathsRequestBodyContentApplicationJsonSchemaPropertiesPublished].
          *
-         * Unlike [componentsSchemasPropertiesPublished], this method doesn't throw if the JSON
-         * field has an unexpected type.
+         * Unlike [pathsRequestBodyContentApplicationJsonSchemaPropertiesPublished], this method
+         * doesn't throw if the JSON field has an unexpected type.
          */
-        @JsonProperty("\$.components.schemas.*.properties.published")
+        @JsonProperty(
+            "\$.paths['*'].*.requestBody.content['application/json'].schema.properties.published"
+        )
         @ExcludeMissing
-        fun _componentsSchemasPropertiesPublished(): JsonField<Boolean> =
-            componentsSchemasPropertiesPublished
+        fun _pathsRequestBodyContentApplicationJsonSchemaPropertiesPublished(): JsonField<Boolean> =
+            pathsRequestBodyContentApplicationJsonSchemaPropertiesPublished
 
         /**
          * Returns the raw JSON value of [collaborative].
@@ -528,7 +543,9 @@ private constructor(
         class Builder internal constructor() {
 
             private var name: JsonField<String>? = null
-            private var componentsSchemasPropertiesPublished: JsonField<Boolean> = JsonMissing.of()
+            private var pathsRequestBodyContentApplicationJsonSchemaPropertiesPublished:
+                JsonField<Boolean> =
+                JsonMissing.of()
             private var collaborative: JsonField<Boolean> = JsonMissing.of()
             private var description: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -536,7 +553,8 @@ private constructor(
             @JvmSynthetic
             internal fun from(body: Body) = apply {
                 name = body.name
-                componentsSchemasPropertiesPublished = body.componentsSchemasPropertiesPublished
+                pathsRequestBodyContentApplicationJsonSchemaPropertiesPublished =
+                    body.pathsRequestBodyContentApplicationJsonSchemaPropertiesPublished
                 collaborative = body.collaborative
                 description = body.description
                 additionalProperties = body.additionalProperties.toMutableMap()
@@ -566,24 +584,27 @@ private constructor(
              * public/private status, see
              * [Working with Playlists](/documentation/web-api/concepts/playlists)
              */
-            fun componentsSchemasPropertiesPublished(
-                componentsSchemasPropertiesPublished: Boolean
+            fun pathsRequestBodyContentApplicationJsonSchemaPropertiesPublished(
+                pathsRequestBodyContentApplicationJsonSchemaPropertiesPublished: Boolean
             ) =
-                componentsSchemasPropertiesPublished(
-                    JsonField.of(componentsSchemasPropertiesPublished)
+                pathsRequestBodyContentApplicationJsonSchemaPropertiesPublished(
+                    JsonField.of(pathsRequestBodyContentApplicationJsonSchemaPropertiesPublished)
                 )
 
             /**
-             * Sets [Builder.componentsSchemasPropertiesPublished] to an arbitrary JSON value.
+             * Sets [Builder.pathsRequestBodyContentApplicationJsonSchemaPropertiesPublished] to an
+             * arbitrary JSON value.
              *
-             * You should usually call [Builder.componentsSchemasPropertiesPublished] with a
+             * You should usually call
+             * [Builder.pathsRequestBodyContentApplicationJsonSchemaPropertiesPublished] with a
              * well-typed [Boolean] value instead. This method is primarily for setting the field to
              * an undocumented or not yet supported value.
              */
-            fun componentsSchemasPropertiesPublished(
-                componentsSchemasPropertiesPublished: JsonField<Boolean>
+            fun pathsRequestBodyContentApplicationJsonSchemaPropertiesPublished(
+                pathsRequestBodyContentApplicationJsonSchemaPropertiesPublished: JsonField<Boolean>
             ) = apply {
-                this.componentsSchemasPropertiesPublished = componentsSchemasPropertiesPublished
+                this.pathsRequestBodyContentApplicationJsonSchemaPropertiesPublished =
+                    pathsRequestBodyContentApplicationJsonSchemaPropertiesPublished
             }
 
             /**
@@ -656,7 +677,7 @@ private constructor(
             fun build(): Body =
                 Body(
                     checkRequired("name", name),
-                    componentsSchemasPropertiesPublished,
+                    pathsRequestBodyContentApplicationJsonSchemaPropertiesPublished,
                     collaborative,
                     description,
                     additionalProperties.toMutableMap(),
@@ -671,7 +692,7 @@ private constructor(
             }
 
             name()
-            componentsSchemasPropertiesPublished()
+            pathsRequestBodyContentApplicationJsonSchemaPropertiesPublished()
             collaborative()
             description()
             validated = true
@@ -694,7 +715,13 @@ private constructor(
         @JvmSynthetic
         internal fun validity(): Int =
             (if (name.asKnown().isPresent) 1 else 0) +
-                (if (componentsSchemasPropertiesPublished.asKnown().isPresent) 1 else 0) +
+                (if (
+                    pathsRequestBodyContentApplicationJsonSchemaPropertiesPublished
+                        .asKnown()
+                        .isPresent
+                )
+                    1
+                else 0) +
                 (if (collaborative.asKnown().isPresent) 1 else 0) +
                 (if (description.asKnown().isPresent) 1 else 0)
 
@@ -705,8 +732,8 @@ private constructor(
 
             return other is Body &&
                 name == other.name &&
-                componentsSchemasPropertiesPublished ==
-                    other.componentsSchemasPropertiesPublished &&
+                pathsRequestBodyContentApplicationJsonSchemaPropertiesPublished ==
+                    other.pathsRequestBodyContentApplicationJsonSchemaPropertiesPublished &&
                 collaborative == other.collaborative &&
                 description == other.description &&
                 additionalProperties == other.additionalProperties
@@ -715,7 +742,7 @@ private constructor(
         private val hashCode: Int by lazy {
             Objects.hash(
                 name,
-                componentsSchemasPropertiesPublished,
+                pathsRequestBodyContentApplicationJsonSchemaPropertiesPublished,
                 collaborative,
                 description,
                 additionalProperties,
@@ -725,7 +752,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Body{name=$name, componentsSchemasPropertiesPublished=$componentsSchemasPropertiesPublished, collaborative=$collaborative, description=$description, additionalProperties=$additionalProperties}"
+            "Body{name=$name, pathsRequestBodyContentApplicationJsonSchemaPropertiesPublished=$pathsRequestBodyContentApplicationJsonSchemaPropertiesPublished, collaborative=$collaborative, description=$description, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {
