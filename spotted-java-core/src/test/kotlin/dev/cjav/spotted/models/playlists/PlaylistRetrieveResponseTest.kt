@@ -27,6 +27,7 @@ internal class PlaylistRetrieveResponseTest {
         val playlistRetrieveResponse =
             PlaylistRetrieveResponse.builder()
                 .id("id")
+                .componentsSchemasPropertiesIsPublic(true)
                 .collaborative(true)
                 .description("description")
                 .externalUrls(ExternalUrlObject.builder().spotify("spotify").build())
@@ -50,7 +51,6 @@ internal class PlaylistRetrieveResponseTest {
                         .displayName("display_name")
                         .build()
                 )
-                .public_(true)
                 .snapshotId("snapshot_id")
                 .tracks(
                     PlaylistRetrieveResponse.Tracks.builder()
@@ -194,6 +194,7 @@ internal class PlaylistRetrieveResponseTest {
                 .build()
 
         assertThat(playlistRetrieveResponse.id()).contains("id")
+        assertThat(playlistRetrieveResponse.componentsSchemasPropertiesIsPublic()).contains(true)
         assertThat(playlistRetrieveResponse.collaborative()).contains(true)
         assertThat(playlistRetrieveResponse.description()).contains("description")
         assertThat(playlistRetrieveResponse.externalUrls())
@@ -221,7 +222,6 @@ internal class PlaylistRetrieveResponseTest {
                     .displayName("display_name")
                     .build()
             )
-        assertThat(playlistRetrieveResponse.public_()).contains(true)
         assertThat(playlistRetrieveResponse.snapshotId()).contains("snapshot_id")
         assertThat(playlistRetrieveResponse.tracks())
             .contains(
@@ -367,6 +367,7 @@ internal class PlaylistRetrieveResponseTest {
         val playlistRetrieveResponse =
             PlaylistRetrieveResponse.builder()
                 .id("id")
+                .componentsSchemasPropertiesIsPublic(true)
                 .collaborative(true)
                 .description("description")
                 .externalUrls(ExternalUrlObject.builder().spotify("spotify").build())
@@ -390,7 +391,6 @@ internal class PlaylistRetrieveResponseTest {
                         .displayName("display_name")
                         .build()
                 )
-                .public_(true)
                 .snapshotId("snapshot_id")
                 .tracks(
                     PlaylistRetrieveResponse.Tracks.builder()

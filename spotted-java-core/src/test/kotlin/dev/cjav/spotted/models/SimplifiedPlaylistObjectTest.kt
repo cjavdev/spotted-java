@@ -15,6 +15,7 @@ internal class SimplifiedPlaylistObjectTest {
         val simplifiedPlaylistObject =
             SimplifiedPlaylistObject.builder()
                 .id("id")
+                .componentsSchemasPropertiesIsPublic(true)
                 .collaborative(true)
                 .description("description")
                 .externalUrls(ExternalUrlObject.builder().spotify("spotify").build())
@@ -37,7 +38,6 @@ internal class SimplifiedPlaylistObjectTest {
                         .displayName("display_name")
                         .build()
                 )
-                .public_(true)
                 .snapshotId("snapshot_id")
                 .tracks(PlaylistTracksRefObject.builder().href("href").total(0L).build())
                 .type("type")
@@ -45,6 +45,7 @@ internal class SimplifiedPlaylistObjectTest {
                 .build()
 
         assertThat(simplifiedPlaylistObject.id()).contains("id")
+        assertThat(simplifiedPlaylistObject.componentsSchemasPropertiesIsPublic()).contains(true)
         assertThat(simplifiedPlaylistObject.collaborative()).contains(true)
         assertThat(simplifiedPlaylistObject.description()).contains("description")
         assertThat(simplifiedPlaylistObject.externalUrls())
@@ -70,7 +71,6 @@ internal class SimplifiedPlaylistObjectTest {
                     .displayName("display_name")
                     .build()
             )
-        assertThat(simplifiedPlaylistObject.public_()).contains(true)
         assertThat(simplifiedPlaylistObject.snapshotId()).contains("snapshot_id")
         assertThat(simplifiedPlaylistObject.tracks())
             .contains(PlaylistTracksRefObject.builder().href("href").total(0L).build())
@@ -84,6 +84,7 @@ internal class SimplifiedPlaylistObjectTest {
         val simplifiedPlaylistObject =
             SimplifiedPlaylistObject.builder()
                 .id("id")
+                .componentsSchemasPropertiesIsPublic(true)
                 .collaborative(true)
                 .description("description")
                 .externalUrls(ExternalUrlObject.builder().spotify("spotify").build())
@@ -106,7 +107,6 @@ internal class SimplifiedPlaylistObjectTest {
                         .displayName("display_name")
                         .build()
                 )
-                .public_(true)
                 .snapshotId("snapshot_id")
                 .tracks(PlaylistTracksRefObject.builder().href("href").total(0L).build())
                 .type("type")
