@@ -15,7 +15,7 @@ internal class SimplifiedPlaylistObjectTest {
         val simplifiedPlaylistObject =
             SimplifiedPlaylistObject.builder()
                 .id("id")
-                .componentsSchemasPropertiesIsPublic(true)
+                .componentsSchemasPropertiesPublished(true)
                 .collaborative(true)
                 .description("description")
                 .externalUrls(ExternalUrlObject.builder().spotify("spotify").build())
@@ -45,7 +45,7 @@ internal class SimplifiedPlaylistObjectTest {
                 .build()
 
         assertThat(simplifiedPlaylistObject.id()).contains("id")
-        assertThat(simplifiedPlaylistObject.componentsSchemasPropertiesIsPublic()).contains(true)
+        assertThat(simplifiedPlaylistObject.componentsSchemasPropertiesPublished()).contains(true)
         assertThat(simplifiedPlaylistObject.collaborative()).contains(true)
         assertThat(simplifiedPlaylistObject.description()).contains("description")
         assertThat(simplifiedPlaylistObject.externalUrls())
@@ -84,7 +84,7 @@ internal class SimplifiedPlaylistObjectTest {
         val simplifiedPlaylistObject =
             SimplifiedPlaylistObject.builder()
                 .id("id")
-                .componentsSchemasPropertiesIsPublic(true)
+                .componentsSchemasPropertiesPublished(true)
                 .collaborative(true)
                 .description("description")
                 .externalUrls(ExternalUrlObject.builder().spotify("spotify").build())
