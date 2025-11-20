@@ -2,18 +2,20 @@
 
 <!-- x-release-please-start-version -->
 
-[![Maven Central](https://img.shields.io/maven-central/v/dev.cjav.spotted/spotted-java)](https://central.sonatype.com/artifact/dev.cjav.spotted/spotted-java/0.2.1)
-[![javadoc](https://javadoc.io/badge2/dev.cjav.spotted/spotted-java/0.2.1/javadoc.svg)](https://javadoc.io/doc/dev.cjav.spotted/spotted-java/0.2.1)
+[![Maven Central](https://img.shields.io/maven-central/v/dev.cjav.spotted/spotted-java)](https://central.sonatype.com/artifact/dev.cjav.spotted/spotted-java/0.3.0)
+[![javadoc](https://javadoc.io/badge2/dev.cjav.spotted/spotted-java/0.3.0/javadoc.svg)](https://javadoc.io/doc/dev.cjav.spotted/spotted-java/0.3.0)
 
 <!-- x-release-please-end -->
 
 The Spotted Java SDK provides convenient access to the [Spotted REST API](https://spotted.stldocs.com) from applications written in Java.
 
+The Spotted Java SDK is similar to the Spotted Kotlin SDK but with minor differences that make it more ergonomic for use in Java, such as `Optional` instead of nullable values, `Stream` instead of `Sequence`, and `CompletableFuture` instead of suspend functions.
+
 It is generated with [Stainless](https://www.stainless.com/).
 
 <!-- x-release-please-start-version -->
 
-The REST API documentation can be found on [spotted.stldocs.com](https://spotted.stldocs.com). Javadocs are available on [javadoc.io](https://javadoc.io/doc/dev.cjav.spotted/spotted-java/0.2.1).
+The REST API documentation can be found on [spotted.stldocs.com](https://spotted.stldocs.com). Javadocs are available on [javadoc.io](https://javadoc.io/doc/dev.cjav.spotted/spotted-java/0.3.0).
 
 <!-- x-release-please-end -->
 
@@ -24,7 +26,7 @@ The REST API documentation can be found on [spotted.stldocs.com](https://spotted
 ### Gradle
 
 ```kotlin
-implementation("dev.cjav.spotted:spotted-java:0.2.1")
+implementation("dev.cjav.spotted:spotted-java:0.3.0")
 ```
 
 ### Maven
@@ -33,7 +35,7 @@ implementation("dev.cjav.spotted:spotted-java:0.2.1")
 <dependency>
   <groupId>dev.cjav.spotted</groupId>
   <artifactId>spotted-java</artifactId>
-  <version>0.2.1</version>
+  <version>0.3.0</version>
 </dependency>
 ```
 

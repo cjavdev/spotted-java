@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.3.0 (2025-11-20)
+
+Full Changelog: [v0.2.1...v0.3.0](https://github.com/cjavdev/spotted-java/compare/v0.2.1...v0.3.0)
+
+### Features
+
+* **api:** manual updates ([1ab98ad](https://github.com/cjavdev/spotted-java/commit/1ab98ad62bedd6bbe114f4ff21b3a00a57ffe667))
+* **api:** manual updates ([04d026f](https://github.com/cjavdev/spotted-java/commit/04d026ff0a35f4e989017632d03c635dde661679))
+* **api:** manual updates ([ac12594](https://github.com/cjavdev/spotted-java/commit/ac12594f2b3feda1ce234abb9a61b7e4b99956cb))
+* **api:** manual updates ([8bf54bc](https://github.com/cjavdev/spotted-java/commit/8bf54bc582d86ad73ecfe05d1f5e1193a22c78e6))
+* **api:** manual updates ([ad18adc](https://github.com/cjavdev/spotted-java/commit/ad18adc54d187530f26c08f4b0c5de03f44e6faf))
+* **api:** manual updates ([3a645c1](https://github.com/cjavdev/spotted-java/commit/3a645c1e9cfebf5b00e962ec69f0941dca6caa53))
+* **api:** rename public to published for java ([943df93](https://github.com/cjavdev/spotted-java/commit/943df9378aefcd9cc829d059cc84d3dda7323835))
+* **api:** update kotlin maven config ([0612d76](https://github.com/cjavdev/spotted-java/commit/0612d767d42a8dafc33cb8b43cf0edc0f7e38636))
+
 ## 0.2.1 (2025-11-19)
 
 Full Changelog: [v0.2.0...v0.2.1](https://github.com/cjavdev/spotted-java/compare/v0.2.0...v0.2.1)
