@@ -68,7 +68,7 @@ private constructor(
      * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun public_(): Optional<Boolean> = body.public_()
+    fun published(): Optional<Boolean> = body.published()
 
     /**
      * Returns the raw JSON value of [collaborative].
@@ -92,11 +92,11 @@ private constructor(
     fun _name(): JsonField<String> = body._name()
 
     /**
-     * Returns the raw JSON value of [public_].
+     * Returns the raw JSON value of [published].
      *
-     * Unlike [public_], this method doesn't throw if the JSON field has an unexpected type.
+     * Unlike [published], this method doesn't throw if the JSON field has an unexpected type.
      */
-    fun _public_(): JsonField<Boolean> = body._public_()
+    fun _published(): JsonField<Boolean> = body._published()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
@@ -146,7 +146,7 @@ private constructor(
          * - [collaborative]
          * - [description]
          * - [name]
-         * - [public_]
+         * - [published]
          */
         fun body(body: Body) = apply { this.body = body.toBuilder() }
 
@@ -197,15 +197,16 @@ private constructor(
          * the playlist status is not relevant. For more about public/private status, see
          * [Working with Playlists](/documentation/web-api/concepts/playlists)
          */
-        fun public_(public_: Boolean) = apply { body.public_(public_) }
+        fun published(published: Boolean) = apply { body.published(published) }
 
         /**
-         * Sets [Builder.public_] to an arbitrary JSON value.
+         * Sets [Builder.published] to an arbitrary JSON value.
          *
-         * You should usually call [Builder.public_] with a well-typed [Boolean] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
+         * You should usually call [Builder.published] with a well-typed [Boolean] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
          */
-        fun public_(public_: JsonField<Boolean>) = apply { body.public_(public_) }
+        fun published(published: JsonField<Boolean>) = apply { body.published(published) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
             body.additionalProperties(additionalBodyProperties)
@@ -356,7 +357,7 @@ private constructor(
         private val collaborative: JsonField<Boolean>,
         private val description: JsonField<String>,
         private val name: JsonField<String>,
-        private val public_: JsonField<Boolean>,
+        private val published: JsonField<Boolean>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
@@ -369,8 +370,10 @@ private constructor(
             @ExcludeMissing
             description: JsonField<String> = JsonMissing.of(),
             @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("public") @ExcludeMissing public_: JsonField<Boolean> = JsonMissing.of(),
-        ) : this(collaborative, description, name, public_, mutableMapOf())
+            @JsonProperty("published")
+            @ExcludeMissing
+            published: JsonField<Boolean> = JsonMissing.of(),
+        ) : this(collaborative, description, name, published, mutableMapOf())
 
         /**
          * If `true`, the playlist will become collaborative and other users will be able to modify
@@ -407,7 +410,7 @@ private constructor(
          * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun public_(): Optional<Boolean> = public_.getOptional("public")
+        fun published(): Optional<Boolean> = published.getOptional("published")
 
         /**
          * Returns the raw JSON value of [collaborative].
@@ -436,11 +439,11 @@ private constructor(
         @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
         /**
-         * Returns the raw JSON value of [public_].
+         * Returns the raw JSON value of [published].
          *
-         * Unlike [public_], this method doesn't throw if the JSON field has an unexpected type.
+         * Unlike [published], this method doesn't throw if the JSON field has an unexpected type.
          */
-        @JsonProperty("public") @ExcludeMissing fun _public_(): JsonField<Boolean> = public_
+        @JsonProperty("published") @ExcludeMissing fun _published(): JsonField<Boolean> = published
 
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -466,7 +469,7 @@ private constructor(
             private var collaborative: JsonField<Boolean> = JsonMissing.of()
             private var description: JsonField<String> = JsonMissing.of()
             private var name: JsonField<String> = JsonMissing.of()
-            private var public_: JsonField<Boolean> = JsonMissing.of()
+            private var published: JsonField<Boolean> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -474,7 +477,7 @@ private constructor(
                 collaborative = body.collaborative
                 description = body.description
                 name = body.name
-                public_ = body.public_
+                published = body.published
                 additionalProperties = body.additionalProperties.toMutableMap()
             }
 
@@ -530,16 +533,16 @@ private constructor(
              * `null` the playlist status is not relevant. For more about public/private status, see
              * [Working with Playlists](/documentation/web-api/concepts/playlists)
              */
-            fun public_(public_: Boolean) = public_(JsonField.of(public_))
+            fun published(published: Boolean) = published(JsonField.of(published))
 
             /**
-             * Sets [Builder.public_] to an arbitrary JSON value.
+             * Sets [Builder.published] to an arbitrary JSON value.
              *
-             * You should usually call [Builder.public_] with a well-typed [Boolean] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
+             * You should usually call [Builder.published] with a well-typed [Boolean] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun public_(public_: JsonField<Boolean>) = apply { this.public_ = public_ }
+            fun published(published: JsonField<Boolean>) = apply { this.published = published }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -566,7 +569,13 @@ private constructor(
              * Further updates to this [Builder] will not mutate the returned instance.
              */
             fun build(): Body =
-                Body(collaborative, description, name, public_, additionalProperties.toMutableMap())
+                Body(
+                    collaborative,
+                    description,
+                    name,
+                    published,
+                    additionalProperties.toMutableMap(),
+                )
         }
 
         private var validated: Boolean = false
@@ -579,7 +588,7 @@ private constructor(
             collaborative()
             description()
             name()
-            public_()
+            published()
             validated = true
         }
 
@@ -602,7 +611,7 @@ private constructor(
             (if (collaborative.asKnown().isPresent) 1 else 0) +
                 (if (description.asKnown().isPresent) 1 else 0) +
                 (if (name.asKnown().isPresent) 1 else 0) +
-                (if (public_.asKnown().isPresent) 1 else 0)
+                (if (published.asKnown().isPresent) 1 else 0)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -613,18 +622,18 @@ private constructor(
                 collaborative == other.collaborative &&
                 description == other.description &&
                 name == other.name &&
-                public_ == other.public_ &&
+                published == other.published &&
                 additionalProperties == other.additionalProperties
         }
 
         private val hashCode: Int by lazy {
-            Objects.hash(collaborative, description, name, public_, additionalProperties)
+            Objects.hash(collaborative, description, name, published, additionalProperties)
         }
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Body{collaborative=$collaborative, description=$description, name=$name, public_=$public_, additionalProperties=$additionalProperties}"
+            "Body{collaborative=$collaborative, description=$description, name=$name, published=$published, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {

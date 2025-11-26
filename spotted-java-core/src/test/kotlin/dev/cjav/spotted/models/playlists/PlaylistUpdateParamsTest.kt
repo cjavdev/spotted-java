@@ -14,7 +14,7 @@ internal class PlaylistUpdateParamsTest {
             .collaborative(true)
             .description("Updated playlist description")
             .name("Updated Playlist Name")
-            .public_(false)
+            .published(true)
             .build()
     }
 
@@ -35,7 +35,7 @@ internal class PlaylistUpdateParamsTest {
                 .collaborative(true)
                 .description("Updated playlist description")
                 .name("Updated Playlist Name")
-                .public_(false)
+                .published(true)
                 .build()
 
         val body = params._body()
@@ -43,7 +43,7 @@ internal class PlaylistUpdateParamsTest {
         assertThat(body.collaborative()).contains(true)
         assertThat(body.description()).contains("Updated playlist description")
         assertThat(body.name()).contains("Updated Playlist Name")
-        assertThat(body.public_()).contains(false)
+        assertThat(body.published()).contains(true)
     }
 
     @Test
