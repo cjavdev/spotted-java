@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.1 (2025-11-27)
+
+Full Changelog: [v0.4.0...v0.4.1](https://github.com/cjavdev/spotted-java/compare/v0.4.0...v0.4.1)
+
+### Bug Fixes
+
+* **client:** cancel okhttp call when future cancelled ([200488c](https://github.com/cjavdev/spotted-java/commit/200488c10ff09dff8b6175af3074d4726d1a96b0))
+
 ## 0.4.0 (2025-11-26)
 
 Full Changelog: [v0.3.0...v0.4.0](https://github.com/cjavdev/spotted-java/compare/v0.3.0...v0.4.0)
