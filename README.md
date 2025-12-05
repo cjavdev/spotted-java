@@ -1,4 +1,4 @@
-# Spotted Java API Library
+# Unofficial Spotify API Library
 
 <!-- x-release-please-start-version -->
 
@@ -7,7 +7,7 @@
 
 <!-- x-release-please-end -->
 
-The Spotted Java SDK provides convenient access to the [Spotted REST API](https://spotted.stldocs.com) from applications written in Java.
+The Unofficial Spotify SDK provides convenient access to the [Spotted REST API](https://spotted.stldocs.com) from applications written in Java.
 
 The Spotted Java SDK is similar to the Spotted Kotlin SDK but with minor differences that make it more ergonomic for use in Java, such as `Optional` instead of nullable values, `Stream` instead of `Sequence`, and `CompletableFuture` instead of suspend functions.
 
