@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.5.0 (2025-12-05)
+
+Full Changelog: [v0.4.1...v0.5.0](https://github.com/cjavdev/spotted-java/compare/v0.4.1...v0.5.0)
+
+### Features
+
+* **api:** Update readme titles. ([e9add14](https://github.com/cjavdev/spotted-java/commit/e9add14d8621dd866eb0ddd4952dab3b48e70565))
+
+
+### Documentation
+
+* remove `$` for better copy-pasteabality ([2f880a6](https://github.com/cjavdev/spotted-java/commit/2f880a6a6a6ba685bbf59f636fc9fef6084d9a9f))
+
 ## 0.4.1 (2025-11-27)
 
 Full Changelog: [v0.4.0...v0.4.1](https://github.com/cjavdev/spotted-java/compare/v0.4.0...v0.4.1)
