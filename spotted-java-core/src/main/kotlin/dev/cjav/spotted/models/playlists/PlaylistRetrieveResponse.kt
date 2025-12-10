@@ -36,6 +36,7 @@ private constructor(
     private val images: JsonField<List<ImageObject>>,
     private val name: JsonField<String>,
     private val owner: JsonField<Owner>,
+    private val public_: JsonField<Boolean>,
     private val snapshotId: JsonField<String>,
     private val tracks: JsonField<Tracks>,
     private val type: JsonField<String>,
@@ -64,6 +65,7 @@ private constructor(
         images: JsonField<List<ImageObject>> = JsonMissing.of(),
         @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
         @JsonProperty("owner") @ExcludeMissing owner: JsonField<Owner> = JsonMissing.of(),
+        @JsonProperty("public") @ExcludeMissing public_: JsonField<Boolean> = JsonMissing.of(),
         @JsonProperty("snapshot_id")
         @ExcludeMissing
         snapshotId: JsonField<String> = JsonMissing.of(),
@@ -80,6 +82,7 @@ private constructor(
         images,
         name,
         owner,
+        public_,
         snapshotId,
         tracks,
         type,
@@ -161,6 +164,17 @@ private constructor(
      *   server responded with an unexpected value).
      */
     fun owner(): Optional<Owner> = owner.getOptional("owner")
+
+    /**
+     * The playlist's public/private status (if it is added to the user's profile): `true` the
+     * playlist is public, `false` the playlist is private, `null` the playlist status is not
+     * relevant. For more about public/private status, see
+     * [Working with Playlists](/documentation/web-api/concepts/playlists)
+     *
+     * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun public_(): Optional<Boolean> = public_.getOptional("public")
 
     /**
      * The version identifier for the current playlist. Can be supplied in other requests to target
@@ -265,6 +279,13 @@ private constructor(
     @JsonProperty("owner") @ExcludeMissing fun _owner(): JsonField<Owner> = owner
 
     /**
+     * Returns the raw JSON value of [public_].
+     *
+     * Unlike [public_], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("public") @ExcludeMissing fun _public_(): JsonField<Boolean> = public_
+
+    /**
      * Returns the raw JSON value of [snapshotId].
      *
      * Unlike [snapshotId], this method doesn't throw if the JSON field has an unexpected type.
@@ -322,6 +343,7 @@ private constructor(
         private var images: JsonField<MutableList<ImageObject>>? = null
         private var name: JsonField<String> = JsonMissing.of()
         private var owner: JsonField<Owner> = JsonMissing.of()
+        private var public_: JsonField<Boolean> = JsonMissing.of()
         private var snapshotId: JsonField<String> = JsonMissing.of()
         private var tracks: JsonField<Tracks> = JsonMissing.of()
         private var type: JsonField<String> = JsonMissing.of()
@@ -339,6 +361,7 @@ private constructor(
             images = playlistRetrieveResponse.images.map { it.toMutableList() }
             name = playlistRetrieveResponse.name
             owner = playlistRetrieveResponse.owner
+            public_ = playlistRetrieveResponse.public_
             snapshotId = playlistRetrieveResponse.snapshotId
             tracks = playlistRetrieveResponse.tracks
             type = playlistRetrieveResponse.type
@@ -481,6 +504,22 @@ private constructor(
         fun owner(owner: JsonField<Owner>) = apply { this.owner = owner }
 
         /**
+         * The playlist's public/private status (if it is added to the user's profile): `true` the
+         * playlist is public, `false` the playlist is private, `null` the playlist status is not
+         * relevant. For more about public/private status, see
+         * [Working with Playlists](/documentation/web-api/concepts/playlists)
+         */
+        fun public_(public_: Boolean) = public_(JsonField.of(public_))
+
+        /**
+         * Sets [Builder.public_] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.public_] with a well-typed [Boolean] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun public_(public_: JsonField<Boolean>) = apply { this.public_ = public_ }
+
+        /**
          * The version identifier for the current playlist. Can be supplied in other requests to
          * target a specific playlist version
          */
@@ -563,6 +602,7 @@ private constructor(
                 (images ?: JsonMissing.of()).map { it.toImmutable() },
                 name,
                 owner,
+                public_,
                 snapshotId,
                 tracks,
                 type,
@@ -587,6 +627,7 @@ private constructor(
         images().ifPresent { it.forEach { it.validate() } }
         name()
         owner().ifPresent { it.validate() }
+        public_()
         snapshotId()
         tracks().ifPresent { it.validate() }
         type()
@@ -618,6 +659,7 @@ private constructor(
             (images.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
             (if (name.asKnown().isPresent) 1 else 0) +
             (owner.asKnown().getOrNull()?.validity() ?: 0) +
+            (if (public_.asKnown().isPresent) 1 else 0) +
             (if (snapshotId.asKnown().isPresent) 1 else 0) +
             (tracks.asKnown().getOrNull()?.validity() ?: 0) +
             (if (type.asKnown().isPresent) 1 else 0) +
@@ -1403,6 +1445,7 @@ private constructor(
             images == other.images &&
             name == other.name &&
             owner == other.owner &&
+            public_ == other.public_ &&
             snapshotId == other.snapshotId &&
             tracks == other.tracks &&
             type == other.type &&
@@ -1421,6 +1464,7 @@ private constructor(
             images,
             name,
             owner,
+            public_,
             snapshotId,
             tracks,
             type,
@@ -1432,5 +1476,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "PlaylistRetrieveResponse{id=$id, collaborative=$collaborative, description=$description, externalUrls=$externalUrls, followers=$followers, href=$href, images=$images, name=$name, owner=$owner, snapshotId=$snapshotId, tracks=$tracks, type=$type, uri=$uri, additionalProperties=$additionalProperties}"
+        "PlaylistRetrieveResponse{id=$id, collaborative=$collaborative, description=$description, externalUrls=$externalUrls, followers=$followers, href=$href, images=$images, name=$name, owner=$owner, public_=$public_, snapshotId=$snapshotId, tracks=$tracks, type=$type, uri=$uri, additionalProperties=$additionalProperties}"
 }
