@@ -36,7 +36,7 @@ private constructor(
     private val images: JsonField<List<ImageObject>>,
     private val name: JsonField<String>,
     private val owner: JsonField<Owner>,
-    private val published: JsonField<Boolean>,
+    private val public_: JsonField<Boolean>,
     private val snapshotId: JsonField<String>,
     private val tracks: JsonField<Tracks>,
     private val type: JsonField<String>,
@@ -65,7 +65,7 @@ private constructor(
         images: JsonField<List<ImageObject>> = JsonMissing.of(),
         @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
         @JsonProperty("owner") @ExcludeMissing owner: JsonField<Owner> = JsonMissing.of(),
-        @JsonProperty("published") @ExcludeMissing published: JsonField<Boolean> = JsonMissing.of(),
+        @JsonProperty("public") @ExcludeMissing public_: JsonField<Boolean> = JsonMissing.of(),
         @JsonProperty("snapshot_id")
         @ExcludeMissing
         snapshotId: JsonField<String> = JsonMissing.of(),
@@ -82,7 +82,7 @@ private constructor(
         images,
         name,
         owner,
-        published,
+        public_,
         snapshotId,
         tracks,
         type,
@@ -174,7 +174,7 @@ private constructor(
      * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun published(): Optional<Boolean> = published.getOptional("published")
+    fun public_(): Optional<Boolean> = public_.getOptional("public")
 
     /**
      * The version identifier for the current playlist. Can be supplied in other requests to target
@@ -279,11 +279,11 @@ private constructor(
     @JsonProperty("owner") @ExcludeMissing fun _owner(): JsonField<Owner> = owner
 
     /**
-     * Returns the raw JSON value of [published].
+     * Returns the raw JSON value of [public_].
      *
-     * Unlike [published], this method doesn't throw if the JSON field has an unexpected type.
+     * Unlike [public_], this method doesn't throw if the JSON field has an unexpected type.
      */
-    @JsonProperty("published") @ExcludeMissing fun _published(): JsonField<Boolean> = published
+    @JsonProperty("public") @ExcludeMissing fun _public_(): JsonField<Boolean> = public_
 
     /**
      * Returns the raw JSON value of [snapshotId].
@@ -343,7 +343,7 @@ private constructor(
         private var images: JsonField<MutableList<ImageObject>>? = null
         private var name: JsonField<String> = JsonMissing.of()
         private var owner: JsonField<Owner> = JsonMissing.of()
-        private var published: JsonField<Boolean> = JsonMissing.of()
+        private var public_: JsonField<Boolean> = JsonMissing.of()
         private var snapshotId: JsonField<String> = JsonMissing.of()
         private var tracks: JsonField<Tracks> = JsonMissing.of()
         private var type: JsonField<String> = JsonMissing.of()
@@ -361,7 +361,7 @@ private constructor(
             images = playlistRetrieveResponse.images.map { it.toMutableList() }
             name = playlistRetrieveResponse.name
             owner = playlistRetrieveResponse.owner
-            published = playlistRetrieveResponse.published
+            public_ = playlistRetrieveResponse.public_
             snapshotId = playlistRetrieveResponse.snapshotId
             tracks = playlistRetrieveResponse.tracks
             type = playlistRetrieveResponse.type
@@ -509,16 +509,15 @@ private constructor(
          * relevant. For more about public/private status, see
          * [Working with Playlists](/documentation/web-api/concepts/playlists)
          */
-        fun published(published: Boolean) = published(JsonField.of(published))
+        fun public_(public_: Boolean) = public_(JsonField.of(public_))
 
         /**
-         * Sets [Builder.published] to an arbitrary JSON value.
+         * Sets [Builder.public_] to an arbitrary JSON value.
          *
-         * You should usually call [Builder.published] with a well-typed [Boolean] value instead.
-         * This method is primarily for setting the field to an undocumented or not yet supported
-         * value.
+         * You should usually call [Builder.public_] with a well-typed [Boolean] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun published(published: JsonField<Boolean>) = apply { this.published = published }
+        fun public_(public_: JsonField<Boolean>) = apply { this.public_ = public_ }
 
         /**
          * The version identifier for the current playlist. Can be supplied in other requests to
@@ -603,7 +602,7 @@ private constructor(
                 (images ?: JsonMissing.of()).map { it.toImmutable() },
                 name,
                 owner,
-                published,
+                public_,
                 snapshotId,
                 tracks,
                 type,
@@ -628,7 +627,7 @@ private constructor(
         images().ifPresent { it.forEach { it.validate() } }
         name()
         owner().ifPresent { it.validate() }
-        published()
+        public_()
         snapshotId()
         tracks().ifPresent { it.validate() }
         type()
@@ -660,7 +659,7 @@ private constructor(
             (images.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
             (if (name.asKnown().isPresent) 1 else 0) +
             (owner.asKnown().getOrNull()?.validity() ?: 0) +
-            (if (published.asKnown().isPresent) 1 else 0) +
+            (if (public_.asKnown().isPresent) 1 else 0) +
             (if (snapshotId.asKnown().isPresent) 1 else 0) +
             (tracks.asKnown().getOrNull()?.validity() ?: 0) +
             (if (type.asKnown().isPresent) 1 else 0) +
@@ -1446,7 +1445,7 @@ private constructor(
             images == other.images &&
             name == other.name &&
             owner == other.owner &&
-            published == other.published &&
+            public_ == other.public_ &&
             snapshotId == other.snapshotId &&
             tracks == other.tracks &&
             type == other.type &&
@@ -1465,7 +1464,7 @@ private constructor(
             images,
             name,
             owner,
-            published,
+            public_,
             snapshotId,
             tracks,
             type,
@@ -1477,5 +1476,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "PlaylistRetrieveResponse{id=$id, collaborative=$collaborative, description=$description, externalUrls=$externalUrls, followers=$followers, href=$href, images=$images, name=$name, owner=$owner, published=$published, snapshotId=$snapshotId, tracks=$tracks, type=$type, uri=$uri, additionalProperties=$additionalProperties}"
+        "PlaylistRetrieveResponse{id=$id, collaborative=$collaborative, description=$description, externalUrls=$externalUrls, followers=$followers, href=$href, images=$images, name=$name, owner=$owner, public_=$public_, snapshotId=$snapshotId, tracks=$tracks, type=$type, uri=$uri, additionalProperties=$additionalProperties}"
 }
