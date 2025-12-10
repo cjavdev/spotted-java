@@ -50,6 +50,7 @@ internal class PlaylistCreateResponseTest {
                         .displayName("display_name")
                         .build()
                 )
+                .public_(true)
                 .snapshotId("snapshot_id")
                 .tracks(
                     PlaylistCreateResponse.Tracks.builder()
@@ -220,6 +221,7 @@ internal class PlaylistCreateResponseTest {
                     .displayName("display_name")
                     .build()
             )
+        assertThat(playlistCreateResponse.public_()).contains(true)
         assertThat(playlistCreateResponse.snapshotId()).contains("snapshot_id")
         assertThat(playlistCreateResponse.tracks())
             .contains(
@@ -388,6 +390,7 @@ internal class PlaylistCreateResponseTest {
                         .displayName("display_name")
                         .build()
                 )
+                .public_(true)
                 .snapshotId("snapshot_id")
                 .tracks(
                     PlaylistCreateResponse.Tracks.builder()
