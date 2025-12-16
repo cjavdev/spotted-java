@@ -20,6 +20,7 @@ class FollowersObject
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val href: JsonField<String>,
+    private val published: JsonField<Boolean>,
     private val total: JsonField<Long>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
@@ -27,8 +28,9 @@ private constructor(
     @JsonCreator
     private constructor(
         @JsonProperty("href") @ExcludeMissing href: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("published") @ExcludeMissing published: JsonField<Boolean> = JsonMissing.of(),
         @JsonProperty("total") @ExcludeMissing total: JsonField<Long> = JsonMissing.of(),
-    ) : this(href, total, mutableMapOf())
+    ) : this(href, published, total, mutableMapOf())
 
     /**
      * This will always be set to null, as the Web API does not support it at the moment.
@@ -37,6 +39,17 @@ private constructor(
      *   server responded with an unexpected value).
      */
     fun href(): Optional<String> = href.getOptional("href")
+
+    /**
+     * The playlist's public/private status (if it should be added to the user's profile or not):
+     * `true` the playlist will be public, `false` the playlist will be private, `null` the playlist
+     * status is not relevant. For more about public/private status, see
+     * [Working with Playlists](/documentation/web-api/concepts/playlists)
+     *
+     * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun published(): Optional<Boolean> = published.getOptional("published")
 
     /**
      * The total number of followers.
@@ -52,6 +65,13 @@ private constructor(
      * Unlike [href], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("href") @ExcludeMissing fun _href(): JsonField<String> = href
+
+    /**
+     * Returns the raw JSON value of [published].
+     *
+     * Unlike [published], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("published") @ExcludeMissing fun _published(): JsonField<Boolean> = published
 
     /**
      * Returns the raw JSON value of [total].
@@ -82,12 +102,14 @@ private constructor(
     class Builder internal constructor() {
 
         private var href: JsonField<String> = JsonMissing.of()
+        private var published: JsonField<Boolean> = JsonMissing.of()
         private var total: JsonField<Long> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(followersObject: FollowersObject) = apply {
             href = followersObject.href
+            published = followersObject.published
             total = followersObject.total
             additionalProperties = followersObject.additionalProperties.toMutableMap()
         }
@@ -105,6 +127,23 @@ private constructor(
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun href(href: JsonField<String>) = apply { this.href = href }
+
+        /**
+         * The playlist's public/private status (if it should be added to the user's profile or
+         * not): `true` the playlist will be public, `false` the playlist will be private, `null`
+         * the playlist status is not relevant. For more about public/private status, see
+         * [Working with Playlists](/documentation/web-api/concepts/playlists)
+         */
+        fun published(published: Boolean) = published(JsonField.of(published))
+
+        /**
+         * Sets [Builder.published] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.published] with a well-typed [Boolean] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun published(published: JsonField<Boolean>) = apply { this.published = published }
 
         /** The total number of followers. */
         fun total(total: Long) = total(JsonField.of(total))
@@ -142,7 +181,7 @@ private constructor(
          * Further updates to this [Builder] will not mutate the returned instance.
          */
         fun build(): FollowersObject =
-            FollowersObject(href, total, additionalProperties.toMutableMap())
+            FollowersObject(href, published, total, additionalProperties.toMutableMap())
     }
 
     private var validated: Boolean = false
@@ -153,6 +192,7 @@ private constructor(
         }
 
         href()
+        published()
         total()
         validated = true
     }
@@ -172,7 +212,9 @@ private constructor(
      */
     @JvmSynthetic
     internal fun validity(): Int =
-        (if (href.asKnown().isPresent) 1 else 0) + (if (total.asKnown().isPresent) 1 else 0)
+        (if (href.asKnown().isPresent) 1 else 0) +
+            (if (published.asKnown().isPresent) 1 else 0) +
+            (if (total.asKnown().isPresent) 1 else 0)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
@@ -181,14 +223,15 @@ private constructor(
 
         return other is FollowersObject &&
             href == other.href &&
+            published == other.published &&
             total == other.total &&
             additionalProperties == other.additionalProperties
     }
 
-    private val hashCode: Int by lazy { Objects.hash(href, total, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(href, published, total, additionalProperties) }
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "FollowersObject{href=$href, total=$total, additionalProperties=$additionalProperties}"
+        "FollowersObject{href=$href, published=$published, total=$total, additionalProperties=$additionalProperties}"
 }

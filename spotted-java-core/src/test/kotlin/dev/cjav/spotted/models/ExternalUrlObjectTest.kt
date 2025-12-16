@@ -11,15 +11,18 @@ internal class ExternalUrlObjectTest {
 
     @Test
     fun create() {
-        val externalUrlObject = ExternalUrlObject.builder().spotify("spotify").build()
+        val externalUrlObject =
+            ExternalUrlObject.builder().published(true).spotify("spotify").build()
 
+        assertThat(externalUrlObject.published()).contains(true)
         assertThat(externalUrlObject.spotify()).contains("spotify")
     }
 
     @Test
     fun roundtrip() {
         val jsonMapper = jsonMapper()
-        val externalUrlObject = ExternalUrlObject.builder().spotify("spotify").build()
+        val externalUrlObject =
+            ExternalUrlObject.builder().published(true).spotify("spotify").build()
 
         val roundtrippedExternalUrlObject =
             jsonMapper.readValue(

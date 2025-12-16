@@ -11,15 +11,18 @@ internal class EpisodeRestrictionObjectTest {
 
     @Test
     fun create() {
-        val episodeRestrictionObject = EpisodeRestrictionObject.builder().reason("reason").build()
+        val episodeRestrictionObject =
+            EpisodeRestrictionObject.builder().published(true).reason("reason").build()
 
+        assertThat(episodeRestrictionObject.published()).contains(true)
         assertThat(episodeRestrictionObject.reason()).contains("reason")
     }
 
     @Test
     fun roundtrip() {
         val jsonMapper = jsonMapper()
-        val episodeRestrictionObject = EpisodeRestrictionObject.builder().reason("reason").build()
+        val episodeRestrictionObject =
+            EpisodeRestrictionObject.builder().published(true).reason("reason").build()
 
         val roundtrippedEpisodeRestrictionObject =
             jsonMapper.readValue(

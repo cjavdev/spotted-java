@@ -24,6 +24,7 @@ private constructor(
     private val isPrivateSession: JsonField<Boolean>,
     private val isRestricted: JsonField<Boolean>,
     private val name: JsonField<String>,
+    private val published: JsonField<Boolean>,
     private val supportsVolume: JsonField<Boolean>,
     private val type: JsonField<String>,
     private val volumePercent: JsonField<Long>,
@@ -41,6 +42,7 @@ private constructor(
         @ExcludeMissing
         isRestricted: JsonField<Boolean> = JsonMissing.of(),
         @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("published") @ExcludeMissing published: JsonField<Boolean> = JsonMissing.of(),
         @JsonProperty("supports_volume")
         @ExcludeMissing
         supportsVolume: JsonField<Boolean> = JsonMissing.of(),
@@ -54,6 +56,7 @@ private constructor(
         isPrivateSession,
         isRestricted,
         name,
+        published,
         supportsVolume,
         type,
         volumePercent,
@@ -104,6 +107,17 @@ private constructor(
      *   server responded with an unexpected value).
      */
     fun name(): Optional<String> = name.getOptional("name")
+
+    /**
+     * The playlist's public/private status (if it should be added to the user's profile or not):
+     * `true` the playlist will be public, `false` the playlist will be private, `null` the playlist
+     * status is not relevant. For more about public/private status, see
+     * [Working with Playlists](/documentation/web-api/concepts/playlists)
+     *
+     * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun published(): Optional<Boolean> = published.getOptional("published")
 
     /**
      * If this device can be used to set the volume.
@@ -170,6 +184,13 @@ private constructor(
     @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
     /**
+     * Returns the raw JSON value of [published].
+     *
+     * Unlike [published], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("published") @ExcludeMissing fun _published(): JsonField<Boolean> = published
+
+    /**
      * Returns the raw JSON value of [supportsVolume].
      *
      * Unlike [supportsVolume], this method doesn't throw if the JSON field has an unexpected type.
@@ -220,6 +241,7 @@ private constructor(
         private var isPrivateSession: JsonField<Boolean> = JsonMissing.of()
         private var isRestricted: JsonField<Boolean> = JsonMissing.of()
         private var name: JsonField<String> = JsonMissing.of()
+        private var published: JsonField<Boolean> = JsonMissing.of()
         private var supportsVolume: JsonField<Boolean> = JsonMissing.of()
         private var type: JsonField<String> = JsonMissing.of()
         private var volumePercent: JsonField<Long> = JsonMissing.of()
@@ -232,6 +254,7 @@ private constructor(
             isPrivateSession = deviceObject.isPrivateSession
             isRestricted = deviceObject.isRestricted
             name = deviceObject.name
+            published = deviceObject.published
             supportsVolume = deviceObject.supportsVolume
             type = deviceObject.type
             volumePercent = deviceObject.volumePercent
@@ -315,6 +338,23 @@ private constructor(
          */
         fun name(name: JsonField<String>) = apply { this.name = name }
 
+        /**
+         * The playlist's public/private status (if it should be added to the user's profile or
+         * not): `true` the playlist will be public, `false` the playlist will be private, `null`
+         * the playlist status is not relevant. For more about public/private status, see
+         * [Working with Playlists](/documentation/web-api/concepts/playlists)
+         */
+        fun published(published: Boolean) = published(JsonField.of(published))
+
+        /**
+         * Sets [Builder.published] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.published] with a well-typed [Boolean] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun published(published: JsonField<Boolean>) = apply { this.published = published }
+
         /** If this device can be used to set the volume. */
         fun supportsVolume(supportsVolume: Boolean) = supportsVolume(JsonField.of(supportsVolume))
 
@@ -395,6 +435,7 @@ private constructor(
                 isPrivateSession,
                 isRestricted,
                 name,
+                published,
                 supportsVolume,
                 type,
                 volumePercent,
@@ -414,6 +455,7 @@ private constructor(
         isPrivateSession()
         isRestricted()
         name()
+        published()
         supportsVolume()
         type()
         volumePercent()
@@ -440,6 +482,7 @@ private constructor(
             (if (isPrivateSession.asKnown().isPresent) 1 else 0) +
             (if (isRestricted.asKnown().isPresent) 1 else 0) +
             (if (name.asKnown().isPresent) 1 else 0) +
+            (if (published.asKnown().isPresent) 1 else 0) +
             (if (supportsVolume.asKnown().isPresent) 1 else 0) +
             (if (type.asKnown().isPresent) 1 else 0) +
             (if (volumePercent.asKnown().isPresent) 1 else 0)
@@ -455,6 +498,7 @@ private constructor(
             isPrivateSession == other.isPrivateSession &&
             isRestricted == other.isRestricted &&
             name == other.name &&
+            published == other.published &&
             supportsVolume == other.supportsVolume &&
             type == other.type &&
             volumePercent == other.volumePercent &&
@@ -468,6 +512,7 @@ private constructor(
             isPrivateSession,
             isRestricted,
             name,
+            published,
             supportsVolume,
             type,
             volumePercent,
@@ -478,5 +523,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "DeviceObject{id=$id, isActive=$isActive, isPrivateSession=$isPrivateSession, isRestricted=$isRestricted, name=$name, supportsVolume=$supportsVolume, type=$type, volumePercent=$volumePercent, additionalProperties=$additionalProperties}"
+        "DeviceObject{id=$id, isActive=$isActive, isPrivateSession=$isPrivateSession, isRestricted=$isRestricted, name=$name, published=$published, supportsVolume=$supportsVolume, type=$type, volumePercent=$volumePercent, additionalProperties=$additionalProperties}"
 }

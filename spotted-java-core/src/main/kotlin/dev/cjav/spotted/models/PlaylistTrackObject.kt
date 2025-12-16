@@ -33,6 +33,7 @@ private constructor(
     private val addedAt: JsonField<OffsetDateTime>,
     private val addedBy: JsonField<PlaylistUserObject>,
     private val isLocal: JsonField<Boolean>,
+    private val published: JsonField<Boolean>,
     private val track: JsonField<Track>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
@@ -46,8 +47,9 @@ private constructor(
         @ExcludeMissing
         addedBy: JsonField<PlaylistUserObject> = JsonMissing.of(),
         @JsonProperty("is_local") @ExcludeMissing isLocal: JsonField<Boolean> = JsonMissing.of(),
+        @JsonProperty("published") @ExcludeMissing published: JsonField<Boolean> = JsonMissing.of(),
         @JsonProperty("track") @ExcludeMissing track: JsonField<Track> = JsonMissing.of(),
-    ) : this(addedAt, addedBy, isLocal, track, mutableMapOf())
+    ) : this(addedAt, addedBy, isLocal, published, track, mutableMapOf())
 
     /**
      * The date and time the track or episode was added. _**Note**: some very old playlists may
@@ -75,6 +77,17 @@ private constructor(
      *   server responded with an unexpected value).
      */
     fun isLocal(): Optional<Boolean> = isLocal.getOptional("is_local")
+
+    /**
+     * The playlist's public/private status (if it should be added to the user's profile or not):
+     * `true` the playlist will be public, `false` the playlist will be private, `null` the playlist
+     * status is not relevant. For more about public/private status, see
+     * [Working with Playlists](/documentation/web-api/concepts/playlists)
+     *
+     * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun published(): Optional<Boolean> = published.getOptional("published")
 
     /**
      * Information about the track or episode.
@@ -108,6 +121,13 @@ private constructor(
     @JsonProperty("is_local") @ExcludeMissing fun _isLocal(): JsonField<Boolean> = isLocal
 
     /**
+     * Returns the raw JSON value of [published].
+     *
+     * Unlike [published], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("published") @ExcludeMissing fun _published(): JsonField<Boolean> = published
+
+    /**
      * Returns the raw JSON value of [track].
      *
      * Unlike [track], this method doesn't throw if the JSON field has an unexpected type.
@@ -138,6 +158,7 @@ private constructor(
         private var addedAt: JsonField<OffsetDateTime> = JsonMissing.of()
         private var addedBy: JsonField<PlaylistUserObject> = JsonMissing.of()
         private var isLocal: JsonField<Boolean> = JsonMissing.of()
+        private var published: JsonField<Boolean> = JsonMissing.of()
         private var track: JsonField<Track> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
@@ -146,6 +167,7 @@ private constructor(
             addedAt = playlistTrackObject.addedAt
             addedBy = playlistTrackObject.addedBy
             isLocal = playlistTrackObject.isLocal
+            published = playlistTrackObject.published
             track = playlistTrackObject.track
             additionalProperties = playlistTrackObject.additionalProperties.toMutableMap()
         }
@@ -194,6 +216,23 @@ private constructor(
          */
         fun isLocal(isLocal: JsonField<Boolean>) = apply { this.isLocal = isLocal }
 
+        /**
+         * The playlist's public/private status (if it should be added to the user's profile or
+         * not): `true` the playlist will be public, `false` the playlist will be private, `null`
+         * the playlist status is not relevant. For more about public/private status, see
+         * [Working with Playlists](/documentation/web-api/concepts/playlists)
+         */
+        fun published(published: Boolean) = published(JsonField.of(published))
+
+        /**
+         * Sets [Builder.published] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.published] with a well-typed [Boolean] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun published(published: JsonField<Boolean>) = apply { this.published = published }
+
         /** Information about the track or episode. */
         fun track(track: Track) = track(JsonField.of(track))
 
@@ -240,6 +279,7 @@ private constructor(
                 addedAt,
                 addedBy,
                 isLocal,
+                published,
                 track,
                 additionalProperties.toMutableMap(),
             )
@@ -255,6 +295,7 @@ private constructor(
         addedAt()
         addedBy().ifPresent { it.validate() }
         isLocal()
+        published()
         track().ifPresent { it.validate() }
         validated = true
     }
@@ -277,6 +318,7 @@ private constructor(
         (if (addedAt.asKnown().isPresent) 1 else 0) +
             (addedBy.asKnown().getOrNull()?.validity() ?: 0) +
             (if (isLocal.asKnown().isPresent) 1 else 0) +
+            (if (published.asKnown().isPresent) 1 else 0) +
             (track.asKnown().getOrNull()?.validity() ?: 0)
 
     /** Information about the track or episode. */
@@ -453,16 +495,17 @@ private constructor(
             addedAt == other.addedAt &&
             addedBy == other.addedBy &&
             isLocal == other.isLocal &&
+            published == other.published &&
             track == other.track &&
             additionalProperties == other.additionalProperties
     }
 
     private val hashCode: Int by lazy {
-        Objects.hash(addedAt, addedBy, isLocal, track, additionalProperties)
+        Objects.hash(addedAt, addedBy, isLocal, published, track, additionalProperties)
     }
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "PlaylistTrackObject{addedAt=$addedAt, addedBy=$addedBy, isLocal=$isLocal, track=$track, additionalProperties=$additionalProperties}"
+        "PlaylistTrackObject{addedAt=$addedAt, addedBy=$addedBy, isLocal=$isLocal, published=$published, track=$track, additionalProperties=$additionalProperties}"
 }

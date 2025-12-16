@@ -149,9 +149,9 @@ private constructor(
     fun owner(): Optional<Owner> = owner.getOptional("owner")
 
     /**
-     * The playlist's public/private status (if it is added to the user's profile): `true` the
-     * playlist is public, `false` the playlist is private, `null` the playlist status is not
-     * relevant. For more about public/private status, see
+     * The playlist's public/private status (if it should be added to the user's profile or not):
+     * `true` the playlist will be public, `false` the playlist will be private, `null` the playlist
+     * status is not relevant. For more about public/private status, see
      * [Working with Playlists](/documentation/web-api/concepts/playlists)
      *
      * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -465,9 +465,9 @@ private constructor(
         fun owner(owner: JsonField<Owner>) = apply { this.owner = owner }
 
         /**
-         * The playlist's public/private status (if it is added to the user's profile): `true` the
-         * playlist is public, `false` the playlist is private, `null` the playlist status is not
-         * relevant. For more about public/private status, see
+         * The playlist's public/private status (if it should be added to the user's profile or
+         * not): `true` the playlist will be public, `false` the playlist will be private, `null`
+         * the playlist status is not relevant. For more about public/private status, see
          * [Working with Playlists](/documentation/web-api/concepts/playlists)
          */
         fun published(published: Boolean) = published(JsonField.of(published))
@@ -637,6 +637,7 @@ private constructor(
         private val id: JsonField<String>,
         private val externalUrls: JsonField<ExternalUrlObject>,
         private val href: JsonField<String>,
+        private val published: JsonField<Boolean>,
         private val type: JsonField<PlaylistUserObject.Type>,
         private val uri: JsonField<String>,
         private val displayName: JsonField<String>,
@@ -650,6 +651,9 @@ private constructor(
             @ExcludeMissing
             externalUrls: JsonField<ExternalUrlObject> = JsonMissing.of(),
             @JsonProperty("href") @ExcludeMissing href: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("published")
+            @ExcludeMissing
+            published: JsonField<Boolean> = JsonMissing.of(),
             @JsonProperty("type")
             @ExcludeMissing
             type: JsonField<PlaylistUserObject.Type> = JsonMissing.of(),
@@ -657,13 +661,14 @@ private constructor(
             @JsonProperty("display_name")
             @ExcludeMissing
             displayName: JsonField<String> = JsonMissing.of(),
-        ) : this(id, externalUrls, href, type, uri, displayName, mutableMapOf())
+        ) : this(id, externalUrls, href, published, type, uri, displayName, mutableMapOf())
 
         fun toPlaylistUserObject(): PlaylistUserObject =
             PlaylistUserObject.builder()
                 .id(id)
                 .externalUrls(externalUrls)
                 .href(href)
+                .published(published)
                 .type(type)
                 .uri(uri)
                 .build()
@@ -691,6 +696,17 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun href(): Optional<String> = href.getOptional("href")
+
+        /**
+         * The playlist's public/private status (if it should be added to the user's profile or
+         * not): `true` the playlist will be public, `false` the playlist will be private, `null`
+         * the playlist status is not relevant. For more about public/private status, see
+         * [Working with Playlists](/documentation/web-api/concepts/playlists)
+         *
+         * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun published(): Optional<Boolean> = published.getOptional("published")
 
         /**
          * The object type.
@@ -741,6 +757,13 @@ private constructor(
         @JsonProperty("href") @ExcludeMissing fun _href(): JsonField<String> = href
 
         /**
+         * Returns the raw JSON value of [published].
+         *
+         * Unlike [published], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("published") @ExcludeMissing fun _published(): JsonField<Boolean> = published
+
+        /**
          * Returns the raw JSON value of [type].
          *
          * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
@@ -787,6 +810,7 @@ private constructor(
             private var id: JsonField<String> = JsonMissing.of()
             private var externalUrls: JsonField<ExternalUrlObject> = JsonMissing.of()
             private var href: JsonField<String> = JsonMissing.of()
+            private var published: JsonField<Boolean> = JsonMissing.of()
             private var type: JsonField<PlaylistUserObject.Type> = JsonMissing.of()
             private var uri: JsonField<String> = JsonMissing.of()
             private var displayName: JsonField<String> = JsonMissing.of()
@@ -797,6 +821,7 @@ private constructor(
                 id = owner.id
                 externalUrls = owner.externalUrls
                 href = owner.href
+                published = owner.published
                 type = owner.type
                 uri = owner.uri
                 displayName = owner.displayName
@@ -844,6 +869,23 @@ private constructor(
              * value.
              */
             fun href(href: JsonField<String>) = apply { this.href = href }
+
+            /**
+             * The playlist's public/private status (if it should be added to the user's profile or
+             * not): `true` the playlist will be public, `false` the playlist will be private,
+             * `null` the playlist status is not relevant. For more about public/private status, see
+             * [Working with Playlists](/documentation/web-api/concepts/playlists)
+             */
+            fun published(published: Boolean) = published(JsonField.of(published))
+
+            /**
+             * Sets [Builder.published] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.published] with a well-typed [Boolean] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun published(published: JsonField<Boolean>) = apply { this.published = published }
 
             /** The object type. */
             fun type(type: PlaylistUserObject.Type) = type(JsonField.of(type))
@@ -917,6 +959,7 @@ private constructor(
                     id,
                     externalUrls,
                     href,
+                    published,
                     type,
                     uri,
                     displayName,
@@ -934,6 +977,7 @@ private constructor(
             id()
             externalUrls().ifPresent { it.validate() }
             href()
+            published()
             type().ifPresent { it.validate() }
             uri()
             displayName()
@@ -959,6 +1003,7 @@ private constructor(
             (if (id.asKnown().isPresent) 1 else 0) +
                 (externalUrls.asKnown().getOrNull()?.validity() ?: 0) +
                 (if (href.asKnown().isPresent) 1 else 0) +
+                (if (published.asKnown().isPresent) 1 else 0) +
                 (type.asKnown().getOrNull()?.validity() ?: 0) +
                 (if (uri.asKnown().isPresent) 1 else 0) +
                 (if (displayName.asKnown().isPresent) 1 else 0)
@@ -972,6 +1017,7 @@ private constructor(
                 id == other.id &&
                 externalUrls == other.externalUrls &&
                 href == other.href &&
+                published == other.published &&
                 type == other.type &&
                 uri == other.uri &&
                 displayName == other.displayName &&
@@ -979,13 +1025,22 @@ private constructor(
         }
 
         private val hashCode: Int by lazy {
-            Objects.hash(id, externalUrls, href, type, uri, displayName, additionalProperties)
+            Objects.hash(
+                id,
+                externalUrls,
+                href,
+                published,
+                type,
+                uri,
+                displayName,
+                additionalProperties,
+            )
         }
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Owner{id=$id, externalUrls=$externalUrls, href=$href, type=$type, uri=$uri, displayName=$displayName, additionalProperties=$additionalProperties}"
+            "Owner{id=$id, externalUrls=$externalUrls, href=$href, published=$published, type=$type, uri=$uri, displayName=$displayName, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {

@@ -18,14 +18,27 @@ import java.util.Optional
 class ExternalUrlObject
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
+    private val published: JsonField<Boolean>,
     private val spotify: JsonField<String>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
     @JsonCreator
     private constructor(
-        @JsonProperty("spotify") @ExcludeMissing spotify: JsonField<String> = JsonMissing.of()
-    ) : this(spotify, mutableMapOf())
+        @JsonProperty("published") @ExcludeMissing published: JsonField<Boolean> = JsonMissing.of(),
+        @JsonProperty("spotify") @ExcludeMissing spotify: JsonField<String> = JsonMissing.of(),
+    ) : this(published, spotify, mutableMapOf())
+
+    /**
+     * The playlist's public/private status (if it should be added to the user's profile or not):
+     * `true` the playlist will be public, `false` the playlist will be private, `null` the playlist
+     * status is not relevant. For more about public/private status, see
+     * [Working with Playlists](/documentation/web-api/concepts/playlists)
+     *
+     * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun published(): Optional<Boolean> = published.getOptional("published")
 
     /**
      * The [Spotify URL](/documentation/web-api/concepts/spotify-uris-ids) for the object.
@@ -34,6 +47,13 @@ private constructor(
      *   server responded with an unexpected value).
      */
     fun spotify(): Optional<String> = spotify.getOptional("spotify")
+
+    /**
+     * Returns the raw JSON value of [published].
+     *
+     * Unlike [published], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("published") @ExcludeMissing fun _published(): JsonField<Boolean> = published
 
     /**
      * Returns the raw JSON value of [spotify].
@@ -63,14 +83,33 @@ private constructor(
     /** A builder for [ExternalUrlObject]. */
     class Builder internal constructor() {
 
+        private var published: JsonField<Boolean> = JsonMissing.of()
         private var spotify: JsonField<String> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(externalUrlObject: ExternalUrlObject) = apply {
+            published = externalUrlObject.published
             spotify = externalUrlObject.spotify
             additionalProperties = externalUrlObject.additionalProperties.toMutableMap()
         }
+
+        /**
+         * The playlist's public/private status (if it should be added to the user's profile or
+         * not): `true` the playlist will be public, `false` the playlist will be private, `null`
+         * the playlist status is not relevant. For more about public/private status, see
+         * [Working with Playlists](/documentation/web-api/concepts/playlists)
+         */
+        fun published(published: Boolean) = published(JsonField.of(published))
+
+        /**
+         * Sets [Builder.published] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.published] with a well-typed [Boolean] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun published(published: JsonField<Boolean>) = apply { this.published = published }
 
         /** The [Spotify URL](/documentation/web-api/concepts/spotify-uris-ids) for the object. */
         fun spotify(spotify: String) = spotify(JsonField.of(spotify))
@@ -108,7 +147,7 @@ private constructor(
          * Further updates to this [Builder] will not mutate the returned instance.
          */
         fun build(): ExternalUrlObject =
-            ExternalUrlObject(spotify, additionalProperties.toMutableMap())
+            ExternalUrlObject(published, spotify, additionalProperties.toMutableMap())
     }
 
     private var validated: Boolean = false
@@ -118,6 +157,7 @@ private constructor(
             return@apply
         }
 
+        published()
         spotify()
         validated = true
     }
@@ -135,7 +175,9 @@ private constructor(
      *
      * Used for best match union deserialization.
      */
-    @JvmSynthetic internal fun validity(): Int = (if (spotify.asKnown().isPresent) 1 else 0)
+    @JvmSynthetic
+    internal fun validity(): Int =
+        (if (published.asKnown().isPresent) 1 else 0) + (if (spotify.asKnown().isPresent) 1 else 0)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
@@ -143,14 +185,15 @@ private constructor(
         }
 
         return other is ExternalUrlObject &&
+            published == other.published &&
             spotify == other.spotify &&
             additionalProperties == other.additionalProperties
     }
 
-    private val hashCode: Int by lazy { Objects.hash(spotify, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(published, spotify, additionalProperties) }
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "ExternalUrlObject{spotify=$spotify, additionalProperties=$additionalProperties}"
+        "ExternalUrlObject{published=$published, spotify=$spotify, additionalProperties=$additionalProperties}"
 }

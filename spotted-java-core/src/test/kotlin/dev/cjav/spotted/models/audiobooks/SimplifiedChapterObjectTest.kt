@@ -28,7 +28,9 @@ internal class SimplifiedChapterObjectTest {
                 )
                 .durationMs(1686230L)
                 .explicit(true)
-                .externalUrls(ExternalUrlObject.builder().spotify("spotify").build())
+                .externalUrls(
+                    ExternalUrlObject.builder().published(true).spotify("spotify").build()
+                )
                 .href("https://api.spotify.com/v1/episodes/5Xt5DXGzch68nYYamXrNxZ")
                 .htmlDescription(
                     "<p>We kept on ascending, with occasional periods of quick descent, but in the main always ascending. Suddenly, I became conscious of the fact that the driver was in the act of pulling up the horses in the courtyard of a vast ruined castle, from whose tall black windows came no ray of light, and whose broken battlements showed a jagged line against the moonlit sky.</p>\n"
@@ -38,6 +40,7 @@ internal class SimplifiedChapterObjectTest {
                         .height(300L)
                         .url("https://i.scdn.co/image/ab67616d00001e02ff9ca10b55ce82ae553c8228\n")
                         .width(300L)
+                        .published(true)
                         .build()
                 )
                 .isPlayable(true)
@@ -48,9 +51,16 @@ internal class SimplifiedChapterObjectTest {
                 .releaseDatePrecision(SimplifiedChapterObject.ReleaseDatePrecision.DAY)
                 .uri("spotify:episode:0zLhl3WsOCQHbe1BPTiHgr")
                 .addAvailableMarket("string")
-                .restrictions(ChapterRestrictionObject.builder().reason("reason").build())
+                .published(true)
+                .restrictions(
+                    ChapterRestrictionObject.builder().published(true).reason("reason").build()
+                )
                 .resumePoint(
-                    ResumePointObject.builder().fullyPlayed(true).resumePositionMs(0L).build()
+                    ResumePointObject.builder()
+                        .fullyPlayed(true)
+                        .published(true)
+                        .resumePositionMs(0L)
+                        .build()
                 )
                 .build()
 
@@ -65,7 +75,7 @@ internal class SimplifiedChapterObjectTest {
         assertThat(simplifiedChapterObject.durationMs()).isEqualTo(1686230L)
         assertThat(simplifiedChapterObject.explicit()).isEqualTo(true)
         assertThat(simplifiedChapterObject.externalUrls())
-            .isEqualTo(ExternalUrlObject.builder().spotify("spotify").build())
+            .isEqualTo(ExternalUrlObject.builder().published(true).spotify("spotify").build())
         assertThat(simplifiedChapterObject.href())
             .isEqualTo("https://api.spotify.com/v1/episodes/5Xt5DXGzch68nYYamXrNxZ")
         assertThat(simplifiedChapterObject.htmlDescription())
@@ -78,6 +88,7 @@ internal class SimplifiedChapterObjectTest {
                     .height(300L)
                     .url("https://i.scdn.co/image/ab67616d00001e02ff9ca10b55ce82ae553c8228\n")
                     .width(300L)
+                    .published(true)
                     .build()
             )
         assertThat(simplifiedChapterObject.isPlayable()).isEqualTo(true)
@@ -90,10 +101,17 @@ internal class SimplifiedChapterObjectTest {
         assertThat(simplifiedChapterObject.uri())
             .isEqualTo("spotify:episode:0zLhl3WsOCQHbe1BPTiHgr")
         assertThat(simplifiedChapterObject.availableMarkets().getOrNull()).containsExactly("string")
+        assertThat(simplifiedChapterObject.published()).contains(true)
         assertThat(simplifiedChapterObject.restrictions())
-            .contains(ChapterRestrictionObject.builder().reason("reason").build())
+            .contains(ChapterRestrictionObject.builder().published(true).reason("reason").build())
         assertThat(simplifiedChapterObject.resumePoint())
-            .contains(ResumePointObject.builder().fullyPlayed(true).resumePositionMs(0L).build())
+            .contains(
+                ResumePointObject.builder()
+                    .fullyPlayed(true)
+                    .published(true)
+                    .resumePositionMs(0L)
+                    .build()
+            )
     }
 
     @Test
@@ -111,7 +129,9 @@ internal class SimplifiedChapterObjectTest {
                 )
                 .durationMs(1686230L)
                 .explicit(true)
-                .externalUrls(ExternalUrlObject.builder().spotify("spotify").build())
+                .externalUrls(
+                    ExternalUrlObject.builder().published(true).spotify("spotify").build()
+                )
                 .href("https://api.spotify.com/v1/episodes/5Xt5DXGzch68nYYamXrNxZ")
                 .htmlDescription(
                     "<p>We kept on ascending, with occasional periods of quick descent, but in the main always ascending. Suddenly, I became conscious of the fact that the driver was in the act of pulling up the horses in the courtyard of a vast ruined castle, from whose tall black windows came no ray of light, and whose broken battlements showed a jagged line against the moonlit sky.</p>\n"
@@ -121,6 +141,7 @@ internal class SimplifiedChapterObjectTest {
                         .height(300L)
                         .url("https://i.scdn.co/image/ab67616d00001e02ff9ca10b55ce82ae553c8228\n")
                         .width(300L)
+                        .published(true)
                         .build()
                 )
                 .isPlayable(true)
@@ -131,9 +152,16 @@ internal class SimplifiedChapterObjectTest {
                 .releaseDatePrecision(SimplifiedChapterObject.ReleaseDatePrecision.DAY)
                 .uri("spotify:episode:0zLhl3WsOCQHbe1BPTiHgr")
                 .addAvailableMarket("string")
-                .restrictions(ChapterRestrictionObject.builder().reason("reason").build())
+                .published(true)
+                .restrictions(
+                    ChapterRestrictionObject.builder().published(true).reason("reason").build()
+                )
                 .resumePoint(
-                    ResumePointObject.builder().fullyPlayed(true).resumePositionMs(0L).build()
+                    ResumePointObject.builder()
+                        .fullyPlayed(true)
+                        .published(true)
+                        .resumePositionMs(0L)
+                        .build()
                 )
                 .build()
 

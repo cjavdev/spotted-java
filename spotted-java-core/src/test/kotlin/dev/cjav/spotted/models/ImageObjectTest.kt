@@ -16,12 +16,14 @@ internal class ImageObjectTest {
                 .height(300L)
                 .url("https://i.scdn.co/image/ab67616d00001e02ff9ca10b55ce82ae553c8228\n")
                 .width(300L)
+                .published(true)
                 .build()
 
         assertThat(imageObject.height()).contains(300L)
         assertThat(imageObject.url())
             .isEqualTo("https://i.scdn.co/image/ab67616d00001e02ff9ca10b55ce82ae553c8228\n")
         assertThat(imageObject.width()).contains(300L)
+        assertThat(imageObject.published()).contains(true)
     }
 
     @Test
@@ -32,6 +34,7 @@ internal class ImageObjectTest {
                 .height(300L)
                 .url("https://i.scdn.co/image/ab67616d00001e02ff9ca10b55ce82ae553c8228\n")
                 .width(300L)
+                .published(true)
                 .build()
 
         val roundtrippedImageObject =

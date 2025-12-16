@@ -25,7 +25,9 @@ internal class PagingPlaylistObjectTest {
                         .id("id")
                         .collaborative(true)
                         .description("description")
-                        .externalUrls(ExternalUrlObject.builder().spotify("spotify").build())
+                        .externalUrls(
+                            ExternalUrlObject.builder().published(true).spotify("spotify").build()
+                        )
                         .href("href")
                         .addImage(
                             ImageObject.builder()
@@ -34,6 +36,7 @@ internal class PagingPlaylistObjectTest {
                                     "https://i.scdn.co/image/ab67616d00001e02ff9ca10b55ce82ae553c8228\n"
                                 )
                                 .width(300L)
+                                .published(true)
                                 .build()
                         )
                         .name("name")
@@ -41,9 +44,13 @@ internal class PagingPlaylistObjectTest {
                             SimplifiedPlaylistObject.Owner.builder()
                                 .id("id")
                                 .externalUrls(
-                                    ExternalUrlObject.builder().spotify("spotify").build()
+                                    ExternalUrlObject.builder()
+                                        .published(true)
+                                        .spotify("spotify")
+                                        .build()
                                 )
                                 .href("href")
+                                .published(true)
                                 .type(PlaylistUserObject.Type.USER)
                                 .uri("uri")
                                 .displayName("display_name")
@@ -51,11 +58,18 @@ internal class PagingPlaylistObjectTest {
                         )
                         .published(true)
                         .snapshotId("snapshot_id")
-                        .tracks(PlaylistTracksRefObject.builder().href("href").total(0L).build())
+                        .tracks(
+                            PlaylistTracksRefObject.builder()
+                                .href("href")
+                                .published(true)
+                                .total(0L)
+                                .build()
+                        )
                         .type("type")
                         .uri("uri")
                         .build()
                 )
+                .published(true)
                 .build()
 
         assertThat(pagingPlaylistObject.href())
@@ -73,7 +87,9 @@ internal class PagingPlaylistObjectTest {
                     .id("id")
                     .collaborative(true)
                     .description("description")
-                    .externalUrls(ExternalUrlObject.builder().spotify("spotify").build())
+                    .externalUrls(
+                        ExternalUrlObject.builder().published(true).spotify("spotify").build()
+                    )
                     .href("href")
                     .addImage(
                         ImageObject.builder()
@@ -82,14 +98,21 @@ internal class PagingPlaylistObjectTest {
                                 "https://i.scdn.co/image/ab67616d00001e02ff9ca10b55ce82ae553c8228\n"
                             )
                             .width(300L)
+                            .published(true)
                             .build()
                     )
                     .name("name")
                     .owner(
                         SimplifiedPlaylistObject.Owner.builder()
                             .id("id")
-                            .externalUrls(ExternalUrlObject.builder().spotify("spotify").build())
+                            .externalUrls(
+                                ExternalUrlObject.builder()
+                                    .published(true)
+                                    .spotify("spotify")
+                                    .build()
+                            )
                             .href("href")
+                            .published(true)
                             .type(PlaylistUserObject.Type.USER)
                             .uri("uri")
                             .displayName("display_name")
@@ -97,11 +120,18 @@ internal class PagingPlaylistObjectTest {
                     )
                     .published(true)
                     .snapshotId("snapshot_id")
-                    .tracks(PlaylistTracksRefObject.builder().href("href").total(0L).build())
+                    .tracks(
+                        PlaylistTracksRefObject.builder()
+                            .href("href")
+                            .published(true)
+                            .total(0L)
+                            .build()
+                    )
                     .type("type")
                     .uri("uri")
                     .build()
             )
+        assertThat(pagingPlaylistObject.published()).contains(true)
     }
 
     @Test
@@ -120,7 +150,9 @@ internal class PagingPlaylistObjectTest {
                         .id("id")
                         .collaborative(true)
                         .description("description")
-                        .externalUrls(ExternalUrlObject.builder().spotify("spotify").build())
+                        .externalUrls(
+                            ExternalUrlObject.builder().published(true).spotify("spotify").build()
+                        )
                         .href("href")
                         .addImage(
                             ImageObject.builder()
@@ -129,6 +161,7 @@ internal class PagingPlaylistObjectTest {
                                     "https://i.scdn.co/image/ab67616d00001e02ff9ca10b55ce82ae553c8228\n"
                                 )
                                 .width(300L)
+                                .published(true)
                                 .build()
                         )
                         .name("name")
@@ -136,9 +169,13 @@ internal class PagingPlaylistObjectTest {
                             SimplifiedPlaylistObject.Owner.builder()
                                 .id("id")
                                 .externalUrls(
-                                    ExternalUrlObject.builder().spotify("spotify").build()
+                                    ExternalUrlObject.builder()
+                                        .published(true)
+                                        .spotify("spotify")
+                                        .build()
                                 )
                                 .href("href")
+                                .published(true)
                                 .type(PlaylistUserObject.Type.USER)
                                 .uri("uri")
                                 .displayName("display_name")
@@ -146,11 +183,18 @@ internal class PagingPlaylistObjectTest {
                         )
                         .published(true)
                         .snapshotId("snapshot_id")
-                        .tracks(PlaylistTracksRefObject.builder().href("href").total(0L).build())
+                        .tracks(
+                            PlaylistTracksRefObject.builder()
+                                .href("href")
+                                .published(true)
+                                .total(0L)
+                                .build()
+                        )
                         .type("type")
                         .uri("uri")
                         .build()
                 )
+                .published(true)
                 .build()
 
         val roundtrippedPagingPlaylistObject =

@@ -12,10 +12,16 @@ internal class TimeIntervalObjectTest {
     @Test
     fun create() {
         val timeIntervalObject =
-            TimeIntervalObject.builder().confidence(0.925).duration(2.18749).start(0.49567).build()
+            TimeIntervalObject.builder()
+                .confidence(0.925)
+                .duration(2.18749)
+                .published(true)
+                .start(0.49567)
+                .build()
 
         assertThat(timeIntervalObject.confidence()).contains(0.925)
         assertThat(timeIntervalObject.duration()).contains(2.18749)
+        assertThat(timeIntervalObject.published()).contains(true)
         assertThat(timeIntervalObject.start()).contains(0.49567)
     }
 
@@ -23,7 +29,12 @@ internal class TimeIntervalObjectTest {
     fun roundtrip() {
         val jsonMapper = jsonMapper()
         val timeIntervalObject =
-            TimeIntervalObject.builder().confidence(0.925).duration(2.18749).start(0.49567).build()
+            TimeIntervalObject.builder()
+                .confidence(0.925)
+                .duration(2.18749)
+                .published(true)
+                .start(0.49567)
+                .build()
 
         val roundtrippedTimeIntervalObject =
             jsonMapper.readValue(

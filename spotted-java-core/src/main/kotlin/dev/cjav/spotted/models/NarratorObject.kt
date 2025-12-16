@@ -19,13 +19,15 @@ class NarratorObject
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val name: JsonField<String>,
+    private val published: JsonField<Boolean>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
     @JsonCreator
     private constructor(
-        @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of()
-    ) : this(name, mutableMapOf())
+        @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("published") @ExcludeMissing published: JsonField<Boolean> = JsonMissing.of(),
+    ) : this(name, published, mutableMapOf())
 
     /**
      * The name of the Narrator.
@@ -36,11 +38,29 @@ private constructor(
     fun name(): Optional<String> = name.getOptional("name")
 
     /**
+     * The playlist's public/private status (if it should be added to the user's profile or not):
+     * `true` the playlist will be public, `false` the playlist will be private, `null` the playlist
+     * status is not relevant. For more about public/private status, see
+     * [Working with Playlists](/documentation/web-api/concepts/playlists)
+     *
+     * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun published(): Optional<Boolean> = published.getOptional("published")
+
+    /**
      * Returns the raw JSON value of [name].
      *
      * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
+
+    /**
+     * Returns the raw JSON value of [published].
+     *
+     * Unlike [published], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("published") @ExcludeMissing fun _published(): JsonField<Boolean> = published
 
     @JsonAnySetter
     private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -64,11 +84,13 @@ private constructor(
     class Builder internal constructor() {
 
         private var name: JsonField<String> = JsonMissing.of()
+        private var published: JsonField<Boolean> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(narratorObject: NarratorObject) = apply {
             name = narratorObject.name
+            published = narratorObject.published
             additionalProperties = narratorObject.additionalProperties.toMutableMap()
         }
 
@@ -82,6 +104,23 @@ private constructor(
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun name(name: JsonField<String>) = apply { this.name = name }
+
+        /**
+         * The playlist's public/private status (if it should be added to the user's profile or
+         * not): `true` the playlist will be public, `false` the playlist will be private, `null`
+         * the playlist status is not relevant. For more about public/private status, see
+         * [Working with Playlists](/documentation/web-api/concepts/playlists)
+         */
+        fun published(published: Boolean) = published(JsonField.of(published))
+
+        /**
+         * Sets [Builder.published] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.published] with a well-typed [Boolean] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun published(published: JsonField<Boolean>) = apply { this.published = published }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -107,7 +146,8 @@ private constructor(
          *
          * Further updates to this [Builder] will not mutate the returned instance.
          */
-        fun build(): NarratorObject = NarratorObject(name, additionalProperties.toMutableMap())
+        fun build(): NarratorObject =
+            NarratorObject(name, published, additionalProperties.toMutableMap())
     }
 
     private var validated: Boolean = false
@@ -118,6 +158,7 @@ private constructor(
         }
 
         name()
+        published()
         validated = true
     }
 
@@ -134,7 +175,9 @@ private constructor(
      *
      * Used for best match union deserialization.
      */
-    @JvmSynthetic internal fun validity(): Int = (if (name.asKnown().isPresent) 1 else 0)
+    @JvmSynthetic
+    internal fun validity(): Int =
+        (if (name.asKnown().isPresent) 1 else 0) + (if (published.asKnown().isPresent) 1 else 0)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
@@ -143,13 +186,14 @@ private constructor(
 
         return other is NarratorObject &&
             name == other.name &&
+            published == other.published &&
             additionalProperties == other.additionalProperties
     }
 
-    private val hashCode: Int by lazy { Objects.hash(name, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(name, published, additionalProperties) }
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "NarratorObject{name=$name, additionalProperties=$additionalProperties}"
+        "NarratorObject{name=$name, published=$published, additionalProperties=$additionalProperties}"
 }

@@ -26,6 +26,7 @@ private constructor(
     private val items: JsonField<List<PlayerListRecentlyPlayedResponse>>,
     private val limit: JsonField<Long>,
     private val next: JsonField<String>,
+    private val published: JsonField<Boolean>,
     private val total: JsonField<Long>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
@@ -39,8 +40,9 @@ private constructor(
         items: JsonField<List<PlayerListRecentlyPlayedResponse>> = JsonMissing.of(),
         @JsonProperty("limit") @ExcludeMissing limit: JsonField<Long> = JsonMissing.of(),
         @JsonProperty("next") @ExcludeMissing next: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("published") @ExcludeMissing published: JsonField<Boolean> = JsonMissing.of(),
         @JsonProperty("total") @ExcludeMissing total: JsonField<Long> = JsonMissing.of(),
-    ) : this(cursors, href, items, limit, next, total, mutableMapOf())
+    ) : this(cursors, href, items, limit, next, published, total, mutableMapOf())
 
     /**
      * The cursors used to find the next set of items.
@@ -79,6 +81,17 @@ private constructor(
      *   server responded with an unexpected value).
      */
     fun next(): Optional<String> = next.getOptional("next")
+
+    /**
+     * The playlist's public/private status (if it should be added to the user's profile or not):
+     * `true` the playlist will be public, `false` the playlist will be private, `null` the playlist
+     * status is not relevant. For more about public/private status, see
+     * [Working with Playlists](/documentation/web-api/concepts/playlists)
+     *
+     * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun published(): Optional<Boolean> = published.getOptional("published")
 
     /**
      * The total number of items available to return.
@@ -126,6 +139,13 @@ private constructor(
     @JsonProperty("next") @ExcludeMissing fun _next(): JsonField<String> = next
 
     /**
+     * Returns the raw JSON value of [published].
+     *
+     * Unlike [published], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("published") @ExcludeMissing fun _published(): JsonField<Boolean> = published
+
+    /**
      * Returns the raw JSON value of [total].
      *
      * Unlike [total], this method doesn't throw if the JSON field has an unexpected type.
@@ -161,6 +181,7 @@ private constructor(
         private var items: JsonField<MutableList<PlayerListRecentlyPlayedResponse>>? = null
         private var limit: JsonField<Long> = JsonMissing.of()
         private var next: JsonField<String> = JsonMissing.of()
+        private var published: JsonField<Boolean> = JsonMissing.of()
         private var total: JsonField<Long> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
@@ -173,6 +194,7 @@ private constructor(
             items = playerListRecentlyPlayedPageResponse.items.map { it.toMutableList() }
             limit = playerListRecentlyPlayedPageResponse.limit
             next = playerListRecentlyPlayedPageResponse.next
+            published = playerListRecentlyPlayedPageResponse.published
             total = playerListRecentlyPlayedPageResponse.total
             additionalProperties =
                 playerListRecentlyPlayedPageResponse.additionalProperties.toMutableMap()
@@ -245,6 +267,23 @@ private constructor(
          */
         fun next(next: JsonField<String>) = apply { this.next = next }
 
+        /**
+         * The playlist's public/private status (if it should be added to the user's profile or
+         * not): `true` the playlist will be public, `false` the playlist will be private, `null`
+         * the playlist status is not relevant. For more about public/private status, see
+         * [Working with Playlists](/documentation/web-api/concepts/playlists)
+         */
+        fun published(published: Boolean) = published(JsonField.of(published))
+
+        /**
+         * Sets [Builder.published] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.published] with a well-typed [Boolean] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun published(published: JsonField<Boolean>) = apply { this.published = published }
+
         /** The total number of items available to return. */
         fun total(total: Long) = total(JsonField.of(total))
 
@@ -287,6 +326,7 @@ private constructor(
                 (items ?: JsonMissing.of()).map { it.toImmutable() },
                 limit,
                 next,
+                published,
                 total,
                 additionalProperties.toMutableMap(),
             )
@@ -304,6 +344,7 @@ private constructor(
         items().ifPresent { it.forEach { it.validate() } }
         limit()
         next()
+        published()
         total()
         validated = true
     }
@@ -328,6 +369,7 @@ private constructor(
             (items.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
             (if (limit.asKnown().isPresent) 1 else 0) +
             (if (next.asKnown().isPresent) 1 else 0) +
+            (if (published.asKnown().isPresent) 1 else 0) +
             (if (total.asKnown().isPresent) 1 else 0)
 
     /** The cursors used to find the next set of items. */
@@ -336,6 +378,7 @@ private constructor(
     private constructor(
         private val after: JsonField<String>,
         private val before: JsonField<String>,
+        private val published: JsonField<Boolean>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
@@ -343,7 +386,10 @@ private constructor(
         private constructor(
             @JsonProperty("after") @ExcludeMissing after: JsonField<String> = JsonMissing.of(),
             @JsonProperty("before") @ExcludeMissing before: JsonField<String> = JsonMissing.of(),
-        ) : this(after, before, mutableMapOf())
+            @JsonProperty("published")
+            @ExcludeMissing
+            published: JsonField<Boolean> = JsonMissing.of(),
+        ) : this(after, before, published, mutableMapOf())
 
         /**
          * The cursor to use as key to find the next page of items.
@@ -362,6 +408,17 @@ private constructor(
         fun before(): Optional<String> = before.getOptional("before")
 
         /**
+         * The playlist's public/private status (if it should be added to the user's profile or
+         * not): `true` the playlist will be public, `false` the playlist will be private, `null`
+         * the playlist status is not relevant. For more about public/private status, see
+         * [Working with Playlists](/documentation/web-api/concepts/playlists)
+         *
+         * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun published(): Optional<Boolean> = published.getOptional("published")
+
+        /**
          * Returns the raw JSON value of [after].
          *
          * Unlike [after], this method doesn't throw if the JSON field has an unexpected type.
@@ -374,6 +431,13 @@ private constructor(
          * Unlike [before], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("before") @ExcludeMissing fun _before(): JsonField<String> = before
+
+        /**
+         * Returns the raw JSON value of [published].
+         *
+         * Unlike [published], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("published") @ExcludeMissing fun _published(): JsonField<Boolean> = published
 
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -398,12 +462,14 @@ private constructor(
 
             private var after: JsonField<String> = JsonMissing.of()
             private var before: JsonField<String> = JsonMissing.of()
+            private var published: JsonField<Boolean> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(cursors: Cursors) = apply {
                 after = cursors.after
                 before = cursors.before
+                published = cursors.published
                 additionalProperties = cursors.additionalProperties.toMutableMap()
             }
 
@@ -431,6 +497,23 @@ private constructor(
              */
             fun before(before: JsonField<String>) = apply { this.before = before }
 
+            /**
+             * The playlist's public/private status (if it should be added to the user's profile or
+             * not): `true` the playlist will be public, `false` the playlist will be private,
+             * `null` the playlist status is not relevant. For more about public/private status, see
+             * [Working with Playlists](/documentation/web-api/concepts/playlists)
+             */
+            fun published(published: Boolean) = published(JsonField.of(published))
+
+            /**
+             * Sets [Builder.published] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.published] with a well-typed [Boolean] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun published(published: JsonField<Boolean>) = apply { this.published = published }
+
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
                 putAllAdditionalProperties(additionalProperties)
@@ -455,7 +538,8 @@ private constructor(
              *
              * Further updates to this [Builder] will not mutate the returned instance.
              */
-            fun build(): Cursors = Cursors(after, before, additionalProperties.toMutableMap())
+            fun build(): Cursors =
+                Cursors(after, before, published, additionalProperties.toMutableMap())
         }
 
         private var validated: Boolean = false
@@ -467,6 +551,7 @@ private constructor(
 
             after()
             before()
+            published()
             validated = true
         }
 
@@ -486,7 +571,9 @@ private constructor(
          */
         @JvmSynthetic
         internal fun validity(): Int =
-            (if (after.asKnown().isPresent) 1 else 0) + (if (before.asKnown().isPresent) 1 else 0)
+            (if (after.asKnown().isPresent) 1 else 0) +
+                (if (before.asKnown().isPresent) 1 else 0) +
+                (if (published.asKnown().isPresent) 1 else 0)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -496,15 +583,18 @@ private constructor(
             return other is Cursors &&
                 after == other.after &&
                 before == other.before &&
+                published == other.published &&
                 additionalProperties == other.additionalProperties
         }
 
-        private val hashCode: Int by lazy { Objects.hash(after, before, additionalProperties) }
+        private val hashCode: Int by lazy {
+            Objects.hash(after, before, published, additionalProperties)
+        }
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Cursors{after=$after, before=$before, additionalProperties=$additionalProperties}"
+            "Cursors{after=$after, before=$before, published=$published, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {
@@ -518,16 +608,17 @@ private constructor(
             items == other.items &&
             limit == other.limit &&
             next == other.next &&
+            published == other.published &&
             total == other.total &&
             additionalProperties == other.additionalProperties
     }
 
     private val hashCode: Int by lazy {
-        Objects.hash(cursors, href, items, limit, next, total, additionalProperties)
+        Objects.hash(cursors, href, items, limit, next, published, total, additionalProperties)
     }
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "PlayerListRecentlyPlayedPageResponse{cursors=$cursors, href=$href, items=$items, limit=$limit, next=$next, total=$total, additionalProperties=$additionalProperties}"
+        "PlayerListRecentlyPlayedPageResponse{cursors=$cursors, href=$href, items=$items, limit=$limit, next=$next, published=$published, total=$total, additionalProperties=$additionalProperties}"
 }
