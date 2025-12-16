@@ -12,6 +12,7 @@ internal class TrackRemoveParamsTest {
         TrackRemoveParams.builder()
             .playlistId("3cEYpjA9oz9GiPac4AsH4n")
             .addTrack(TrackRemoveParams.Track.builder().uri("uri").build())
+            .published(true)
             .snapshotId("snapshot_id")
             .build()
     }
@@ -35,6 +36,7 @@ internal class TrackRemoveParamsTest {
             TrackRemoveParams.builder()
                 .playlistId("3cEYpjA9oz9GiPac4AsH4n")
                 .addTrack(TrackRemoveParams.Track.builder().uri("uri").build())
+                .published(true)
                 .snapshotId("snapshot_id")
                 .build()
 
@@ -42,6 +44,7 @@ internal class TrackRemoveParamsTest {
 
         assertThat(body.tracks())
             .containsExactly(TrackRemoveParams.Track.builder().uri("uri").build())
+        assertThat(body.published()).contains(true)
         assertThat(body.snapshotId()).contains("snapshot_id")
     }
 

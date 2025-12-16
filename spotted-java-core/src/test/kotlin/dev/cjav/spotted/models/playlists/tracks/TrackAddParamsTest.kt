@@ -13,6 +13,7 @@ internal class TrackAddParamsTest {
         TrackAddParams.builder()
             .playlistId("3cEYpjA9oz9GiPac4AsH4n")
             .position(0L)
+            .published(true)
             .addUris("string")
             .build()
     }
@@ -32,12 +33,14 @@ internal class TrackAddParamsTest {
             TrackAddParams.builder()
                 .playlistId("3cEYpjA9oz9GiPac4AsH4n")
                 .position(0L)
+                .published(true)
                 .addUris("string")
                 .build()
 
         val body = params._body()
 
         assertThat(body.position()).contains(0L)
+        assertThat(body.published()).contains(true)
         assertThat(body.uris().getOrNull()).containsExactly("string")
     }
 

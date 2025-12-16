@@ -243,6 +243,7 @@ internal class PlayerServiceAsyncTest {
                             .build()
                     )
                     .positionMs(0L)
+                    .published(true)
                     .addUris("string")
                     .build()
             )
@@ -286,6 +287,7 @@ internal class PlayerServiceAsyncTest {
                 PlayerTransferParams.builder()
                     .addDeviceId("74ASZWbe4lXaubB36ztrGX")
                     .play(true)
+                    .published(true)
                     .build()
             )
 
