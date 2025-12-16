@@ -25,6 +25,7 @@ class RecommendationGetResponse
 private constructor(
     private val seeds: JsonField<List<Seed>>,
     private val tracks: JsonField<List<TrackObject>>,
+    private val published: JsonField<Boolean>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
@@ -34,7 +35,8 @@ private constructor(
         @JsonProperty("tracks")
         @ExcludeMissing
         tracks: JsonField<List<TrackObject>> = JsonMissing.of(),
-    ) : this(seeds, tracks, mutableMapOf())
+        @JsonProperty("published") @ExcludeMissing published: JsonField<Boolean> = JsonMissing.of(),
+    ) : this(seeds, tracks, published, mutableMapOf())
 
     /**
      * An array of recommendation seed objects.
@@ -53,6 +55,17 @@ private constructor(
     fun tracks(): List<TrackObject> = tracks.getRequired("tracks")
 
     /**
+     * The playlist's public/private status (if it should be added to the user's profile or not):
+     * `true` the playlist will be public, `false` the playlist will be private, `null` the playlist
+     * status is not relevant. For more about public/private status, see
+     * [Working with Playlists](/documentation/web-api/concepts/playlists)
+     *
+     * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun published(): Optional<Boolean> = published.getOptional("published")
+
+    /**
      * Returns the raw JSON value of [seeds].
      *
      * Unlike [seeds], this method doesn't throw if the JSON field has an unexpected type.
@@ -65,6 +78,13 @@ private constructor(
      * Unlike [tracks], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("tracks") @ExcludeMissing fun _tracks(): JsonField<List<TrackObject>> = tracks
+
+    /**
+     * Returns the raw JSON value of [published].
+     *
+     * Unlike [published], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("published") @ExcludeMissing fun _published(): JsonField<Boolean> = published
 
     @JsonAnySetter
     private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -97,12 +117,14 @@ private constructor(
 
         private var seeds: JsonField<MutableList<Seed>>? = null
         private var tracks: JsonField<MutableList<TrackObject>>? = null
+        private var published: JsonField<Boolean> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(recommendationGetResponse: RecommendationGetResponse) = apply {
             seeds = recommendationGetResponse.seeds.map { it.toMutableList() }
             tracks = recommendationGetResponse.tracks.map { it.toMutableList() }
+            published = recommendationGetResponse.published
             additionalProperties = recommendationGetResponse.additionalProperties.toMutableMap()
         }
 
@@ -156,6 +178,23 @@ private constructor(
                 }
         }
 
+        /**
+         * The playlist's public/private status (if it should be added to the user's profile or
+         * not): `true` the playlist will be public, `false` the playlist will be private, `null`
+         * the playlist status is not relevant. For more about public/private status, see
+         * [Working with Playlists](/documentation/web-api/concepts/playlists)
+         */
+        fun published(published: Boolean) = published(JsonField.of(published))
+
+        /**
+         * Sets [Builder.published] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.published] with a well-typed [Boolean] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun published(published: JsonField<Boolean>) = apply { this.published = published }
+
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
             putAllAdditionalProperties(additionalProperties)
@@ -192,6 +231,7 @@ private constructor(
             RecommendationGetResponse(
                 checkRequired("seeds", seeds).map { it.toImmutable() },
                 checkRequired("tracks", tracks).map { it.toImmutable() },
+                published,
                 additionalProperties.toMutableMap(),
             )
     }
@@ -205,6 +245,7 @@ private constructor(
 
         seeds().forEach { it.validate() }
         tracks().forEach { it.validate() }
+        published()
         validated = true
     }
 
@@ -224,7 +265,8 @@ private constructor(
     @JvmSynthetic
     internal fun validity(): Int =
         (seeds.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
-            (tracks.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
+            (tracks.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
+            (if (published.asKnown().isPresent) 1 else 0)
 
     class Seed
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
@@ -234,6 +276,7 @@ private constructor(
         private val afterRelinkingSize: JsonField<Long>,
         private val href: JsonField<String>,
         private val initialPoolSize: JsonField<Long>,
+        private val published: JsonField<Boolean>,
         private val type: JsonField<String>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
@@ -251,6 +294,9 @@ private constructor(
             @JsonProperty("initialPoolSize")
             @ExcludeMissing
             initialPoolSize: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("published")
+            @ExcludeMissing
+            published: JsonField<Boolean> = JsonMissing.of(),
             @JsonProperty("type") @ExcludeMissing type: JsonField<String> = JsonMissing.of(),
         ) : this(
             id,
@@ -258,6 +304,7 @@ private constructor(
             afterRelinkingSize,
             href,
             initialPoolSize,
+            published,
             type,
             mutableMapOf(),
         )
@@ -306,6 +353,17 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun initialPoolSize(): Optional<Long> = initialPoolSize.getOptional("initialPoolSize")
+
+        /**
+         * The playlist's public/private status (if it should be added to the user's profile or
+         * not): `true` the playlist will be public, `false` the playlist will be private, `null`
+         * the playlist status is not relevant. For more about public/private status, see
+         * [Working with Playlists](/documentation/web-api/concepts/playlists)
+         *
+         * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun published(): Optional<Boolean> = published.getOptional("published")
 
         /**
          * The entity type of this seed. One of `artist`, `track` or `genre`.
@@ -360,6 +418,13 @@ private constructor(
         fun _initialPoolSize(): JsonField<Long> = initialPoolSize
 
         /**
+         * Returns the raw JSON value of [published].
+         *
+         * Unlike [published], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("published") @ExcludeMissing fun _published(): JsonField<Boolean> = published
+
+        /**
          * Returns the raw JSON value of [type].
          *
          * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
@@ -392,6 +457,7 @@ private constructor(
             private var afterRelinkingSize: JsonField<Long> = JsonMissing.of()
             private var href: JsonField<String> = JsonMissing.of()
             private var initialPoolSize: JsonField<Long> = JsonMissing.of()
+            private var published: JsonField<Boolean> = JsonMissing.of()
             private var type: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
@@ -402,6 +468,7 @@ private constructor(
                 afterRelinkingSize = seed.afterRelinkingSize
                 href = seed.href
                 initialPoolSize = seed.initialPoolSize
+                published = seed.published
                 type = seed.type
                 additionalProperties = seed.additionalProperties.toMutableMap()
             }
@@ -484,6 +551,23 @@ private constructor(
                 this.initialPoolSize = initialPoolSize
             }
 
+            /**
+             * The playlist's public/private status (if it should be added to the user's profile or
+             * not): `true` the playlist will be public, `false` the playlist will be private,
+             * `null` the playlist status is not relevant. For more about public/private status, see
+             * [Working with Playlists](/documentation/web-api/concepts/playlists)
+             */
+            fun published(published: Boolean) = published(JsonField.of(published))
+
+            /**
+             * Sets [Builder.published] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.published] with a well-typed [Boolean] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun published(published: JsonField<Boolean>) = apply { this.published = published }
+
             /** The entity type of this seed. One of `artist`, `track` or `genre`. */
             fun type(type: String) = type(JsonField.of(type))
 
@@ -527,6 +611,7 @@ private constructor(
                     afterRelinkingSize,
                     href,
                     initialPoolSize,
+                    published,
                     type,
                     additionalProperties.toMutableMap(),
                 )
@@ -544,6 +629,7 @@ private constructor(
             afterRelinkingSize()
             href()
             initialPoolSize()
+            published()
             type()
             validated = true
         }
@@ -569,6 +655,7 @@ private constructor(
                 (if (afterRelinkingSize.asKnown().isPresent) 1 else 0) +
                 (if (href.asKnown().isPresent) 1 else 0) +
                 (if (initialPoolSize.asKnown().isPresent) 1 else 0) +
+                (if (published.asKnown().isPresent) 1 else 0) +
                 (if (type.asKnown().isPresent) 1 else 0)
 
         override fun equals(other: Any?): Boolean {
@@ -582,6 +669,7 @@ private constructor(
                 afterRelinkingSize == other.afterRelinkingSize &&
                 href == other.href &&
                 initialPoolSize == other.initialPoolSize &&
+                published == other.published &&
                 type == other.type &&
                 additionalProperties == other.additionalProperties
         }
@@ -593,6 +681,7 @@ private constructor(
                 afterRelinkingSize,
                 href,
                 initialPoolSize,
+                published,
                 type,
                 additionalProperties,
             )
@@ -601,7 +690,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Seed{id=$id, afterFilteringSize=$afterFilteringSize, afterRelinkingSize=$afterRelinkingSize, href=$href, initialPoolSize=$initialPoolSize, type=$type, additionalProperties=$additionalProperties}"
+            "Seed{id=$id, afterFilteringSize=$afterFilteringSize, afterRelinkingSize=$afterRelinkingSize, href=$href, initialPoolSize=$initialPoolSize, published=$published, type=$type, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {
@@ -612,13 +701,16 @@ private constructor(
         return other is RecommendationGetResponse &&
             seeds == other.seeds &&
             tracks == other.tracks &&
+            published == other.published &&
             additionalProperties == other.additionalProperties
     }
 
-    private val hashCode: Int by lazy { Objects.hash(seeds, tracks, additionalProperties) }
+    private val hashCode: Int by lazy {
+        Objects.hash(seeds, tracks, published, additionalProperties)
+    }
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "RecommendationGetResponse{seeds=$seeds, tracks=$tracks, additionalProperties=$additionalProperties}"
+        "RecommendationGetResponse{seeds=$seeds, tracks=$tracks, published=$published, additionalProperties=$additionalProperties}"
 }

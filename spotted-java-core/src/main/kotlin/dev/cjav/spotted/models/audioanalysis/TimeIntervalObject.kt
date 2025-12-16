@@ -20,6 +20,7 @@ class TimeIntervalObject
 private constructor(
     private val confidence: JsonField<Double>,
     private val duration: JsonField<Double>,
+    private val published: JsonField<Boolean>,
     private val start: JsonField<Double>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
@@ -30,8 +31,9 @@ private constructor(
         @ExcludeMissing
         confidence: JsonField<Double> = JsonMissing.of(),
         @JsonProperty("duration") @ExcludeMissing duration: JsonField<Double> = JsonMissing.of(),
+        @JsonProperty("published") @ExcludeMissing published: JsonField<Boolean> = JsonMissing.of(),
         @JsonProperty("start") @ExcludeMissing start: JsonField<Double> = JsonMissing.of(),
-    ) : this(confidence, duration, start, mutableMapOf())
+    ) : this(confidence, duration, published, start, mutableMapOf())
 
     /**
      * The confidence, from 0.0 to 1.0, of the reliability of the interval.
@@ -48,6 +50,17 @@ private constructor(
      *   server responded with an unexpected value).
      */
     fun duration(): Optional<Double> = duration.getOptional("duration")
+
+    /**
+     * The playlist's public/private status (if it should be added to the user's profile or not):
+     * `true` the playlist will be public, `false` the playlist will be private, `null` the playlist
+     * status is not relevant. For more about public/private status, see
+     * [Working with Playlists](/documentation/web-api/concepts/playlists)
+     *
+     * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun published(): Optional<Boolean> = published.getOptional("published")
 
     /**
      * The starting point (in seconds) of the time interval.
@@ -70,6 +83,13 @@ private constructor(
      * Unlike [duration], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("duration") @ExcludeMissing fun _duration(): JsonField<Double> = duration
+
+    /**
+     * Returns the raw JSON value of [published].
+     *
+     * Unlike [published], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("published") @ExcludeMissing fun _published(): JsonField<Boolean> = published
 
     /**
      * Returns the raw JSON value of [start].
@@ -101,6 +121,7 @@ private constructor(
 
         private var confidence: JsonField<Double> = JsonMissing.of()
         private var duration: JsonField<Double> = JsonMissing.of()
+        private var published: JsonField<Boolean> = JsonMissing.of()
         private var start: JsonField<Double> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
@@ -108,6 +129,7 @@ private constructor(
         internal fun from(timeIntervalObject: TimeIntervalObject) = apply {
             confidence = timeIntervalObject.confidence
             duration = timeIntervalObject.duration
+            published = timeIntervalObject.published
             start = timeIntervalObject.start
             additionalProperties = timeIntervalObject.additionalProperties.toMutableMap()
         }
@@ -134,6 +156,23 @@ private constructor(
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun duration(duration: JsonField<Double>) = apply { this.duration = duration }
+
+        /**
+         * The playlist's public/private status (if it should be added to the user's profile or
+         * not): `true` the playlist will be public, `false` the playlist will be private, `null`
+         * the playlist status is not relevant. For more about public/private status, see
+         * [Working with Playlists](/documentation/web-api/concepts/playlists)
+         */
+        fun published(published: Boolean) = published(JsonField.of(published))
+
+        /**
+         * Sets [Builder.published] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.published] with a well-typed [Boolean] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun published(published: JsonField<Boolean>) = apply { this.published = published }
 
         /** The starting point (in seconds) of the time interval. */
         fun start(start: Double) = start(JsonField.of(start))
@@ -171,7 +210,13 @@ private constructor(
          * Further updates to this [Builder] will not mutate the returned instance.
          */
         fun build(): TimeIntervalObject =
-            TimeIntervalObject(confidence, duration, start, additionalProperties.toMutableMap())
+            TimeIntervalObject(
+                confidence,
+                duration,
+                published,
+                start,
+                additionalProperties.toMutableMap(),
+            )
     }
 
     private var validated: Boolean = false
@@ -183,6 +228,7 @@ private constructor(
 
         confidence()
         duration()
+        published()
         start()
         validated = true
     }
@@ -204,6 +250,7 @@ private constructor(
     internal fun validity(): Int =
         (if (confidence.asKnown().isPresent) 1 else 0) +
             (if (duration.asKnown().isPresent) 1 else 0) +
+            (if (published.asKnown().isPresent) 1 else 0) +
             (if (start.asKnown().isPresent) 1 else 0)
 
     override fun equals(other: Any?): Boolean {
@@ -214,16 +261,17 @@ private constructor(
         return other is TimeIntervalObject &&
             confidence == other.confidence &&
             duration == other.duration &&
+            published == other.published &&
             start == other.start &&
             additionalProperties == other.additionalProperties
     }
 
     private val hashCode: Int by lazy {
-        Objects.hash(confidence, duration, start, additionalProperties)
+        Objects.hash(confidence, duration, published, start, additionalProperties)
     }
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "TimeIntervalObject{confidence=$confidence, duration=$duration, start=$start, additionalProperties=$additionalProperties}"
+        "TimeIntervalObject{confidence=$confidence, duration=$duration, published=$published, start=$start, additionalProperties=$additionalProperties}"
 }

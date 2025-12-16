@@ -23,6 +23,7 @@ private constructor(
     private val height: JsonField<Long>,
     private val url: JsonField<String>,
     private val width: JsonField<Long>,
+    private val published: JsonField<Boolean>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
@@ -31,7 +32,8 @@ private constructor(
         @JsonProperty("height") @ExcludeMissing height: JsonField<Long> = JsonMissing.of(),
         @JsonProperty("url") @ExcludeMissing url: JsonField<String> = JsonMissing.of(),
         @JsonProperty("width") @ExcludeMissing width: JsonField<Long> = JsonMissing.of(),
-    ) : this(height, url, width, mutableMapOf())
+        @JsonProperty("published") @ExcludeMissing published: JsonField<Boolean> = JsonMissing.of(),
+    ) : this(height, url, width, published, mutableMapOf())
 
     /**
      * The image height in pixels.
@@ -58,6 +60,17 @@ private constructor(
     fun width(): Optional<Long> = width.getOptional("width")
 
     /**
+     * The playlist's public/private status (if it should be added to the user's profile or not):
+     * `true` the playlist will be public, `false` the playlist will be private, `null` the playlist
+     * status is not relevant. For more about public/private status, see
+     * [Working with Playlists](/documentation/web-api/concepts/playlists)
+     *
+     * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun published(): Optional<Boolean> = published.getOptional("published")
+
+    /**
      * Returns the raw JSON value of [height].
      *
      * Unlike [height], this method doesn't throw if the JSON field has an unexpected type.
@@ -77,6 +90,13 @@ private constructor(
      * Unlike [width], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("width") @ExcludeMissing fun _width(): JsonField<Long> = width
+
+    /**
+     * Returns the raw JSON value of [published].
+     *
+     * Unlike [published], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("published") @ExcludeMissing fun _published(): JsonField<Boolean> = published
 
     @JsonAnySetter
     private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -111,6 +131,7 @@ private constructor(
         private var height: JsonField<Long>? = null
         private var url: JsonField<String>? = null
         private var width: JsonField<Long>? = null
+        private var published: JsonField<Boolean> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
@@ -118,6 +139,7 @@ private constructor(
             height = imageObject.height
             url = imageObject.url
             width = imageObject.width
+            published = imageObject.published
             additionalProperties = imageObject.additionalProperties.toMutableMap()
         }
 
@@ -174,6 +196,23 @@ private constructor(
          */
         fun width(width: JsonField<Long>) = apply { this.width = width }
 
+        /**
+         * The playlist's public/private status (if it should be added to the user's profile or
+         * not): `true` the playlist will be public, `false` the playlist will be private, `null`
+         * the playlist status is not relevant. For more about public/private status, see
+         * [Working with Playlists](/documentation/web-api/concepts/playlists)
+         */
+        fun published(published: Boolean) = published(JsonField.of(published))
+
+        /**
+         * Sets [Builder.published] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.published] with a well-typed [Boolean] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun published(published: JsonField<Boolean>) = apply { this.published = published }
+
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
             putAllAdditionalProperties(additionalProperties)
@@ -212,6 +251,7 @@ private constructor(
                 checkRequired("height", height),
                 checkRequired("url", url),
                 checkRequired("width", width),
+                published,
                 additionalProperties.toMutableMap(),
             )
     }
@@ -226,6 +266,7 @@ private constructor(
         height()
         url()
         width()
+        published()
         validated = true
     }
 
@@ -246,7 +287,8 @@ private constructor(
     internal fun validity(): Int =
         (if (height.asKnown().isPresent) 1 else 0) +
             (if (url.asKnown().isPresent) 1 else 0) +
-            (if (width.asKnown().isPresent) 1 else 0)
+            (if (width.asKnown().isPresent) 1 else 0) +
+            (if (published.asKnown().isPresent) 1 else 0)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
@@ -257,13 +299,16 @@ private constructor(
             height == other.height &&
             url == other.url &&
             width == other.width &&
+            published == other.published &&
             additionalProperties == other.additionalProperties
     }
 
-    private val hashCode: Int by lazy { Objects.hash(height, url, width, additionalProperties) }
+    private val hashCode: Int by lazy {
+        Objects.hash(height, url, width, published, additionalProperties)
+    }
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "ImageObject{height=$height, url=$url, width=$width, additionalProperties=$additionalProperties}"
+        "ImageObject{height=$height, url=$url, width=$width, published=$published, additionalProperties=$additionalProperties}"
 }

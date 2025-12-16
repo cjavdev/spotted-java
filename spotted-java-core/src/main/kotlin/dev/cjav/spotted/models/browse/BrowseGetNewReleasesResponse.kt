@@ -170,6 +170,7 @@ private constructor(
         private val previous: JsonField<String>,
         private val total: JsonField<Long>,
         private val items: JsonField<List<Item>>,
+        private val published: JsonField<Boolean>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
@@ -184,7 +185,10 @@ private constructor(
             previous: JsonField<String> = JsonMissing.of(),
             @JsonProperty("total") @ExcludeMissing total: JsonField<Long> = JsonMissing.of(),
             @JsonProperty("items") @ExcludeMissing items: JsonField<List<Item>> = JsonMissing.of(),
-        ) : this(href, limit, next, offset, previous, total, items, mutableMapOf())
+            @JsonProperty("published")
+            @ExcludeMissing
+            published: JsonField<Boolean> = JsonMissing.of(),
+        ) : this(href, limit, next, offset, previous, total, items, published, mutableMapOf())
 
         /**
          * A link to the Web API endpoint returning the full result of the request
@@ -241,6 +245,17 @@ private constructor(
         fun items(): Optional<List<Item>> = items.getOptional("items")
 
         /**
+         * The playlist's public/private status (if it should be added to the user's profile or
+         * not): `true` the playlist will be public, `false` the playlist will be private, `null`
+         * the playlist status is not relevant. For more about public/private status, see
+         * [Working with Playlists](/documentation/web-api/concepts/playlists)
+         *
+         * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun published(): Optional<Boolean> = published.getOptional("published")
+
+        /**
          * Returns the raw JSON value of [href].
          *
          * Unlike [href], this method doesn't throw if the JSON field has an unexpected type.
@@ -289,6 +304,13 @@ private constructor(
          */
         @JsonProperty("items") @ExcludeMissing fun _items(): JsonField<List<Item>> = items
 
+        /**
+         * Returns the raw JSON value of [published].
+         *
+         * Unlike [published], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("published") @ExcludeMissing fun _published(): JsonField<Boolean> = published
+
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
             additionalProperties.put(key, value)
@@ -329,6 +351,7 @@ private constructor(
             private var previous: JsonField<String>? = null
             private var total: JsonField<Long>? = null
             private var items: JsonField<MutableList<Item>>? = null
+            private var published: JsonField<Boolean> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -340,6 +363,7 @@ private constructor(
                 previous = albums.previous
                 total = albums.total
                 items = albums.items.map { it.toMutableList() }
+                published = albums.published
                 additionalProperties = albums.additionalProperties.toMutableMap()
             }
 
@@ -446,6 +470,23 @@ private constructor(
                     }
             }
 
+            /**
+             * The playlist's public/private status (if it should be added to the user's profile or
+             * not): `true` the playlist will be public, `false` the playlist will be private,
+             * `null` the playlist status is not relevant. For more about public/private status, see
+             * [Working with Playlists](/documentation/web-api/concepts/playlists)
+             */
+            fun published(published: Boolean) = published(JsonField.of(published))
+
+            /**
+             * Sets [Builder.published] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.published] with a well-typed [Boolean] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun published(published: JsonField<Boolean>) = apply { this.published = published }
+
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
                 putAllAdditionalProperties(additionalProperties)
@@ -491,6 +532,7 @@ private constructor(
                     checkRequired("previous", previous),
                     checkRequired("total", total),
                     (items ?: JsonMissing.of()).map { it.toImmutable() },
+                    published,
                     additionalProperties.toMutableMap(),
                 )
         }
@@ -509,6 +551,7 @@ private constructor(
             previous()
             total()
             items().ifPresent { it.forEach { it.validate() } }
+            published()
             validated = true
         }
 
@@ -534,7 +577,8 @@ private constructor(
                 (if (offset.asKnown().isPresent) 1 else 0) +
                 (if (previous.asKnown().isPresent) 1 else 0) +
                 (if (total.asKnown().isPresent) 1 else 0) +
-                (items.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
+                (items.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
+                (if (published.asKnown().isPresent) 1 else 0)
 
         class Item
         @JsonCreator(mode = JsonCreator.Mode.DISABLED)
@@ -552,6 +596,7 @@ private constructor(
             private val totalTracks: JsonField<Long>,
             private val type: JsonValue,
             private val uri: JsonField<String>,
+            private val published: JsonField<Boolean>,
             private val restrictions: JsonField<AlbumRestrictionObject>,
             private val additionalProperties: MutableMap<String, JsonValue>,
         ) {
@@ -587,6 +632,9 @@ private constructor(
                 totalTracks: JsonField<Long> = JsonMissing.of(),
                 @JsonProperty("type") @ExcludeMissing type: JsonValue = JsonMissing.of(),
                 @JsonProperty("uri") @ExcludeMissing uri: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("published")
+                @ExcludeMissing
+                published: JsonField<Boolean> = JsonMissing.of(),
                 @JsonProperty("restrictions")
                 @ExcludeMissing
                 restrictions: JsonField<AlbumRestrictionObject> = JsonMissing.of(),
@@ -604,6 +652,7 @@ private constructor(
                 totalTracks,
                 type,
                 uri,
+                published,
                 restrictions,
                 mutableMapOf(),
             )
@@ -736,6 +785,17 @@ private constructor(
             fun uri(): String = uri.getRequired("uri")
 
             /**
+             * The playlist's public/private status (if it should be added to the user's profile or
+             * not): `true` the playlist will be public, `false` the playlist will be private,
+             * `null` the playlist status is not relevant. For more about public/private status, see
+             * [Working with Playlists](/documentation/web-api/concepts/playlists)
+             *
+             * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if
+             *   the server responded with an unexpected value).
+             */
+            fun published(): Optional<Boolean> = published.getOptional("published")
+
+            /**
              * Included in the response when a content restriction is applied.
              *
              * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if
@@ -851,6 +911,16 @@ private constructor(
             @JsonProperty("uri") @ExcludeMissing fun _uri(): JsonField<String> = uri
 
             /**
+             * Returns the raw JSON value of [published].
+             *
+             * Unlike [published], this method doesn't throw if the JSON field has an unexpected
+             * type.
+             */
+            @JsonProperty("published")
+            @ExcludeMissing
+            fun _published(): JsonField<Boolean> = published
+
+            /**
              * Returns the raw JSON value of [restrictions].
              *
              * Unlike [restrictions], this method doesn't throw if the JSON field has an unexpected
@@ -912,6 +982,7 @@ private constructor(
                 private var totalTracks: JsonField<Long>? = null
                 private var type: JsonValue = JsonValue.from("album")
                 private var uri: JsonField<String>? = null
+                private var published: JsonField<Boolean> = JsonMissing.of()
                 private var restrictions: JsonField<AlbumRestrictionObject> = JsonMissing.of()
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
@@ -930,6 +1001,7 @@ private constructor(
                     totalTracks = item.totalTracks
                     type = item.type
                     uri = item.uri
+                    published = item.published
                     restrictions = item.restrictions
                     additionalProperties = item.additionalProperties.toMutableMap()
                 }
@@ -1164,6 +1236,24 @@ private constructor(
                  */
                 fun uri(uri: JsonField<String>) = apply { this.uri = uri }
 
+                /**
+                 * The playlist's public/private status (if it should be added to the user's profile
+                 * or not): `true` the playlist will be public, `false` the playlist will be
+                 * private, `null` the playlist status is not relevant. For more about
+                 * public/private status, see
+                 * [Working with Playlists](/documentation/web-api/concepts/playlists)
+                 */
+                fun published(published: Boolean) = published(JsonField.of(published))
+
+                /**
+                 * Sets [Builder.published] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.published] with a well-typed [Boolean] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
+                fun published(published: JsonField<Boolean>) = apply { this.published = published }
+
                 /** Included in the response when a content restriction is applied. */
                 fun restrictions(restrictions: AlbumRestrictionObject) =
                     restrictions(JsonField.of(restrictions))
@@ -1241,6 +1331,7 @@ private constructor(
                         checkRequired("totalTracks", totalTracks),
                         type,
                         checkRequired("uri", uri),
+                        published,
                         restrictions,
                         additionalProperties.toMutableMap(),
                     )
@@ -1270,6 +1361,7 @@ private constructor(
                     }
                 }
                 uri()
+                published()
                 restrictions().ifPresent { it.validate() }
                 validated = true
             }
@@ -1303,6 +1395,7 @@ private constructor(
                     (if (totalTracks.asKnown().isPresent) 1 else 0) +
                     type.let { if (it == JsonValue.from("album")) 1 else 0 } +
                     (if (uri.asKnown().isPresent) 1 else 0) +
+                    (if (published.asKnown().isPresent) 1 else 0) +
                     (restrictions.asKnown().getOrNull()?.validity() ?: 0)
 
             /** The type of the album. */
@@ -1606,6 +1699,7 @@ private constructor(
                     totalTracks == other.totalTracks &&
                     type == other.type &&
                     uri == other.uri &&
+                    published == other.published &&
                     restrictions == other.restrictions &&
                     additionalProperties == other.additionalProperties
             }
@@ -1625,6 +1719,7 @@ private constructor(
                     totalTracks,
                     type,
                     uri,
+                    published,
                     restrictions,
                     additionalProperties,
                 )
@@ -1633,7 +1728,7 @@ private constructor(
             override fun hashCode(): Int = hashCode
 
             override fun toString() =
-                "Item{id=$id, albumType=$albumType, artists=$artists, availableMarkets=$availableMarkets, externalUrls=$externalUrls, href=$href, images=$images, name=$name, releaseDate=$releaseDate, releaseDatePrecision=$releaseDatePrecision, totalTracks=$totalTracks, type=$type, uri=$uri, restrictions=$restrictions, additionalProperties=$additionalProperties}"
+                "Item{id=$id, albumType=$albumType, artists=$artists, availableMarkets=$availableMarkets, externalUrls=$externalUrls, href=$href, images=$images, name=$name, releaseDate=$releaseDate, releaseDatePrecision=$releaseDatePrecision, totalTracks=$totalTracks, type=$type, uri=$uri, published=$published, restrictions=$restrictions, additionalProperties=$additionalProperties}"
         }
 
         override fun equals(other: Any?): Boolean {
@@ -1649,17 +1744,28 @@ private constructor(
                 previous == other.previous &&
                 total == other.total &&
                 items == other.items &&
+                published == other.published &&
                 additionalProperties == other.additionalProperties
         }
 
         private val hashCode: Int by lazy {
-            Objects.hash(href, limit, next, offset, previous, total, items, additionalProperties)
+            Objects.hash(
+                href,
+                limit,
+                next,
+                offset,
+                previous,
+                total,
+                items,
+                published,
+                additionalProperties,
+            )
         }
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Albums{href=$href, limit=$limit, next=$next, offset=$offset, previous=$previous, total=$total, items=$items, additionalProperties=$additionalProperties}"
+            "Albums{href=$href, limit=$limit, next=$next, offset=$offset, previous=$previous, total=$total, items=$items, published=$published, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {

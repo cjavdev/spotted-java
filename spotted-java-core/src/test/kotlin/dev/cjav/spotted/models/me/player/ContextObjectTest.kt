@@ -14,15 +14,19 @@ internal class ContextObjectTest {
     fun create() {
         val contextObject =
             ContextObject.builder()
-                .externalUrls(ExternalUrlObject.builder().spotify("spotify").build())
+                .externalUrls(
+                    ExternalUrlObject.builder().published(true).spotify("spotify").build()
+                )
                 .href("href")
+                .published(true)
                 .type("type")
                 .uri("uri")
                 .build()
 
         assertThat(contextObject.externalUrls())
-            .contains(ExternalUrlObject.builder().spotify("spotify").build())
+            .contains(ExternalUrlObject.builder().published(true).spotify("spotify").build())
         assertThat(contextObject.href()).contains("href")
+        assertThat(contextObject.published()).contains(true)
         assertThat(contextObject.type()).contains("type")
         assertThat(contextObject.uri()).contains("uri")
     }
@@ -32,8 +36,11 @@ internal class ContextObjectTest {
         val jsonMapper = jsonMapper()
         val contextObject =
             ContextObject.builder()
-                .externalUrls(ExternalUrlObject.builder().spotify("spotify").build())
+                .externalUrls(
+                    ExternalUrlObject.builder().published(true).spotify("spotify").build()
+                )
                 .href("href")
+                .published(true)
                 .type("type")
                 .uri("uri")
                 .build()

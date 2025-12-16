@@ -11,17 +11,20 @@ internal class ExternalIdObjectTest {
 
     @Test
     fun create() {
-        val externalIdObject = ExternalIdObject.builder().ean("ean").isrc("isrc").upc("upc").build()
+        val externalIdObject =
+            ExternalIdObject.builder().ean("ean").isrc("isrc").published(true).upc("upc").build()
 
         assertThat(externalIdObject.ean()).contains("ean")
         assertThat(externalIdObject.isrc()).contains("isrc")
+        assertThat(externalIdObject.published()).contains(true)
         assertThat(externalIdObject.upc()).contains("upc")
     }
 
     @Test
     fun roundtrip() {
         val jsonMapper = jsonMapper()
-        val externalIdObject = ExternalIdObject.builder().ean("ean").isrc("isrc").upc("upc").build()
+        val externalIdObject =
+            ExternalIdObject.builder().ean("ean").isrc("isrc").published(true).upc("upc").build()
 
         val roundtrippedExternalIdObject =
             jsonMapper.readValue(
