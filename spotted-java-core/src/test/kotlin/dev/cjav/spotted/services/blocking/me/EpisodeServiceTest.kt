@@ -56,7 +56,7 @@ internal class EpisodeServiceTest {
                 .build()
         val episodeService = client.me().episodes()
 
-        episodeService.remove(EpisodeRemoveParams.builder().addId("string").build())
+        episodeService.remove(EpisodeRemoveParams.builder().addId("string").published(true).build())
     }
 
     @Disabled("Prism tests are disabled")
@@ -69,6 +69,6 @@ internal class EpisodeServiceTest {
                 .build()
         val episodeService = client.me().episodes()
 
-        episodeService.save(EpisodeSaveParams.builder().addId("string").build())
+        episodeService.save(EpisodeSaveParams.builder().addId("string").published(true).build())
     }
 }

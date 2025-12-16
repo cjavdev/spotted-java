@@ -21,6 +21,7 @@ internal class PlayerStartPlaybackParamsTest {
                     .build()
             )
             .positionMs(0L)
+            .published(true)
             .addUris("string")
             .build()
     }
@@ -37,6 +38,7 @@ internal class PlayerStartPlaybackParamsTest {
                         .build()
                 )
                 .positionMs(0L)
+                .published(true)
                 .addUris("string")
                 .build()
 
@@ -71,6 +73,7 @@ internal class PlayerStartPlaybackParamsTest {
                         .build()
                 )
                 .positionMs(0L)
+                .published(true)
                 .addUris("string")
                 .build()
 
@@ -84,6 +87,7 @@ internal class PlayerStartPlaybackParamsTest {
                     .build()
             )
         assertThat(body.positionMs()).contains(0L)
+        assertThat(body.published()).contains(true)
         assertThat(body.uris().getOrNull()).containsExactly("string")
     }
 

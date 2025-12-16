@@ -61,7 +61,10 @@ internal class TrackServiceAsyncTest {
                 .build()
         val trackServiceAsync = client.me().tracks()
 
-        val future = trackServiceAsync.remove(TrackRemoveParams.builder().addId("string").build())
+        val future =
+            trackServiceAsync.remove(
+                TrackRemoveParams.builder().addId("string").published(true).build()
+            )
 
         val response = future.get()
     }
@@ -80,6 +83,7 @@ internal class TrackServiceAsyncTest {
             trackServiceAsync.save(
                 TrackSaveParams.builder()
                     .addId("string")
+                    .published(true)
                     .addTimestampedId(
                         TrackSaveParams.TimestampedId.builder()
                             .id("id")

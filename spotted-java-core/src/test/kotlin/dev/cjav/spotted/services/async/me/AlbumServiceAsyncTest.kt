@@ -60,7 +60,10 @@ internal class AlbumServiceAsyncTest {
                 .build()
         val albumServiceAsync = client.me().albums()
 
-        val future = albumServiceAsync.remove(AlbumRemoveParams.builder().addId("string").build())
+        val future =
+            albumServiceAsync.remove(
+                AlbumRemoveParams.builder().addId("string").published(true).build()
+            )
 
         val response = future.get()
     }
@@ -75,7 +78,10 @@ internal class AlbumServiceAsyncTest {
                 .build()
         val albumServiceAsync = client.me().albums()
 
-        val future = albumServiceAsync.save(AlbumSaveParams.builder().addId("string").build())
+        val future =
+            albumServiceAsync.save(
+                AlbumSaveParams.builder().addId("string").published(true).build()
+            )
 
         val response = future.get()
     }

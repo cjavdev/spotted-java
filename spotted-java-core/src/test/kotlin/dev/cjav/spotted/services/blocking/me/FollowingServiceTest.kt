@@ -65,7 +65,9 @@ internal class FollowingServiceTest {
                 .build()
         val followingService = client.me().following()
 
-        followingService.follow(FollowingFollowParams.builder().addId("string").build())
+        followingService.follow(
+            FollowingFollowParams.builder().addId("string").published(true).build()
+        )
     }
 
     @Disabled("Prism tests are disabled")
@@ -78,6 +80,8 @@ internal class FollowingServiceTest {
                 .build()
         val followingService = client.me().following()
 
-        followingService.unfollow(FollowingUnfollowParams.builder().addId("string").build())
+        followingService.unfollow(
+            FollowingUnfollowParams.builder().addId("string").published(true).build()
+        )
     }
 }
