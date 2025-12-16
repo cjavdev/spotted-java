@@ -55,6 +55,17 @@ private constructor(
     fun play(): Optional<Boolean> = body.play()
 
     /**
+     * The playlist's public/private status (if it should be added to the user's profile or not):
+     * `true` the playlist will be public, `false` the playlist will be private, `null` the playlist
+     * status is not relevant. For more about public/private status, see
+     * [Working with Playlists](/documentation/web-api/concepts/playlists)
+     *
+     * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun published(): Optional<Boolean> = body.published()
+
+    /**
      * Returns the raw JSON value of [deviceIds].
      *
      * Unlike [deviceIds], this method doesn't throw if the JSON field has an unexpected type.
@@ -67,6 +78,13 @@ private constructor(
      * Unlike [play], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _play(): JsonField<Boolean> = body._play()
+
+    /**
+     * Returns the raw JSON value of [published].
+     *
+     * Unlike [published], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _published(): JsonField<Boolean> = body._published()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
@@ -112,6 +130,7 @@ private constructor(
          * Otherwise, it's more convenient to use the top-level setters instead:
          * - [deviceIds]
          * - [play]
+         * - [published]
          */
         fun body(body: Body) = apply { this.body = body.toBuilder() }
 
@@ -153,6 +172,23 @@ private constructor(
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun play(play: JsonField<Boolean>) = apply { body.play(play) }
+
+        /**
+         * The playlist's public/private status (if it should be added to the user's profile or
+         * not): `true` the playlist will be public, `false` the playlist will be private, `null`
+         * the playlist status is not relevant. For more about public/private status, see
+         * [Working with Playlists](/documentation/web-api/concepts/playlists)
+         */
+        fun published(published: Boolean) = apply { body.published(published) }
+
+        /**
+         * Sets [Builder.published] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.published] with a well-typed [Boolean] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun published(published: JsonField<Boolean>) = apply { body.published(published) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
             body.additionalProperties(additionalBodyProperties)
@@ -302,6 +338,7 @@ private constructor(
     private constructor(
         private val deviceIds: JsonField<List<String>>,
         private val play: JsonField<Boolean>,
+        private val published: JsonField<Boolean>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
@@ -311,7 +348,10 @@ private constructor(
             @ExcludeMissing
             deviceIds: JsonField<List<String>> = JsonMissing.of(),
             @JsonProperty("play") @ExcludeMissing play: JsonField<Boolean> = JsonMissing.of(),
-        ) : this(deviceIds, play, mutableMapOf())
+            @JsonProperty("published")
+            @ExcludeMissing
+            published: JsonField<Boolean> = JsonMissing.of(),
+        ) : this(deviceIds, play, published, mutableMapOf())
 
         /**
          * A JSON array containing the ID of the device on which playback should be
@@ -335,6 +375,17 @@ private constructor(
         fun play(): Optional<Boolean> = play.getOptional("play")
 
         /**
+         * The playlist's public/private status (if it should be added to the user's profile or
+         * not): `true` the playlist will be public, `false` the playlist will be private, `null`
+         * the playlist status is not relevant. For more about public/private status, see
+         * [Working with Playlists](/documentation/web-api/concepts/playlists)
+         *
+         * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun published(): Optional<Boolean> = published.getOptional("published")
+
+        /**
          * Returns the raw JSON value of [deviceIds].
          *
          * Unlike [deviceIds], this method doesn't throw if the JSON field has an unexpected type.
@@ -349,6 +400,13 @@ private constructor(
          * Unlike [play], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("play") @ExcludeMissing fun _play(): JsonField<Boolean> = play
+
+        /**
+         * Returns the raw JSON value of [published].
+         *
+         * Unlike [published], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("published") @ExcludeMissing fun _published(): JsonField<Boolean> = published
 
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -380,12 +438,14 @@ private constructor(
 
             private var deviceIds: JsonField<MutableList<String>>? = null
             private var play: JsonField<Boolean> = JsonMissing.of()
+            private var published: JsonField<Boolean> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(body: Body) = apply {
                 deviceIds = body.deviceIds.map { it.toMutableList() }
                 play = body.play
+                published = body.published
                 additionalProperties = body.additionalProperties.toMutableMap()
             }
 
@@ -436,6 +496,23 @@ private constructor(
              */
             fun play(play: JsonField<Boolean>) = apply { this.play = play }
 
+            /**
+             * The playlist's public/private status (if it should be added to the user's profile or
+             * not): `true` the playlist will be public, `false` the playlist will be private,
+             * `null` the playlist status is not relevant. For more about public/private status, see
+             * [Working with Playlists](/documentation/web-api/concepts/playlists)
+             */
+            fun published(published: Boolean) = published(JsonField.of(published))
+
+            /**
+             * Sets [Builder.published] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.published] with a well-typed [Boolean] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun published(published: JsonField<Boolean>) = apply { this.published = published }
+
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
                 putAllAdditionalProperties(additionalProperties)
@@ -471,6 +548,7 @@ private constructor(
                 Body(
                     checkRequired("deviceIds", deviceIds).map { it.toImmutable() },
                     play,
+                    published,
                     additionalProperties.toMutableMap(),
                 )
         }
@@ -484,6 +562,7 @@ private constructor(
 
             deviceIds()
             play()
+            published()
             validated = true
         }
 
@@ -503,7 +582,9 @@ private constructor(
          */
         @JvmSynthetic
         internal fun validity(): Int =
-            (deviceIds.asKnown().getOrNull()?.size ?: 0) + (if (play.asKnown().isPresent) 1 else 0)
+            (deviceIds.asKnown().getOrNull()?.size ?: 0) +
+                (if (play.asKnown().isPresent) 1 else 0) +
+                (if (published.asKnown().isPresent) 1 else 0)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -513,15 +594,18 @@ private constructor(
             return other is Body &&
                 deviceIds == other.deviceIds &&
                 play == other.play &&
+                published == other.published &&
                 additionalProperties == other.additionalProperties
         }
 
-        private val hashCode: Int by lazy { Objects.hash(deviceIds, play, additionalProperties) }
+        private val hashCode: Int by lazy {
+            Objects.hash(deviceIds, play, published, additionalProperties)
+        }
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Body{deviceIds=$deviceIds, play=$play, additionalProperties=$additionalProperties}"
+            "Body{deviceIds=$deviceIds, play=$play, published=$published, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {

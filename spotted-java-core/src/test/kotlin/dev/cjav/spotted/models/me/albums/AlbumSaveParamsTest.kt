@@ -10,16 +10,17 @@ internal class AlbumSaveParamsTest {
 
     @Test
     fun create() {
-        AlbumSaveParams.builder().addId("string").build()
+        AlbumSaveParams.builder().addId("string").published(true).build()
     }
 
     @Test
     fun body() {
-        val params = AlbumSaveParams.builder().addId("string").build()
+        val params = AlbumSaveParams.builder().addId("string").published(true).build()
 
         val body = params._body()
 
         assertThat(body.ids().getOrNull()).containsExactly("string")
+        assertThat(body.published()).contains(true)
     }
 
     @Test

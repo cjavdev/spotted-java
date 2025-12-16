@@ -73,7 +73,9 @@ internal class FollowingServiceAsyncTest {
         val followingServiceAsync = client.me().following()
 
         val future =
-            followingServiceAsync.follow(FollowingFollowParams.builder().addId("string").build())
+            followingServiceAsync.follow(
+                FollowingFollowParams.builder().addId("string").published(true).build()
+            )
 
         val response = future.get()
     }
@@ -91,7 +93,7 @@ internal class FollowingServiceAsyncTest {
 
         val future =
             followingServiceAsync.unfollow(
-                FollowingUnfollowParams.builder().addId("string").build()
+                FollowingUnfollowParams.builder().addId("string").published(true).build()
             )
 
         val response = future.get()

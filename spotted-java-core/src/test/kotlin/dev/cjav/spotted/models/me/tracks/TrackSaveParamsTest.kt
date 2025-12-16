@@ -13,6 +13,7 @@ internal class TrackSaveParamsTest {
     fun create() {
         TrackSaveParams.builder()
             .addId("string")
+            .published(true)
             .addTimestampedId(
                 TrackSaveParams.TimestampedId.builder()
                     .id("id")
@@ -27,6 +28,7 @@ internal class TrackSaveParamsTest {
         val params =
             TrackSaveParams.builder()
                 .addId("string")
+                .published(true)
                 .addTimestampedId(
                     TrackSaveParams.TimestampedId.builder()
                         .id("id")
@@ -38,6 +40,7 @@ internal class TrackSaveParamsTest {
         val body = params._body()
 
         assertThat(body.ids()).containsExactly("string")
+        assertThat(body.published()).contains(true)
         assertThat(body.timestampedIds().getOrNull())
             .containsExactly(
                 TrackSaveParams.TimestampedId.builder()

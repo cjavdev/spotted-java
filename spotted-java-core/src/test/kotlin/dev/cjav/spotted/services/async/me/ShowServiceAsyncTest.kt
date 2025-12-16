@@ -63,7 +63,10 @@ internal class ShowServiceAsyncTest {
                 .build()
         val showServiceAsync = client.me().shows()
 
-        val future = showServiceAsync.remove(ShowRemoveParams.builder().addId("string").build())
+        val future =
+            showServiceAsync.remove(
+                ShowRemoveParams.builder().addId("string").published(true).build()
+            )
 
         val response = future.get()
     }
@@ -79,7 +82,8 @@ internal class ShowServiceAsyncTest {
                 .build()
         val showServiceAsync = client.me().shows()
 
-        val future = showServiceAsync.save(ShowSaveParams.builder().addId("string").build())
+        val future =
+            showServiceAsync.save(ShowSaveParams.builder().addId("string").published(true).build())
 
         val response = future.get()
     }

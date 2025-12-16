@@ -44,6 +44,17 @@ private constructor(
     fun ids(): List<String> = body.ids()
 
     /**
+     * The playlist's public/private status (if it should be added to the user's profile or not):
+     * `true` the playlist will be public, `false` the playlist will be private, `null` the playlist
+     * status is not relevant. For more about public/private status, see
+     * [Working with Playlists](/documentation/web-api/concepts/playlists)
+     *
+     * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun published(): Optional<Boolean> = body.published()
+
+    /**
      * A JSON array of objects containing track IDs with their corresponding timestamps. Each object
      * must include a track ID and an `added_at` timestamp. This allows you to specify when tracks
      * were added to maintain a specific chronological order in the user's library.<br/>A maximum of
@@ -62,6 +73,13 @@ private constructor(
      * Unlike [ids], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _ids(): JsonField<List<String>> = body._ids()
+
+    /**
+     * Returns the raw JSON value of [published].
+     *
+     * Unlike [published], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _published(): JsonField<Boolean> = body._published()
 
     /**
      * Returns the raw JSON value of [timestampedIds].
@@ -113,6 +131,7 @@ private constructor(
          * This is generally only useful if you are already constructing the body separately.
          * Otherwise, it's more convenient to use the top-level setters instead:
          * - [ids]
+         * - [published]
          * - [timestampedIds]
          */
         fun body(body: Body) = apply { this.body = body.toBuilder() }
@@ -141,6 +160,23 @@ private constructor(
          * @throws IllegalStateException if the field was previously set to a non-list.
          */
         fun addId(id: String) = apply { body.addId(id) }
+
+        /**
+         * The playlist's public/private status (if it should be added to the user's profile or
+         * not): `true` the playlist will be public, `false` the playlist will be private, `null`
+         * the playlist status is not relevant. For more about public/private status, see
+         * [Working with Playlists](/documentation/web-api/concepts/playlists)
+         */
+        fun published(published: Boolean) = apply { body.published(published) }
+
+        /**
+         * Sets [Builder.published] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.published] with a well-typed [Boolean] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun published(published: JsonField<Boolean>) = apply { body.published(published) }
 
         /**
          * A JSON array of objects containing track IDs with their corresponding timestamps. Each
@@ -317,6 +353,7 @@ private constructor(
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val ids: JsonField<List<String>>,
+        private val published: JsonField<Boolean>,
         private val timestampedIds: JsonField<List<TimestampedId>>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
@@ -324,10 +361,13 @@ private constructor(
         @JsonCreator
         private constructor(
             @JsonProperty("ids") @ExcludeMissing ids: JsonField<List<String>> = JsonMissing.of(),
+            @JsonProperty("published")
+            @ExcludeMissing
+            published: JsonField<Boolean> = JsonMissing.of(),
             @JsonProperty("timestamped_ids")
             @ExcludeMissing
             timestampedIds: JsonField<List<TimestampedId>> = JsonMissing.of(),
-        ) : this(ids, timestampedIds, mutableMapOf())
+        ) : this(ids, published, timestampedIds, mutableMapOf())
 
         /**
          * A JSON array of the [Spotify IDs](/documentation/web-api/concepts/spotify-uris-ids). For
@@ -340,6 +380,17 @@ private constructor(
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
         fun ids(): List<String> = ids.getRequired("ids")
+
+        /**
+         * The playlist's public/private status (if it should be added to the user's profile or
+         * not): `true` the playlist will be public, `false` the playlist will be private, `null`
+         * the playlist status is not relevant. For more about public/private status, see
+         * [Working with Playlists](/documentation/web-api/concepts/playlists)
+         *
+         * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun published(): Optional<Boolean> = published.getOptional("published")
 
         /**
          * A JSON array of objects containing track IDs with their corresponding timestamps. Each
@@ -361,6 +412,13 @@ private constructor(
          * Unlike [ids], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("ids") @ExcludeMissing fun _ids(): JsonField<List<String>> = ids
+
+        /**
+         * Returns the raw JSON value of [published].
+         *
+         * Unlike [published], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("published") @ExcludeMissing fun _published(): JsonField<Boolean> = published
 
         /**
          * Returns the raw JSON value of [timestampedIds].
@@ -401,12 +459,14 @@ private constructor(
         class Builder internal constructor() {
 
             private var ids: JsonField<MutableList<String>>? = null
+            private var published: JsonField<Boolean> = JsonMissing.of()
             private var timestampedIds: JsonField<MutableList<TimestampedId>>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(body: Body) = apply {
                 ids = body.ids.map { it.toMutableList() }
+                published = body.published
                 timestampedIds = body.timestampedIds.map { it.toMutableList() }
                 additionalProperties = body.additionalProperties.toMutableMap()
             }
@@ -439,6 +499,23 @@ private constructor(
             fun addId(id: String) = apply {
                 ids = (ids ?: JsonField.of(mutableListOf())).also { checkKnown("ids", it).add(id) }
             }
+
+            /**
+             * The playlist's public/private status (if it should be added to the user's profile or
+             * not): `true` the playlist will be public, `false` the playlist will be private,
+             * `null` the playlist status is not relevant. For more about public/private status, see
+             * [Working with Playlists](/documentation/web-api/concepts/playlists)
+             */
+            fun published(published: Boolean) = published(JsonField.of(published))
+
+            /**
+             * Sets [Builder.published] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.published] with a well-typed [Boolean] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun published(published: JsonField<Boolean>) = apply { this.published = published }
 
             /**
              * A JSON array of objects containing track IDs with their corresponding timestamps.
@@ -508,6 +585,7 @@ private constructor(
             fun build(): Body =
                 Body(
                     checkRequired("ids", ids).map { it.toImmutable() },
+                    published,
                     (timestampedIds ?: JsonMissing.of()).map { it.toImmutable() },
                     additionalProperties.toMutableMap(),
                 )
@@ -521,6 +599,7 @@ private constructor(
             }
 
             ids()
+            published()
             timestampedIds().ifPresent { it.forEach { it.validate() } }
             validated = true
         }
@@ -542,6 +621,7 @@ private constructor(
         @JvmSynthetic
         internal fun validity(): Int =
             (ids.asKnown().getOrNull()?.size ?: 0) +
+                (if (published.asKnown().isPresent) 1 else 0) +
                 (timestampedIds.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
 
         override fun equals(other: Any?): Boolean {
@@ -551,18 +631,19 @@ private constructor(
 
             return other is Body &&
                 ids == other.ids &&
+                published == other.published &&
                 timestampedIds == other.timestampedIds &&
                 additionalProperties == other.additionalProperties
         }
 
         private val hashCode: Int by lazy {
-            Objects.hash(ids, timestampedIds, additionalProperties)
+            Objects.hash(ids, published, timestampedIds, additionalProperties)
         }
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Body{ids=$ids, timestampedIds=$timestampedIds, additionalProperties=$additionalProperties}"
+            "Body{ids=$ids, published=$published, timestampedIds=$timestampedIds, additionalProperties=$additionalProperties}"
     }
 
     class TimestampedId
