@@ -18,14 +18,27 @@ import java.util.Optional
 class TrackRestrictionObject
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
+    private val published: JsonField<Boolean>,
     private val reason: JsonField<String>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
     @JsonCreator
     private constructor(
-        @JsonProperty("reason") @ExcludeMissing reason: JsonField<String> = JsonMissing.of()
-    ) : this(reason, mutableMapOf())
+        @JsonProperty("published") @ExcludeMissing published: JsonField<Boolean> = JsonMissing.of(),
+        @JsonProperty("reason") @ExcludeMissing reason: JsonField<String> = JsonMissing.of(),
+    ) : this(published, reason, mutableMapOf())
+
+    /**
+     * The playlist's public/private status (if it should be added to the user's profile or not):
+     * `true` the playlist will be public, `false` the playlist will be private, `null` the playlist
+     * status is not relevant. For more about public/private status, see
+     * [Working with Playlists](/documentation/web-api/concepts/playlists)
+     *
+     * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun published(): Optional<Boolean> = published.getOptional("published")
 
     /**
      * The reason for the restriction. Supported values:
@@ -41,6 +54,13 @@ private constructor(
      *   server responded with an unexpected value).
      */
     fun reason(): Optional<String> = reason.getOptional("reason")
+
+    /**
+     * Returns the raw JSON value of [published].
+     *
+     * Unlike [published], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("published") @ExcludeMissing fun _published(): JsonField<Boolean> = published
 
     /**
      * Returns the raw JSON value of [reason].
@@ -70,14 +90,33 @@ private constructor(
     /** A builder for [TrackRestrictionObject]. */
     class Builder internal constructor() {
 
+        private var published: JsonField<Boolean> = JsonMissing.of()
         private var reason: JsonField<String> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(trackRestrictionObject: TrackRestrictionObject) = apply {
+            published = trackRestrictionObject.published
             reason = trackRestrictionObject.reason
             additionalProperties = trackRestrictionObject.additionalProperties.toMutableMap()
         }
+
+        /**
+         * The playlist's public/private status (if it should be added to the user's profile or
+         * not): `true` the playlist will be public, `false` the playlist will be private, `null`
+         * the playlist status is not relevant. For more about public/private status, see
+         * [Working with Playlists](/documentation/web-api/concepts/playlists)
+         */
+        fun published(published: Boolean) = published(JsonField.of(published))
+
+        /**
+         * Sets [Builder.published] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.published] with a well-typed [Boolean] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun published(published: JsonField<Boolean>) = apply { this.published = published }
 
         /**
          * The reason for the restriction. Supported values:
@@ -124,7 +163,7 @@ private constructor(
          * Further updates to this [Builder] will not mutate the returned instance.
          */
         fun build(): TrackRestrictionObject =
-            TrackRestrictionObject(reason, additionalProperties.toMutableMap())
+            TrackRestrictionObject(published, reason, additionalProperties.toMutableMap())
     }
 
     private var validated: Boolean = false
@@ -134,6 +173,7 @@ private constructor(
             return@apply
         }
 
+        published()
         reason()
         validated = true
     }
@@ -151,7 +191,9 @@ private constructor(
      *
      * Used for best match union deserialization.
      */
-    @JvmSynthetic internal fun validity(): Int = (if (reason.asKnown().isPresent) 1 else 0)
+    @JvmSynthetic
+    internal fun validity(): Int =
+        (if (published.asKnown().isPresent) 1 else 0) + (if (reason.asKnown().isPresent) 1 else 0)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
@@ -159,14 +201,15 @@ private constructor(
         }
 
         return other is TrackRestrictionObject &&
+            published == other.published &&
             reason == other.reason &&
             additionalProperties == other.additionalProperties
     }
 
-    private val hashCode: Int by lazy { Objects.hash(reason, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(published, reason, additionalProperties) }
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "TrackRestrictionObject{reason=$reason, additionalProperties=$additionalProperties}"
+        "TrackRestrictionObject{published=$published, reason=$reason, additionalProperties=$additionalProperties}"
 }

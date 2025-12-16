@@ -14,16 +14,20 @@ internal class PlaylistUserObjectTest {
         val playlistUserObject =
             PlaylistUserObject.builder()
                 .id("id")
-                .externalUrls(ExternalUrlObject.builder().spotify("spotify").build())
+                .externalUrls(
+                    ExternalUrlObject.builder().published(true).spotify("spotify").build()
+                )
                 .href("href")
+                .published(true)
                 .type(PlaylistUserObject.Type.USER)
                 .uri("uri")
                 .build()
 
         assertThat(playlistUserObject.id()).contains("id")
         assertThat(playlistUserObject.externalUrls())
-            .contains(ExternalUrlObject.builder().spotify("spotify").build())
+            .contains(ExternalUrlObject.builder().published(true).spotify("spotify").build())
         assertThat(playlistUserObject.href()).contains("href")
+        assertThat(playlistUserObject.published()).contains(true)
         assertThat(playlistUserObject.type()).contains(PlaylistUserObject.Type.USER)
         assertThat(playlistUserObject.uri()).contains("uri")
     }
@@ -34,8 +38,11 @@ internal class PlaylistUserObjectTest {
         val playlistUserObject =
             PlaylistUserObject.builder()
                 .id("id")
-                .externalUrls(ExternalUrlObject.builder().spotify("spotify").build())
+                .externalUrls(
+                    ExternalUrlObject.builder().published(true).spotify("spotify").build()
+                )
                 .href("href")
+                .published(true)
                 .type(PlaylistUserObject.Type.USER)
                 .uri("uri")
                 .build()

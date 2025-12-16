@@ -33,16 +33,22 @@ internal class ArtistListAlbumsPageResponseTest {
                             SimplifiedArtistObject.builder()
                                 .id("id")
                                 .externalUrls(
-                                    ExternalUrlObject.builder().spotify("spotify").build()
+                                    ExternalUrlObject.builder()
+                                        .published(true)
+                                        .spotify("spotify")
+                                        .build()
                                 )
                                 .href("href")
                                 .name("name")
+                                .published(true)
                                 .type(SimplifiedArtistObject.Type.ARTIST)
                                 .uri("uri")
                                 .build()
                         )
                         .availableMarkets(listOf("CA", "BR", "IT"))
-                        .externalUrls(ExternalUrlObject.builder().spotify("spotify").build())
+                        .externalUrls(
+                            ExternalUrlObject.builder().published(true).spotify("spotify").build()
+                        )
                         .href("href")
                         .addImage(
                             ImageObject.builder()
@@ -51,6 +57,7 @@ internal class ArtistListAlbumsPageResponseTest {
                                     "https://i.scdn.co/image/ab67616d00001e02ff9ca10b55ce82ae553c8228\n"
                                 )
                                 .width(300L)
+                                .published(true)
                                 .build()
                         )
                         .name("name")
@@ -58,13 +65,16 @@ internal class ArtistListAlbumsPageResponseTest {
                         .releaseDatePrecision(ArtistListAlbumsResponse.ReleaseDatePrecision.YEAR)
                         .totalTracks(9L)
                         .uri("spotify:album:2up3OPMp9Tb4dAKM2erWXQ")
+                        .published(true)
                         .restrictions(
                             AlbumRestrictionObject.builder()
+                                .published(true)
                                 .reason(AlbumRestrictionObject.Reason.MARKET)
                                 .build()
                         )
                         .build()
                 )
+                .published(true)
                 .build()
 
         assertThat(artistListAlbumsPageResponse.href())
@@ -85,15 +95,23 @@ internal class ArtistListAlbumsPageResponseTest {
                     .addArtist(
                         SimplifiedArtistObject.builder()
                             .id("id")
-                            .externalUrls(ExternalUrlObject.builder().spotify("spotify").build())
+                            .externalUrls(
+                                ExternalUrlObject.builder()
+                                    .published(true)
+                                    .spotify("spotify")
+                                    .build()
+                            )
                             .href("href")
                             .name("name")
+                            .published(true)
                             .type(SimplifiedArtistObject.Type.ARTIST)
                             .uri("uri")
                             .build()
                     )
                     .availableMarkets(listOf("CA", "BR", "IT"))
-                    .externalUrls(ExternalUrlObject.builder().spotify("spotify").build())
+                    .externalUrls(
+                        ExternalUrlObject.builder().published(true).spotify("spotify").build()
+                    )
                     .href("href")
                     .addImage(
                         ImageObject.builder()
@@ -102,6 +120,7 @@ internal class ArtistListAlbumsPageResponseTest {
                                 "https://i.scdn.co/image/ab67616d00001e02ff9ca10b55ce82ae553c8228\n"
                             )
                             .width(300L)
+                            .published(true)
                             .build()
                     )
                     .name("name")
@@ -109,13 +128,16 @@ internal class ArtistListAlbumsPageResponseTest {
                     .releaseDatePrecision(ArtistListAlbumsResponse.ReleaseDatePrecision.YEAR)
                     .totalTracks(9L)
                     .uri("spotify:album:2up3OPMp9Tb4dAKM2erWXQ")
+                    .published(true)
                     .restrictions(
                         AlbumRestrictionObject.builder()
+                            .published(true)
                             .reason(AlbumRestrictionObject.Reason.MARKET)
                             .build()
                     )
                     .build()
             )
+        assertThat(artistListAlbumsPageResponse.published()).contains(true)
     }
 
     @Test
@@ -138,16 +160,22 @@ internal class ArtistListAlbumsPageResponseTest {
                             SimplifiedArtistObject.builder()
                                 .id("id")
                                 .externalUrls(
-                                    ExternalUrlObject.builder().spotify("spotify").build()
+                                    ExternalUrlObject.builder()
+                                        .published(true)
+                                        .spotify("spotify")
+                                        .build()
                                 )
                                 .href("href")
                                 .name("name")
+                                .published(true)
                                 .type(SimplifiedArtistObject.Type.ARTIST)
                                 .uri("uri")
                                 .build()
                         )
                         .availableMarkets(listOf("CA", "BR", "IT"))
-                        .externalUrls(ExternalUrlObject.builder().spotify("spotify").build())
+                        .externalUrls(
+                            ExternalUrlObject.builder().published(true).spotify("spotify").build()
+                        )
                         .href("href")
                         .addImage(
                             ImageObject.builder()
@@ -156,6 +184,7 @@ internal class ArtistListAlbumsPageResponseTest {
                                     "https://i.scdn.co/image/ab67616d00001e02ff9ca10b55ce82ae553c8228\n"
                                 )
                                 .width(300L)
+                                .published(true)
                                 .build()
                         )
                         .name("name")
@@ -163,13 +192,16 @@ internal class ArtistListAlbumsPageResponseTest {
                         .releaseDatePrecision(ArtistListAlbumsResponse.ReleaseDatePrecision.YEAR)
                         .totalTracks(9L)
                         .uri("spotify:album:2up3OPMp9Tb4dAKM2erWXQ")
+                        .published(true)
                         .restrictions(
                             AlbumRestrictionObject.builder()
+                                .published(true)
                                 .reason(AlbumRestrictionObject.Reason.MARKET)
                                 .build()
                         )
                         .build()
                 )
+                .published(true)
                 .build()
 
         val roundtrippedArtistListAlbumsPageResponse =

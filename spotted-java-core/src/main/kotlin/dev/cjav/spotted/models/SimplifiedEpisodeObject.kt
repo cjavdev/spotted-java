@@ -41,6 +41,7 @@ private constructor(
     private val type: JsonValue,
     private val uri: JsonField<String>,
     private val language: JsonField<String>,
+    private val published: JsonField<Boolean>,
     private val restrictions: JsonField<EpisodeRestrictionObject>,
     private val resumePoint: JsonField<ResumePointObject>,
     private val additionalProperties: MutableMap<String, JsonValue>,
@@ -86,6 +87,7 @@ private constructor(
         @JsonProperty("type") @ExcludeMissing type: JsonValue = JsonMissing.of(),
         @JsonProperty("uri") @ExcludeMissing uri: JsonField<String> = JsonMissing.of(),
         @JsonProperty("language") @ExcludeMissing language: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("published") @ExcludeMissing published: JsonField<Boolean> = JsonMissing.of(),
         @JsonProperty("restrictions")
         @ExcludeMissing
         restrictions: JsonField<EpisodeRestrictionObject> = JsonMissing.of(),
@@ -111,6 +113,7 @@ private constructor(
         type,
         uri,
         language,
+        published,
         restrictions,
         resumePoint,
         mutableMapOf(),
@@ -274,6 +277,17 @@ private constructor(
     @Deprecated("deprecated") fun language(): Optional<String> = language.getOptional("language")
 
     /**
+     * The playlist's public/private status (if it should be added to the user's profile or not):
+     * `true` the playlist will be public, `false` the playlist will be private, `null` the playlist
+     * status is not relevant. For more about public/private status, see
+     * [Working with Playlists](/documentation/web-api/concepts/playlists)
+     *
+     * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun published(): Optional<Boolean> = published.getOptional("published")
+
+    /**
      * Included in the response when a content restriction is applied.
      *
      * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -429,6 +443,13 @@ private constructor(
     fun _language(): JsonField<String> = language
 
     /**
+     * Returns the raw JSON value of [published].
+     *
+     * Unlike [published], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("published") @ExcludeMissing fun _published(): JsonField<Boolean> = published
+
+    /**
      * Returns the raw JSON value of [restrictions].
      *
      * Unlike [restrictions], this method doesn't throw if the JSON field has an unexpected type.
@@ -507,6 +528,7 @@ private constructor(
         private var type: JsonValue = JsonValue.from("episode")
         private var uri: JsonField<String>? = null
         private var language: JsonField<String> = JsonMissing.of()
+        private var published: JsonField<Boolean> = JsonMissing.of()
         private var restrictions: JsonField<EpisodeRestrictionObject> = JsonMissing.of()
         private var resumePoint: JsonField<ResumePointObject> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -531,6 +553,7 @@ private constructor(
             type = simplifiedEpisodeObject.type
             uri = simplifiedEpisodeObject.uri
             language = simplifiedEpisodeObject.language
+            published = simplifiedEpisodeObject.published
             restrictions = simplifiedEpisodeObject.restrictions
             resumePoint = simplifiedEpisodeObject.resumePoint
             additionalProperties = simplifiedEpisodeObject.additionalProperties.toMutableMap()
@@ -814,6 +837,23 @@ private constructor(
         @Deprecated("deprecated")
         fun language(language: JsonField<String>) = apply { this.language = language }
 
+        /**
+         * The playlist's public/private status (if it should be added to the user's profile or
+         * not): `true` the playlist will be public, `false` the playlist will be private, `null`
+         * the playlist status is not relevant. For more about public/private status, see
+         * [Working with Playlists](/documentation/web-api/concepts/playlists)
+         */
+        fun published(published: Boolean) = published(JsonField.of(published))
+
+        /**
+         * Sets [Builder.published] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.published] with a well-typed [Boolean] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun published(published: JsonField<Boolean>) = apply { this.published = published }
+
         /** Included in the response when a content restriction is applied. */
         fun restrictions(restrictions: EpisodeRestrictionObject) =
             restrictions(JsonField.of(restrictions))
@@ -912,6 +952,7 @@ private constructor(
                 type,
                 checkRequired("uri", uri),
                 language,
+                published,
                 restrictions,
                 resumePoint,
                 additionalProperties.toMutableMap(),
@@ -947,6 +988,7 @@ private constructor(
         }
         uri()
         language()
+        published()
         restrictions().ifPresent { it.validate() }
         resumePoint().ifPresent { it.validate() }
         validated = true
@@ -985,6 +1027,7 @@ private constructor(
             type.let { if (it == JsonValue.from("episode")) 1 else 0 } +
             (if (uri.asKnown().isPresent) 1 else 0) +
             (if (language.asKnown().isPresent) 1 else 0) +
+            (if (published.asKnown().isPresent) 1 else 0) +
             (restrictions.asKnown().getOrNull()?.validity() ?: 0) +
             (resumePoint.asKnown().getOrNull()?.validity() ?: 0)
 
@@ -1150,6 +1193,7 @@ private constructor(
             type == other.type &&
             uri == other.uri &&
             language == other.language &&
+            published == other.published &&
             restrictions == other.restrictions &&
             resumePoint == other.resumePoint &&
             additionalProperties == other.additionalProperties
@@ -1175,6 +1219,7 @@ private constructor(
             type,
             uri,
             language,
+            published,
             restrictions,
             resumePoint,
             additionalProperties,
@@ -1184,5 +1229,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "SimplifiedEpisodeObject{id=$id, audioPreviewUrl=$audioPreviewUrl, description=$description, durationMs=$durationMs, explicit=$explicit, externalUrls=$externalUrls, href=$href, htmlDescription=$htmlDescription, images=$images, isExternallyHosted=$isExternallyHosted, isPlayable=$isPlayable, languages=$languages, name=$name, releaseDate=$releaseDate, releaseDatePrecision=$releaseDatePrecision, type=$type, uri=$uri, language=$language, restrictions=$restrictions, resumePoint=$resumePoint, additionalProperties=$additionalProperties}"
+        "SimplifiedEpisodeObject{id=$id, audioPreviewUrl=$audioPreviewUrl, description=$description, durationMs=$durationMs, explicit=$explicit, externalUrls=$externalUrls, href=$href, htmlDescription=$htmlDescription, images=$images, isExternallyHosted=$isExternallyHosted, isPlayable=$isPlayable, languages=$languages, name=$name, releaseDate=$releaseDate, releaseDatePrecision=$releaseDatePrecision, type=$type, uri=$uri, language=$language, published=$published, restrictions=$restrictions, resumePoint=$resumePoint, additionalProperties=$additionalProperties}"
 }

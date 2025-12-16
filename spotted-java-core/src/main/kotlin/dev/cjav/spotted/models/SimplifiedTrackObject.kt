@@ -34,6 +34,7 @@ private constructor(
     private val linkedFrom: JsonField<LinkedTrackObject>,
     private val name: JsonField<String>,
     private val previewUrl: JsonField<String>,
+    private val published: JsonField<Boolean>,
     private val restrictions: JsonField<TrackRestrictionObject>,
     private val trackNumber: JsonField<Long>,
     private val type: JsonField<String>,
@@ -68,6 +69,7 @@ private constructor(
         @JsonProperty("preview_url")
         @ExcludeMissing
         previewUrl: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("published") @ExcludeMissing published: JsonField<Boolean> = JsonMissing.of(),
         @JsonProperty("restrictions")
         @ExcludeMissing
         restrictions: JsonField<TrackRestrictionObject> = JsonMissing.of(),
@@ -90,6 +92,7 @@ private constructor(
         linkedFrom,
         name,
         previewUrl,
+        published,
         restrictions,
         trackNumber,
         type,
@@ -209,6 +212,17 @@ private constructor(
      */
     @Deprecated("deprecated")
     fun previewUrl(): Optional<String> = previewUrl.getOptional("preview_url")
+
+    /**
+     * The playlist's public/private status (if it should be added to the user's profile or not):
+     * `true` the playlist will be public, `false` the playlist will be private, `null` the playlist
+     * status is not relevant. For more about public/private status, see
+     * [Working with Playlists](/documentation/web-api/concepts/playlists)
+     *
+     * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun published(): Optional<Boolean> = published.getOptional("published")
 
     /**
      * Included in the response when a content restriction is applied.
@@ -347,6 +361,13 @@ private constructor(
     fun _previewUrl(): JsonField<String> = previewUrl
 
     /**
+     * Returns the raw JSON value of [published].
+     *
+     * Unlike [published], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("published") @ExcludeMissing fun _published(): JsonField<Boolean> = published
+
+    /**
      * Returns the raw JSON value of [restrictions].
      *
      * Unlike [restrictions], this method doesn't throw if the JSON field has an unexpected type.
@@ -410,6 +431,7 @@ private constructor(
         private var linkedFrom: JsonField<LinkedTrackObject> = JsonMissing.of()
         private var name: JsonField<String> = JsonMissing.of()
         private var previewUrl: JsonField<String> = JsonMissing.of()
+        private var published: JsonField<Boolean> = JsonMissing.of()
         private var restrictions: JsonField<TrackRestrictionObject> = JsonMissing.of()
         private var trackNumber: JsonField<Long> = JsonMissing.of()
         private var type: JsonField<String> = JsonMissing.of()
@@ -431,6 +453,7 @@ private constructor(
             linkedFrom = simplifiedTrackObject.linkedFrom
             name = simplifiedTrackObject.name
             previewUrl = simplifiedTrackObject.previewUrl
+            published = simplifiedTrackObject.published
             restrictions = simplifiedTrackObject.restrictions
             trackNumber = simplifiedTrackObject.trackNumber
             type = simplifiedTrackObject.type
@@ -646,6 +669,23 @@ private constructor(
         @Deprecated("deprecated")
         fun previewUrl(previewUrl: JsonField<String>) = apply { this.previewUrl = previewUrl }
 
+        /**
+         * The playlist's public/private status (if it should be added to the user's profile or
+         * not): `true` the playlist will be public, `false` the playlist will be private, `null`
+         * the playlist status is not relevant. For more about public/private status, see
+         * [Working with Playlists](/documentation/web-api/concepts/playlists)
+         */
+        fun published(published: Boolean) = published(JsonField.of(published))
+
+        /**
+         * Sets [Builder.published] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.published] with a well-typed [Boolean] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun published(published: JsonField<Boolean>) = apply { this.published = published }
+
         /** Included in the response when a content restriction is applied. */
         fun restrictions(restrictions: TrackRestrictionObject) =
             restrictions(JsonField.of(restrictions))
@@ -737,6 +777,7 @@ private constructor(
                 linkedFrom,
                 name,
                 previewUrl,
+                published,
                 restrictions,
                 trackNumber,
                 type,
@@ -765,6 +806,7 @@ private constructor(
         linkedFrom().ifPresent { it.validate() }
         name()
         previewUrl()
+        published()
         restrictions().ifPresent { it.validate() }
         trackNumber()
         type()
@@ -800,6 +842,7 @@ private constructor(
             (linkedFrom.asKnown().getOrNull()?.validity() ?: 0) +
             (if (name.asKnown().isPresent) 1 else 0) +
             (if (previewUrl.asKnown().isPresent) 1 else 0) +
+            (if (published.asKnown().isPresent) 1 else 0) +
             (restrictions.asKnown().getOrNull()?.validity() ?: 0) +
             (if (trackNumber.asKnown().isPresent) 1 else 0) +
             (if (type.asKnown().isPresent) 1 else 0) +
@@ -824,6 +867,7 @@ private constructor(
             linkedFrom == other.linkedFrom &&
             name == other.name &&
             previewUrl == other.previewUrl &&
+            published == other.published &&
             restrictions == other.restrictions &&
             trackNumber == other.trackNumber &&
             type == other.type &&
@@ -846,6 +890,7 @@ private constructor(
             linkedFrom,
             name,
             previewUrl,
+            published,
             restrictions,
             trackNumber,
             type,
@@ -857,5 +902,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "SimplifiedTrackObject{id=$id, artists=$artists, availableMarkets=$availableMarkets, discNumber=$discNumber, durationMs=$durationMs, explicit=$explicit, externalUrls=$externalUrls, href=$href, isLocal=$isLocal, isPlayable=$isPlayable, linkedFrom=$linkedFrom, name=$name, previewUrl=$previewUrl, restrictions=$restrictions, trackNumber=$trackNumber, type=$type, uri=$uri, additionalProperties=$additionalProperties}"
+        "SimplifiedTrackObject{id=$id, artists=$artists, availableMarkets=$availableMarkets, discNumber=$discNumber, durationMs=$durationMs, explicit=$explicit, externalUrls=$externalUrls, href=$href, isLocal=$isLocal, isPlayable=$isPlayable, linkedFrom=$linkedFrom, name=$name, previewUrl=$previewUrl, published=$published, restrictions=$restrictions, trackNumber=$trackNumber, type=$type, uri=$uri, additionalProperties=$additionalProperties}"
 }

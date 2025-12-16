@@ -28,17 +28,25 @@ internal class ShowListPageResponseTest {
                 .addItem(
                     ShowListResponse.builder()
                         .addedAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                        .published(true)
                         .show(
                             ShowBase.builder()
                                 .id("id")
                                 .addAvailableMarket("string")
                                 .addCopyright(
-                                    CopyrightObject.builder().text("text").type("type").build()
+                                    CopyrightObject.builder()
+                                        .published(true)
+                                        .text("text")
+                                        .type("type")
+                                        .build()
                                 )
                                 .description("description")
                                 .explicit(true)
                                 .externalUrls(
-                                    ExternalUrlObject.builder().spotify("spotify").build()
+                                    ExternalUrlObject.builder()
+                                        .published(true)
+                                        .spotify("spotify")
+                                        .build()
                                 )
                                 .href("href")
                                 .htmlDescription("html_description")
@@ -49,6 +57,7 @@ internal class ShowListPageResponseTest {
                                             "https://i.scdn.co/image/ab67616d00001e02ff9ca10b55ce82ae553c8228\n"
                                         )
                                         .width(300L)
+                                        .published(true)
                                         .build()
                                 )
                                 .isExternallyHosted(true)
@@ -58,10 +67,12 @@ internal class ShowListPageResponseTest {
                                 .publisher("publisher")
                                 .totalEpisodes(0L)
                                 .uri("uri")
+                                .published(true)
                                 .build()
                         )
                         .build()
                 )
+                .published(true)
                 .build()
 
         assertThat(showListPageResponse.href())
@@ -77,16 +88,26 @@ internal class ShowListPageResponseTest {
             .containsExactly(
                 ShowListResponse.builder()
                     .addedAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                    .published(true)
                     .show(
                         ShowBase.builder()
                             .id("id")
                             .addAvailableMarket("string")
                             .addCopyright(
-                                CopyrightObject.builder().text("text").type("type").build()
+                                CopyrightObject.builder()
+                                    .published(true)
+                                    .text("text")
+                                    .type("type")
+                                    .build()
                             )
                             .description("description")
                             .explicit(true)
-                            .externalUrls(ExternalUrlObject.builder().spotify("spotify").build())
+                            .externalUrls(
+                                ExternalUrlObject.builder()
+                                    .published(true)
+                                    .spotify("spotify")
+                                    .build()
+                            )
                             .href("href")
                             .htmlDescription("html_description")
                             .addImage(
@@ -96,6 +117,7 @@ internal class ShowListPageResponseTest {
                                         "https://i.scdn.co/image/ab67616d00001e02ff9ca10b55ce82ae553c8228\n"
                                     )
                                     .width(300L)
+                                    .published(true)
                                     .build()
                             )
                             .isExternallyHosted(true)
@@ -105,10 +127,12 @@ internal class ShowListPageResponseTest {
                             .publisher("publisher")
                             .totalEpisodes(0L)
                             .uri("uri")
+                            .published(true)
                             .build()
                     )
                     .build()
             )
+        assertThat(showListPageResponse.published()).contains(true)
     }
 
     @Test
@@ -125,17 +149,25 @@ internal class ShowListPageResponseTest {
                 .addItem(
                     ShowListResponse.builder()
                         .addedAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                        .published(true)
                         .show(
                             ShowBase.builder()
                                 .id("id")
                                 .addAvailableMarket("string")
                                 .addCopyright(
-                                    CopyrightObject.builder().text("text").type("type").build()
+                                    CopyrightObject.builder()
+                                        .published(true)
+                                        .text("text")
+                                        .type("type")
+                                        .build()
                                 )
                                 .description("description")
                                 .explicit(true)
                                 .externalUrls(
-                                    ExternalUrlObject.builder().spotify("spotify").build()
+                                    ExternalUrlObject.builder()
+                                        .published(true)
+                                        .spotify("spotify")
+                                        .build()
                                 )
                                 .href("href")
                                 .htmlDescription("html_description")
@@ -146,6 +178,7 @@ internal class ShowListPageResponseTest {
                                             "https://i.scdn.co/image/ab67616d00001e02ff9ca10b55ce82ae553c8228\n"
                                         )
                                         .width(300L)
+                                        .published(true)
                                         .build()
                                 )
                                 .isExternallyHosted(true)
@@ -155,10 +188,12 @@ internal class ShowListPageResponseTest {
                                 .publisher("publisher")
                                 .totalEpisodes(0L)
                                 .uri("uri")
+                                .published(true)
                                 .build()
                         )
                         .build()
                 )
+                .published(true)
                 .build()
 
         val roundtrippedShowListPageResponse =

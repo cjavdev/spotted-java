@@ -22,6 +22,7 @@ private constructor(
     private val id: JsonField<String>,
     private val externalUrls: JsonField<ExternalUrlObject>,
     private val href: JsonField<String>,
+    private val published: JsonField<Boolean>,
     private val type: JsonField<String>,
     private val uri: JsonField<String>,
     private val additionalProperties: MutableMap<String, JsonValue>,
@@ -34,9 +35,10 @@ private constructor(
         @ExcludeMissing
         externalUrls: JsonField<ExternalUrlObject> = JsonMissing.of(),
         @JsonProperty("href") @ExcludeMissing href: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("published") @ExcludeMissing published: JsonField<Boolean> = JsonMissing.of(),
         @JsonProperty("type") @ExcludeMissing type: JsonField<String> = JsonMissing.of(),
         @JsonProperty("uri") @ExcludeMissing uri: JsonField<String> = JsonMissing.of(),
-    ) : this(id, externalUrls, href, type, uri, mutableMapOf())
+    ) : this(id, externalUrls, href, published, type, uri, mutableMapOf())
 
     /**
      * The [Spotify ID](/documentation/web-api/concepts/spotify-uris-ids) for the track.
@@ -61,6 +63,17 @@ private constructor(
      *   server responded with an unexpected value).
      */
     fun href(): Optional<String> = href.getOptional("href")
+
+    /**
+     * The playlist's public/private status (if it should be added to the user's profile or not):
+     * `true` the playlist will be public, `false` the playlist will be private, `null` the playlist
+     * status is not relevant. For more about public/private status, see
+     * [Working with Playlists](/documentation/web-api/concepts/playlists)
+     *
+     * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun published(): Optional<Boolean> = published.getOptional("published")
 
     /**
      * The object type: "track".
@@ -102,6 +115,13 @@ private constructor(
     @JsonProperty("href") @ExcludeMissing fun _href(): JsonField<String> = href
 
     /**
+     * Returns the raw JSON value of [published].
+     *
+     * Unlike [published], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("published") @ExcludeMissing fun _published(): JsonField<Boolean> = published
+
+    /**
      * Returns the raw JSON value of [type].
      *
      * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
@@ -139,6 +159,7 @@ private constructor(
         private var id: JsonField<String> = JsonMissing.of()
         private var externalUrls: JsonField<ExternalUrlObject> = JsonMissing.of()
         private var href: JsonField<String> = JsonMissing.of()
+        private var published: JsonField<Boolean> = JsonMissing.of()
         private var type: JsonField<String> = JsonMissing.of()
         private var uri: JsonField<String> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -148,6 +169,7 @@ private constructor(
             id = linkedTrackObject.id
             externalUrls = linkedTrackObject.externalUrls
             href = linkedTrackObject.href
+            published = linkedTrackObject.published
             type = linkedTrackObject.type
             uri = linkedTrackObject.uri
             additionalProperties = linkedTrackObject.additionalProperties.toMutableMap()
@@ -188,6 +210,23 @@ private constructor(
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun href(href: JsonField<String>) = apply { this.href = href }
+
+        /**
+         * The playlist's public/private status (if it should be added to the user's profile or
+         * not): `true` the playlist will be public, `false` the playlist will be private, `null`
+         * the playlist status is not relevant. For more about public/private status, see
+         * [Working with Playlists](/documentation/web-api/concepts/playlists)
+         */
+        fun published(published: Boolean) = published(JsonField.of(published))
+
+        /**
+         * Sets [Builder.published] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.published] with a well-typed [Boolean] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun published(published: JsonField<Boolean>) = apply { this.published = published }
 
         /** The object type: "track". */
         fun type(type: String) = type(JsonField.of(type))
@@ -240,6 +279,7 @@ private constructor(
                 id,
                 externalUrls,
                 href,
+                published,
                 type,
                 uri,
                 additionalProperties.toMutableMap(),
@@ -256,6 +296,7 @@ private constructor(
         id()
         externalUrls().ifPresent { it.validate() }
         href()
+        published()
         type()
         uri()
         validated = true
@@ -279,6 +320,7 @@ private constructor(
         (if (id.asKnown().isPresent) 1 else 0) +
             (externalUrls.asKnown().getOrNull()?.validity() ?: 0) +
             (if (href.asKnown().isPresent) 1 else 0) +
+            (if (published.asKnown().isPresent) 1 else 0) +
             (if (type.asKnown().isPresent) 1 else 0) +
             (if (uri.asKnown().isPresent) 1 else 0)
 
@@ -291,17 +333,18 @@ private constructor(
             id == other.id &&
             externalUrls == other.externalUrls &&
             href == other.href &&
+            published == other.published &&
             type == other.type &&
             uri == other.uri &&
             additionalProperties == other.additionalProperties
     }
 
     private val hashCode: Int by lazy {
-        Objects.hash(id, externalUrls, href, type, uri, additionalProperties)
+        Objects.hash(id, externalUrls, href, published, type, uri, additionalProperties)
     }
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "LinkedTrackObject{id=$id, externalUrls=$externalUrls, href=$href, type=$type, uri=$uri, additionalProperties=$additionalProperties}"
+        "LinkedTrackObject{id=$id, externalUrls=$externalUrls, href=$href, published=$published, type=$type, uri=$uri, additionalProperties=$additionalProperties}"
 }

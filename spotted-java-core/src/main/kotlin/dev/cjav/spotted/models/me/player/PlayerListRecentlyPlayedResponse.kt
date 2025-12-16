@@ -23,6 +23,7 @@ class PlayerListRecentlyPlayedResponse
 private constructor(
     private val context: JsonField<ContextObject>,
     private val playedAt: JsonField<OffsetDateTime>,
+    private val published: JsonField<Boolean>,
     private val track: JsonField<TrackObject>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
@@ -35,8 +36,9 @@ private constructor(
         @JsonProperty("played_at")
         @ExcludeMissing
         playedAt: JsonField<OffsetDateTime> = JsonMissing.of(),
+        @JsonProperty("published") @ExcludeMissing published: JsonField<Boolean> = JsonMissing.of(),
         @JsonProperty("track") @ExcludeMissing track: JsonField<TrackObject> = JsonMissing.of(),
-    ) : this(context, playedAt, track, mutableMapOf())
+    ) : this(context, playedAt, published, track, mutableMapOf())
 
     /**
      * The context the track was played from.
@@ -53,6 +55,17 @@ private constructor(
      *   server responded with an unexpected value).
      */
     fun playedAt(): Optional<OffsetDateTime> = playedAt.getOptional("played_at")
+
+    /**
+     * The playlist's public/private status (if it should be added to the user's profile or not):
+     * `true` the playlist will be public, `false` the playlist will be private, `null` the playlist
+     * status is not relevant. For more about public/private status, see
+     * [Working with Playlists](/documentation/web-api/concepts/playlists)
+     *
+     * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun published(): Optional<Boolean> = published.getOptional("published")
 
     /**
      * The track the user listened to.
@@ -75,6 +88,13 @@ private constructor(
      * Unlike [playedAt], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("played_at") @ExcludeMissing fun _playedAt(): JsonField<OffsetDateTime> = playedAt
+
+    /**
+     * Returns the raw JSON value of [published].
+     *
+     * Unlike [published], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("published") @ExcludeMissing fun _published(): JsonField<Boolean> = published
 
     /**
      * Returns the raw JSON value of [track].
@@ -109,6 +129,7 @@ private constructor(
 
         private var context: JsonField<ContextObject> = JsonMissing.of()
         private var playedAt: JsonField<OffsetDateTime> = JsonMissing.of()
+        private var published: JsonField<Boolean> = JsonMissing.of()
         private var track: JsonField<TrackObject> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
@@ -117,6 +138,7 @@ private constructor(
             apply {
                 context = playerListRecentlyPlayedResponse.context
                 playedAt = playerListRecentlyPlayedResponse.playedAt
+                published = playerListRecentlyPlayedResponse.published
                 track = playerListRecentlyPlayedResponse.track
                 additionalProperties =
                     playerListRecentlyPlayedResponse.additionalProperties.toMutableMap()
@@ -145,6 +167,23 @@ private constructor(
          * supported value.
          */
         fun playedAt(playedAt: JsonField<OffsetDateTime>) = apply { this.playedAt = playedAt }
+
+        /**
+         * The playlist's public/private status (if it should be added to the user's profile or
+         * not): `true` the playlist will be public, `false` the playlist will be private, `null`
+         * the playlist status is not relevant. For more about public/private status, see
+         * [Working with Playlists](/documentation/web-api/concepts/playlists)
+         */
+        fun published(published: Boolean) = published(JsonField.of(published))
+
+        /**
+         * Sets [Builder.published] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.published] with a well-typed [Boolean] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun published(published: JsonField<Boolean>) = apply { this.published = published }
 
         /** The track the user listened to. */
         fun track(track: TrackObject) = track(JsonField.of(track))
@@ -186,6 +225,7 @@ private constructor(
             PlayerListRecentlyPlayedResponse(
                 context,
                 playedAt,
+                published,
                 track,
                 additionalProperties.toMutableMap(),
             )
@@ -200,6 +240,7 @@ private constructor(
 
         context().ifPresent { it.validate() }
         playedAt()
+        published()
         track().ifPresent { it.validate() }
         validated = true
     }
@@ -221,6 +262,7 @@ private constructor(
     internal fun validity(): Int =
         (context.asKnown().getOrNull()?.validity() ?: 0) +
             (if (playedAt.asKnown().isPresent) 1 else 0) +
+            (if (published.asKnown().isPresent) 1 else 0) +
             (track.asKnown().getOrNull()?.validity() ?: 0)
 
     override fun equals(other: Any?): Boolean {
@@ -231,16 +273,17 @@ private constructor(
         return other is PlayerListRecentlyPlayedResponse &&
             context == other.context &&
             playedAt == other.playedAt &&
+            published == other.published &&
             track == other.track &&
             additionalProperties == other.additionalProperties
     }
 
     private val hashCode: Int by lazy {
-        Objects.hash(context, playedAt, track, additionalProperties)
+        Objects.hash(context, playedAt, published, track, additionalProperties)
     }
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "PlayerListRecentlyPlayedResponse{context=$context, playedAt=$playedAt, track=$track, additionalProperties=$additionalProperties}"
+        "PlayerListRecentlyPlayedResponse{context=$context, playedAt=$playedAt, published=$published, track=$track, additionalProperties=$additionalProperties}"
 }

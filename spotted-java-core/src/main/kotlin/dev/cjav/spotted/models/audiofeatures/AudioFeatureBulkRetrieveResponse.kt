@@ -196,6 +196,7 @@ private constructor(
         private val liveness: JsonField<Float>,
         private val loudness: JsonField<Float>,
         private val mode: JsonField<Long>,
+        private val published: JsonField<Boolean>,
         private val speechiness: JsonField<Float>,
         private val tempo: JsonField<Float>,
         private val timeSignature: JsonField<Long>,
@@ -229,6 +230,9 @@ private constructor(
             @JsonProperty("liveness") @ExcludeMissing liveness: JsonField<Float> = JsonMissing.of(),
             @JsonProperty("loudness") @ExcludeMissing loudness: JsonField<Float> = JsonMissing.of(),
             @JsonProperty("mode") @ExcludeMissing mode: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("published")
+            @ExcludeMissing
+            published: JsonField<Boolean> = JsonMissing.of(),
             @JsonProperty("speechiness")
             @ExcludeMissing
             speechiness: JsonField<Float> = JsonMissing.of(),
@@ -254,6 +258,7 @@ private constructor(
             liveness,
             loudness,
             mode,
+            published,
             speechiness,
             tempo,
             timeSignature,
@@ -371,6 +376,17 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun mode(): Optional<Long> = mode.getOptional("mode")
+
+        /**
+         * The playlist's public/private status (if it should be added to the user's profile or
+         * not): `true` the playlist will be public, `false` the playlist will be private, `null`
+         * the playlist status is not relevant. For more about public/private status, see
+         * [Working with Playlists](/documentation/web-api/concepts/playlists)
+         *
+         * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun published(): Optional<Boolean> = published.getOptional("published")
 
         /**
          * Speechiness detects the presence of spoken words in a track. The more exclusively
@@ -528,6 +544,13 @@ private constructor(
         @JsonProperty("mode") @ExcludeMissing fun _mode(): JsonField<Long> = mode
 
         /**
+         * Returns the raw JSON value of [published].
+         *
+         * Unlike [published], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("published") @ExcludeMissing fun _published(): JsonField<Boolean> = published
+
+        /**
          * Returns the raw JSON value of [speechiness].
          *
          * Unlike [speechiness], this method doesn't throw if the JSON field has an unexpected type.
@@ -613,6 +636,7 @@ private constructor(
             private var liveness: JsonField<Float> = JsonMissing.of()
             private var loudness: JsonField<Float> = JsonMissing.of()
             private var mode: JsonField<Long> = JsonMissing.of()
+            private var published: JsonField<Boolean> = JsonMissing.of()
             private var speechiness: JsonField<Float> = JsonMissing.of()
             private var tempo: JsonField<Float> = JsonMissing.of()
             private var timeSignature: JsonField<Long> = JsonMissing.of()
@@ -635,6 +659,7 @@ private constructor(
                 liveness = audioFeature.liveness
                 loudness = audioFeature.loudness
                 mode = audioFeature.mode
+                published = audioFeature.published
                 speechiness = audioFeature.speechiness
                 tempo = audioFeature.tempo
                 timeSignature = audioFeature.timeSignature
@@ -825,6 +850,23 @@ private constructor(
             fun mode(mode: JsonField<Long>) = apply { this.mode = mode }
 
             /**
+             * The playlist's public/private status (if it should be added to the user's profile or
+             * not): `true` the playlist will be public, `false` the playlist will be private,
+             * `null` the playlist status is not relevant. For more about public/private status, see
+             * [Working with Playlists](/documentation/web-api/concepts/playlists)
+             */
+            fun published(published: Boolean) = published(JsonField.of(published))
+
+            /**
+             * Sets [Builder.published] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.published] with a well-typed [Boolean] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun published(published: JsonField<Boolean>) = apply { this.published = published }
+
+            /**
              * Speechiness detects the presence of spoken words in a track. The more exclusively
              * speech-like the recording (e.g. talk show, audio book, poetry), the closer to 1.0 the
              * attribute value. Values above 0.66 describe tracks that are probably made entirely of
@@ -968,6 +1010,7 @@ private constructor(
                     liveness,
                     loudness,
                     mode,
+                    published,
                     speechiness,
                     tempo,
                     timeSignature,
@@ -997,6 +1040,7 @@ private constructor(
             liveness()
             loudness()
             mode()
+            published()
             speechiness()
             tempo()
             timeSignature()
@@ -1034,6 +1078,7 @@ private constructor(
                 (if (liveness.asKnown().isPresent) 1 else 0) +
                 (if (loudness.asKnown().isPresent) 1 else 0) +
                 (if (mode.asKnown().isPresent) 1 else 0) +
+                (if (published.asKnown().isPresent) 1 else 0) +
                 (if (speechiness.asKnown().isPresent) 1 else 0) +
                 (if (tempo.asKnown().isPresent) 1 else 0) +
                 (if (timeSignature.asKnown().isPresent) 1 else 0) +
@@ -1181,6 +1226,7 @@ private constructor(
                 liveness == other.liveness &&
                 loudness == other.loudness &&
                 mode == other.mode &&
+                published == other.published &&
                 speechiness == other.speechiness &&
                 tempo == other.tempo &&
                 timeSignature == other.timeSignature &&
@@ -1204,6 +1250,7 @@ private constructor(
                 liveness,
                 loudness,
                 mode,
+                published,
                 speechiness,
                 tempo,
                 timeSignature,
@@ -1218,7 +1265,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "AudioFeature{id=$id, acousticness=$acousticness, analysisUrl=$analysisUrl, danceability=$danceability, durationMs=$durationMs, energy=$energy, instrumentalness=$instrumentalness, key=$key, liveness=$liveness, loudness=$loudness, mode=$mode, speechiness=$speechiness, tempo=$tempo, timeSignature=$timeSignature, trackHref=$trackHref, type=$type, uri=$uri, valence=$valence, additionalProperties=$additionalProperties}"
+            "AudioFeature{id=$id, acousticness=$acousticness, analysisUrl=$analysisUrl, danceability=$danceability, durationMs=$durationMs, energy=$energy, instrumentalness=$instrumentalness, key=$key, liveness=$liveness, loudness=$loudness, mode=$mode, published=$published, speechiness=$speechiness, tempo=$tempo, timeSignature=$timeSignature, trackHref=$trackHref, type=$type, uri=$uri, valence=$valence, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {

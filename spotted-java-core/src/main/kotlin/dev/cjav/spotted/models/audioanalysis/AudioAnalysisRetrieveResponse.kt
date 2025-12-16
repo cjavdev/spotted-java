@@ -25,6 +25,7 @@ private constructor(
     private val bars: JsonField<List<TimeIntervalObject>>,
     private val beats: JsonField<List<TimeIntervalObject>>,
     private val meta: JsonField<Meta>,
+    private val published: JsonField<Boolean>,
     private val sections: JsonField<List<Section>>,
     private val segments: JsonField<List<Segment>>,
     private val tatums: JsonField<List<TimeIntervalObject>>,
@@ -41,6 +42,7 @@ private constructor(
         @ExcludeMissing
         beats: JsonField<List<TimeIntervalObject>> = JsonMissing.of(),
         @JsonProperty("meta") @ExcludeMissing meta: JsonField<Meta> = JsonMissing.of(),
+        @JsonProperty("published") @ExcludeMissing published: JsonField<Boolean> = JsonMissing.of(),
         @JsonProperty("sections")
         @ExcludeMissing
         sections: JsonField<List<Section>> = JsonMissing.of(),
@@ -51,7 +53,7 @@ private constructor(
         @ExcludeMissing
         tatums: JsonField<List<TimeIntervalObject>> = JsonMissing.of(),
         @JsonProperty("track") @ExcludeMissing track: JsonField<Track> = JsonMissing.of(),
-    ) : this(bars, beats, meta, sections, segments, tatums, track, mutableMapOf())
+    ) : this(bars, beats, meta, published, sections, segments, tatums, track, mutableMapOf())
 
     /**
      * The time intervals of the bars throughout the track. A bar (or measure) is a segment of time
@@ -76,6 +78,17 @@ private constructor(
      *   server responded with an unexpected value).
      */
     fun meta(): Optional<Meta> = meta.getOptional("meta")
+
+    /**
+     * The playlist's public/private status (if it should be added to the user's profile or not):
+     * `true` the playlist will be public, `false` the playlist will be private, `null` the playlist
+     * status is not relevant. For more about public/private status, see
+     * [Working with Playlists](/documentation/web-api/concepts/playlists)
+     *
+     * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun published(): Optional<Boolean> = published.getOptional("published")
 
     /**
      * Sections are defined by large variations in rhythm or timbre, e.g. chorus, verse, bridge,
@@ -130,6 +143,13 @@ private constructor(
      * Unlike [meta], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("meta") @ExcludeMissing fun _meta(): JsonField<Meta> = meta
+
+    /**
+     * Returns the raw JSON value of [published].
+     *
+     * Unlike [published], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("published") @ExcludeMissing fun _published(): JsonField<Boolean> = published
 
     /**
      * Returns the raw JSON value of [sections].
@@ -188,6 +208,7 @@ private constructor(
         private var bars: JsonField<MutableList<TimeIntervalObject>>? = null
         private var beats: JsonField<MutableList<TimeIntervalObject>>? = null
         private var meta: JsonField<Meta> = JsonMissing.of()
+        private var published: JsonField<Boolean> = JsonMissing.of()
         private var sections: JsonField<MutableList<Section>>? = null
         private var segments: JsonField<MutableList<Segment>>? = null
         private var tatums: JsonField<MutableList<TimeIntervalObject>>? = null
@@ -199,6 +220,7 @@ private constructor(
             bars = audioAnalysisRetrieveResponse.bars.map { it.toMutableList() }
             beats = audioAnalysisRetrieveResponse.beats.map { it.toMutableList() }
             meta = audioAnalysisRetrieveResponse.meta
+            published = audioAnalysisRetrieveResponse.published
             sections = audioAnalysisRetrieveResponse.sections.map { it.toMutableList() }
             segments = audioAnalysisRetrieveResponse.segments.map { it.toMutableList() }
             tatums = audioAnalysisRetrieveResponse.tatums.map { it.toMutableList() }
@@ -269,6 +291,23 @@ private constructor(
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun meta(meta: JsonField<Meta>) = apply { this.meta = meta }
+
+        /**
+         * The playlist's public/private status (if it should be added to the user's profile or
+         * not): `true` the playlist will be public, `false` the playlist will be private, `null`
+         * the playlist status is not relevant. For more about public/private status, see
+         * [Working with Playlists](/documentation/web-api/concepts/playlists)
+         */
+        fun published(published: Boolean) = published(JsonField.of(published))
+
+        /**
+         * Sets [Builder.published] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.published] with a well-typed [Boolean] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun published(published: JsonField<Boolean>) = apply { this.published = published }
 
         /**
          * Sections are defined by large variations in rhythm or timbre, e.g. chorus, verse, bridge,
@@ -394,6 +433,7 @@ private constructor(
                 (bars ?: JsonMissing.of()).map { it.toImmutable() },
                 (beats ?: JsonMissing.of()).map { it.toImmutable() },
                 meta,
+                published,
                 (sections ?: JsonMissing.of()).map { it.toImmutable() },
                 (segments ?: JsonMissing.of()).map { it.toImmutable() },
                 (tatums ?: JsonMissing.of()).map { it.toImmutable() },
@@ -412,6 +452,7 @@ private constructor(
         bars().ifPresent { it.forEach { it.validate() } }
         beats().ifPresent { it.forEach { it.validate() } }
         meta().ifPresent { it.validate() }
+        published()
         sections().ifPresent { it.forEach { it.validate() } }
         segments().ifPresent { it.forEach { it.validate() } }
         tatums().ifPresent { it.forEach { it.validate() } }
@@ -437,6 +478,7 @@ private constructor(
         (bars.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
             (beats.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
             (meta.asKnown().getOrNull()?.validity() ?: 0) +
+            (if (published.asKnown().isPresent) 1 else 0) +
             (sections.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
             (segments.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
             (tatums.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
@@ -869,6 +911,7 @@ private constructor(
         private val loudness: JsonField<Double>,
         private val mode: JsonField<Mode>,
         private val modeConfidence: JsonField<Double>,
+        private val published: JsonField<Boolean>,
         private val start: JsonField<Double>,
         private val tempo: JsonField<Double>,
         private val tempoConfidence: JsonField<Double>,
@@ -896,6 +939,9 @@ private constructor(
             @JsonProperty("mode_confidence")
             @ExcludeMissing
             modeConfidence: JsonField<Double> = JsonMissing.of(),
+            @JsonProperty("published")
+            @ExcludeMissing
+            published: JsonField<Boolean> = JsonMissing.of(),
             @JsonProperty("start") @ExcludeMissing start: JsonField<Double> = JsonMissing.of(),
             @JsonProperty("tempo") @ExcludeMissing tempo: JsonField<Double> = JsonMissing.of(),
             @JsonProperty("tempo_confidence")
@@ -915,6 +961,7 @@ private constructor(
             loudness,
             mode,
             modeConfidence,
+            published,
             start,
             tempo,
             tempoConfidence,
@@ -986,6 +1033,17 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun modeConfidence(): Optional<Double> = modeConfidence.getOptional("mode_confidence")
+
+        /**
+         * The playlist's public/private status (if it should be added to the user's profile or
+         * not): `true` the playlist will be public, `false` the playlist will be private, `null`
+         * the playlist status is not relevant. For more about public/private status, see
+         * [Working with Playlists](/documentation/web-api/concepts/playlists)
+         *
+         * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun published(): Optional<Boolean> = published.getOptional("published")
 
         /**
          * The starting point (in seconds) of the section.
@@ -1093,6 +1151,13 @@ private constructor(
         fun _modeConfidence(): JsonField<Double> = modeConfidence
 
         /**
+         * Returns the raw JSON value of [published].
+         *
+         * Unlike [published], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("published") @ExcludeMissing fun _published(): JsonField<Boolean> = published
+
+        /**
          * Returns the raw JSON value of [start].
          *
          * Unlike [start], this method doesn't throw if the JSON field has an unexpected type.
@@ -1164,6 +1229,7 @@ private constructor(
             private var loudness: JsonField<Double> = JsonMissing.of()
             private var mode: JsonField<Mode> = JsonMissing.of()
             private var modeConfidence: JsonField<Double> = JsonMissing.of()
+            private var published: JsonField<Boolean> = JsonMissing.of()
             private var start: JsonField<Double> = JsonMissing.of()
             private var tempo: JsonField<Double> = JsonMissing.of()
             private var tempoConfidence: JsonField<Double> = JsonMissing.of()
@@ -1180,6 +1246,7 @@ private constructor(
                 loudness = section.loudness
                 mode = section.mode
                 modeConfidence = section.modeConfidence
+                published = section.published
                 start = section.start
                 tempo = section.tempo
                 tempoConfidence = section.tempoConfidence
@@ -1294,6 +1361,23 @@ private constructor(
             fun modeConfidence(modeConfidence: JsonField<Double>) = apply {
                 this.modeConfidence = modeConfidence
             }
+
+            /**
+             * The playlist's public/private status (if it should be added to the user's profile or
+             * not): `true` the playlist will be public, `false` the playlist will be private,
+             * `null` the playlist status is not relevant. For more about public/private status, see
+             * [Working with Playlists](/documentation/web-api/concepts/playlists)
+             */
+            fun published(published: Boolean) = published(JsonField.of(published))
+
+            /**
+             * Sets [Builder.published] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.published] with a well-typed [Boolean] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun published(published: JsonField<Boolean>) = apply { this.published = published }
 
             /** The starting point (in seconds) of the section. */
             fun start(start: Double) = start(JsonField.of(start))
@@ -1411,6 +1495,7 @@ private constructor(
                     loudness,
                     mode,
                     modeConfidence,
+                    published,
                     start,
                     tempo,
                     tempoConfidence,
@@ -1434,6 +1519,7 @@ private constructor(
             loudness()
             mode().ifPresent { it.validate() }
             modeConfidence()
+            published()
             start()
             tempo()
             tempoConfidence()
@@ -1465,6 +1551,7 @@ private constructor(
                 (if (loudness.asKnown().isPresent) 1 else 0) +
                 (mode.asKnown().getOrNull()?.validity() ?: 0) +
                 (if (modeConfidence.asKnown().isPresent) 1 else 0) +
+                (if (published.asKnown().isPresent) 1 else 0) +
                 (if (start.asKnown().isPresent) 1 else 0) +
                 (if (tempo.asKnown().isPresent) 1 else 0) +
                 (if (tempoConfidence.asKnown().isPresent) 1 else 0) +
@@ -1620,6 +1707,7 @@ private constructor(
                 loudness == other.loudness &&
                 mode == other.mode &&
                 modeConfidence == other.modeConfidence &&
+                published == other.published &&
                 start == other.start &&
                 tempo == other.tempo &&
                 tempoConfidence == other.tempoConfidence &&
@@ -1637,6 +1725,7 @@ private constructor(
                 loudness,
                 mode,
                 modeConfidence,
+                published,
                 start,
                 tempo,
                 tempoConfidence,
@@ -1649,7 +1738,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Section{confidence=$confidence, duration=$duration, key=$key, keyConfidence=$keyConfidence, loudness=$loudness, mode=$mode, modeConfidence=$modeConfidence, start=$start, tempo=$tempo, tempoConfidence=$tempoConfidence, timeSignature=$timeSignature, timeSignatureConfidence=$timeSignatureConfidence, additionalProperties=$additionalProperties}"
+            "Section{confidence=$confidence, duration=$duration, key=$key, keyConfidence=$keyConfidence, loudness=$loudness, mode=$mode, modeConfidence=$modeConfidence, published=$published, start=$start, tempo=$tempo, tempoConfidence=$tempoConfidence, timeSignature=$timeSignature, timeSignatureConfidence=$timeSignatureConfidence, additionalProperties=$additionalProperties}"
     }
 
     class Segment
@@ -1662,6 +1751,7 @@ private constructor(
         private val loudnessMaxTime: JsonField<Double>,
         private val loudnessStart: JsonField<Double>,
         private val pitches: JsonField<List<Double>>,
+        private val published: JsonField<Boolean>,
         private val start: JsonField<Double>,
         private val timbre: JsonField<List<Double>>,
         private val additionalProperties: MutableMap<String, JsonValue>,
@@ -1690,6 +1780,9 @@ private constructor(
             @JsonProperty("pitches")
             @ExcludeMissing
             pitches: JsonField<List<Double>> = JsonMissing.of(),
+            @JsonProperty("published")
+            @ExcludeMissing
+            published: JsonField<Boolean> = JsonMissing.of(),
             @JsonProperty("start") @ExcludeMissing start: JsonField<Double> = JsonMissing.of(),
             @JsonProperty("timbre")
             @ExcludeMissing
@@ -1702,6 +1795,7 @@ private constructor(
             loudnessMaxTime,
             loudnessStart,
             pitches,
+            published,
             start,
             timbre,
             mutableMapOf(),
@@ -1780,6 +1874,17 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun pitches(): Optional<List<Double>> = pitches.getOptional("pitches")
+
+        /**
+         * The playlist's public/private status (if it should be added to the user's profile or
+         * not): `true` the playlist will be public, `false` the playlist will be private, `null`
+         * the playlist status is not relevant. For more about public/private status, see
+         * [Working with Playlists](/documentation/web-api/concepts/playlists)
+         *
+         * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun published(): Optional<Boolean> = published.getOptional("published")
 
         /**
          * The starting point (in seconds) of the segment.
@@ -1875,6 +1980,13 @@ private constructor(
         @JsonProperty("pitches") @ExcludeMissing fun _pitches(): JsonField<List<Double>> = pitches
 
         /**
+         * Returns the raw JSON value of [published].
+         *
+         * Unlike [published], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("published") @ExcludeMissing fun _published(): JsonField<Boolean> = published
+
+        /**
          * Returns the raw JSON value of [start].
          *
          * Unlike [start], this method doesn't throw if the JSON field has an unexpected type.
@@ -1916,6 +2028,7 @@ private constructor(
             private var loudnessMaxTime: JsonField<Double> = JsonMissing.of()
             private var loudnessStart: JsonField<Double> = JsonMissing.of()
             private var pitches: JsonField<MutableList<Double>>? = null
+            private var published: JsonField<Boolean> = JsonMissing.of()
             private var start: JsonField<Double> = JsonMissing.of()
             private var timbre: JsonField<MutableList<Double>>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -1929,6 +2042,7 @@ private constructor(
                 loudnessMaxTime = segment.loudnessMaxTime
                 loudnessStart = segment.loudnessStart
                 pitches = segment.pitches.map { it.toMutableList() }
+                published = segment.published
                 start = segment.start
                 timbre = segment.timbre.map { it.toMutableList() }
                 additionalProperties = segment.additionalProperties.toMutableMap()
@@ -2071,6 +2185,23 @@ private constructor(
                     }
             }
 
+            /**
+             * The playlist's public/private status (if it should be added to the user's profile or
+             * not): `true` the playlist will be public, `false` the playlist will be private,
+             * `null` the playlist status is not relevant. For more about public/private status, see
+             * [Working with Playlists](/documentation/web-api/concepts/playlists)
+             */
+            fun published(published: Boolean) = published(JsonField.of(published))
+
+            /**
+             * Sets [Builder.published] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.published] with a well-typed [Boolean] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun published(published: JsonField<Boolean>) = apply { this.published = published }
+
             /** The starting point (in seconds) of the segment. */
             fun start(start: Double) = start(JsonField.of(start))
 
@@ -2161,6 +2292,7 @@ private constructor(
                     loudnessMaxTime,
                     loudnessStart,
                     (pitches ?: JsonMissing.of()).map { it.toImmutable() },
+                    published,
                     start,
                     (timbre ?: JsonMissing.of()).map { it.toImmutable() },
                     additionalProperties.toMutableMap(),
@@ -2181,6 +2313,7 @@ private constructor(
             loudnessMaxTime()
             loudnessStart()
             pitches()
+            published()
             start()
             timbre()
             validated = true
@@ -2209,6 +2342,7 @@ private constructor(
                 (if (loudnessMaxTime.asKnown().isPresent) 1 else 0) +
                 (if (loudnessStart.asKnown().isPresent) 1 else 0) +
                 (pitches.asKnown().getOrNull()?.size ?: 0) +
+                (if (published.asKnown().isPresent) 1 else 0) +
                 (if (start.asKnown().isPresent) 1 else 0) +
                 (timbre.asKnown().getOrNull()?.size ?: 0)
 
@@ -2225,6 +2359,7 @@ private constructor(
                 loudnessMaxTime == other.loudnessMaxTime &&
                 loudnessStart == other.loudnessStart &&
                 pitches == other.pitches &&
+                published == other.published &&
                 start == other.start &&
                 timbre == other.timbre &&
                 additionalProperties == other.additionalProperties
@@ -2239,6 +2374,7 @@ private constructor(
                 loudnessMaxTime,
                 loudnessStart,
                 pitches,
+                published,
                 start,
                 timbre,
                 additionalProperties,
@@ -2248,7 +2384,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Segment{confidence=$confidence, duration=$duration, loudnessEnd=$loudnessEnd, loudnessMax=$loudnessMax, loudnessMaxTime=$loudnessMaxTime, loudnessStart=$loudnessStart, pitches=$pitches, start=$start, timbre=$timbre, additionalProperties=$additionalProperties}"
+            "Segment{confidence=$confidence, duration=$duration, loudnessEnd=$loudnessEnd, loudnessMax=$loudnessMax, loudnessMaxTime=$loudnessMaxTime, loudnessStart=$loudnessStart, pitches=$pitches, published=$published, start=$start, timbre=$timbre, additionalProperties=$additionalProperties}"
     }
 
     class Track
@@ -3557,6 +3693,7 @@ private constructor(
             bars == other.bars &&
             beats == other.beats &&
             meta == other.meta &&
+            published == other.published &&
             sections == other.sections &&
             segments == other.segments &&
             tatums == other.tatums &&
@@ -3565,11 +3702,21 @@ private constructor(
     }
 
     private val hashCode: Int by lazy {
-        Objects.hash(bars, beats, meta, sections, segments, tatums, track, additionalProperties)
+        Objects.hash(
+            bars,
+            beats,
+            meta,
+            published,
+            sections,
+            segments,
+            tatums,
+            track,
+            additionalProperties,
+        )
     }
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "AudioAnalysisRetrieveResponse{bars=$bars, beats=$beats, meta=$meta, sections=$sections, segments=$segments, tatums=$tatums, track=$track, additionalProperties=$additionalProperties}"
+        "AudioAnalysisRetrieveResponse{bars=$bars, beats=$beats, meta=$meta, published=$published, sections=$sections, segments=$segments, tatums=$tatums, track=$track, additionalProperties=$additionalProperties}"
 }
