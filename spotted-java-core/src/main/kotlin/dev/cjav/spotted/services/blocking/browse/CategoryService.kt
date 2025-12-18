@@ -8,8 +8,8 @@ import dev.cjav.spotted.core.RequestOptions
 import dev.cjav.spotted.core.http.HttpResponseFor
 import dev.cjav.spotted.models.browse.categories.CategoryGetPlaylistsParams
 import dev.cjav.spotted.models.browse.categories.CategoryGetPlaylistsResponse
+import dev.cjav.spotted.models.browse.categories.CategoryListPage
 import dev.cjav.spotted.models.browse.categories.CategoryListParams
-import dev.cjav.spotted.models.browse.categories.CategoryListResponse
 import dev.cjav.spotted.models.browse.categories.CategoryRetrieveParams
 import dev.cjav.spotted.models.browse.categories.CategoryRetrieveResponse
 import java.util.function.Consumer
@@ -67,20 +67,20 @@ interface CategoryService {
      * Get a list of categories used to tag items in Spotify (on, for example, the Spotify player’s
      * “Browse” tab).
      */
-    fun list(): CategoryListResponse = list(CategoryListParams.none())
+    fun list(): CategoryListPage = list(CategoryListParams.none())
 
     /** @see list */
     fun list(
         params: CategoryListParams = CategoryListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): CategoryListResponse
+    ): CategoryListPage
 
     /** @see list */
-    fun list(params: CategoryListParams = CategoryListParams.none()): CategoryListResponse =
+    fun list(params: CategoryListParams = CategoryListParams.none()): CategoryListPage =
         list(params, RequestOptions.none())
 
     /** @see list */
-    fun list(requestOptions: RequestOptions): CategoryListResponse =
+    fun list(requestOptions: RequestOptions): CategoryListPage =
         list(CategoryListParams.none(), requestOptions)
 
     /** Get a list of Spotify playlists tagged with a particular category. */
@@ -184,24 +184,24 @@ interface CategoryService {
          * [CategoryService.list].
          */
         @MustBeClosed
-        fun list(): HttpResponseFor<CategoryListResponse> = list(CategoryListParams.none())
+        fun list(): HttpResponseFor<CategoryListPage> = list(CategoryListParams.none())
 
         /** @see list */
         @MustBeClosed
         fun list(
             params: CategoryListParams = CategoryListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<CategoryListResponse>
+        ): HttpResponseFor<CategoryListPage>
 
         /** @see list */
         @MustBeClosed
         fun list(
             params: CategoryListParams = CategoryListParams.none()
-        ): HttpResponseFor<CategoryListResponse> = list(params, RequestOptions.none())
+        ): HttpResponseFor<CategoryListPage> = list(params, RequestOptions.none())
 
         /** @see list */
         @MustBeClosed
-        fun list(requestOptions: RequestOptions): HttpResponseFor<CategoryListResponse> =
+        fun list(requestOptions: RequestOptions): HttpResponseFor<CategoryListPage> =
             list(CategoryListParams.none(), requestOptions)
 
         /**
