@@ -17,8 +17,9 @@ import dev.cjav.spotted.core.http.parseable
 import dev.cjav.spotted.core.prepareAsync
 import dev.cjav.spotted.models.browse.categories.CategoryGetPlaylistsParams
 import dev.cjav.spotted.models.browse.categories.CategoryGetPlaylistsResponse
+import dev.cjav.spotted.models.browse.categories.CategoryListPageAsync
+import dev.cjav.spotted.models.browse.categories.CategoryListPageResponse
 import dev.cjav.spotted.models.browse.categories.CategoryListParams
-import dev.cjav.spotted.models.browse.categories.CategoryListResponse
 import dev.cjav.spotted.models.browse.categories.CategoryRetrieveParams
 import dev.cjav.spotted.models.browse.categories.CategoryRetrieveResponse
 import java.util.concurrent.CompletableFuture
@@ -47,7 +48,7 @@ class CategoryServiceAsyncImpl internal constructor(private val clientOptions: C
     override fun list(
         params: CategoryListParams,
         requestOptions: RequestOptions,
-    ): CompletableFuture<CategoryListResponse> =
+    ): CompletableFuture<CategoryListPageAsync> =
         // get /browse/categories
         withRawResponse().list(params, requestOptions).thenApply { it.parse() }
 
@@ -105,13 +106,13 @@ class CategoryServiceAsyncImpl internal constructor(private val clientOptions: C
                 }
         }
 
-        private val listHandler: Handler<CategoryListResponse> =
-            jsonHandler<CategoryListResponse>(clientOptions.jsonMapper)
+        private val listHandler: Handler<CategoryListPageResponse> =
+            jsonHandler<CategoryListPageResponse>(clientOptions.jsonMapper)
 
         override fun list(
             params: CategoryListParams,
             requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<CategoryListResponse>> {
+        ): CompletableFuture<HttpResponseFor<CategoryListPageAsync>> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -130,6 +131,14 @@ class CategoryServiceAsyncImpl internal constructor(private val clientOptions: C
                                 if (requestOptions.responseValidation!!) {
                                     it.validate()
                                 }
+                            }
+                            .let {
+                                CategoryListPageAsync.builder()
+                                    .service(CategoryServiceAsyncImpl(clientOptions))
+                                    .streamHandlerExecutor(clientOptions.streamHandlerExecutor)
+                                    .params(params)
+                                    .response(it)
+                                    .build()
                             }
                     }
                 }
