@@ -17,8 +17,9 @@ import dev.cjav.spotted.core.http.parseable
 import dev.cjav.spotted.core.prepare
 import dev.cjav.spotted.models.browse.categories.CategoryGetPlaylistsParams
 import dev.cjav.spotted.models.browse.categories.CategoryGetPlaylistsResponse
+import dev.cjav.spotted.models.browse.categories.CategoryListPage
+import dev.cjav.spotted.models.browse.categories.CategoryListPageResponse
 import dev.cjav.spotted.models.browse.categories.CategoryListParams
-import dev.cjav.spotted.models.browse.categories.CategoryListResponse
 import dev.cjav.spotted.models.browse.categories.CategoryRetrieveParams
 import dev.cjav.spotted.models.browse.categories.CategoryRetrieveResponse
 import java.util.function.Consumer
@@ -46,7 +47,7 @@ class CategoryServiceImpl internal constructor(private val clientOptions: Client
     override fun list(
         params: CategoryListParams,
         requestOptions: RequestOptions,
-    ): CategoryListResponse =
+    ): CategoryListPage =
         // get /browse/categories
         withRawResponse().list(params, requestOptions).parse()
 
@@ -101,13 +102,13 @@ class CategoryServiceImpl internal constructor(private val clientOptions: Client
             }
         }
 
-        private val listHandler: Handler<CategoryListResponse> =
-            jsonHandler<CategoryListResponse>(clientOptions.jsonMapper)
+        private val listHandler: Handler<CategoryListPageResponse> =
+            jsonHandler<CategoryListPageResponse>(clientOptions.jsonMapper)
 
         override fun list(
             params: CategoryListParams,
             requestOptions: RequestOptions,
-        ): HttpResponseFor<CategoryListResponse> {
+        ): HttpResponseFor<CategoryListPage> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -124,6 +125,13 @@ class CategoryServiceImpl internal constructor(private val clientOptions: Client
                         if (requestOptions.responseValidation!!) {
                             it.validate()
                         }
+                    }
+                    .let {
+                        CategoryListPage.builder()
+                            .service(CategoryServiceImpl(clientOptions))
+                            .params(params)
+                            .response(it)
+                            .build()
                     }
             }
         }

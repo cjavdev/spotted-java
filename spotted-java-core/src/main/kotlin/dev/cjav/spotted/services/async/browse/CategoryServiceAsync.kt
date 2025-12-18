@@ -7,8 +7,8 @@ import dev.cjav.spotted.core.RequestOptions
 import dev.cjav.spotted.core.http.HttpResponseFor
 import dev.cjav.spotted.models.browse.categories.CategoryGetPlaylistsParams
 import dev.cjav.spotted.models.browse.categories.CategoryGetPlaylistsResponse
+import dev.cjav.spotted.models.browse.categories.CategoryListPageAsync
 import dev.cjav.spotted.models.browse.categories.CategoryListParams
-import dev.cjav.spotted.models.browse.categories.CategoryListResponse
 import dev.cjav.spotted.models.browse.categories.CategoryRetrieveParams
 import dev.cjav.spotted.models.browse.categories.CategoryRetrieveResponse
 import java.util.concurrent.CompletableFuture
@@ -71,21 +71,21 @@ interface CategoryServiceAsync {
      * Get a list of categories used to tag items in Spotify (on, for example, the Spotify player’s
      * “Browse” tab).
      */
-    fun list(): CompletableFuture<CategoryListResponse> = list(CategoryListParams.none())
+    fun list(): CompletableFuture<CategoryListPageAsync> = list(CategoryListParams.none())
 
     /** @see list */
     fun list(
         params: CategoryListParams = CategoryListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<CategoryListResponse>
+    ): CompletableFuture<CategoryListPageAsync>
 
     /** @see list */
     fun list(
         params: CategoryListParams = CategoryListParams.none()
-    ): CompletableFuture<CategoryListResponse> = list(params, RequestOptions.none())
+    ): CompletableFuture<CategoryListPageAsync> = list(params, RequestOptions.none())
 
     /** @see list */
-    fun list(requestOptions: RequestOptions): CompletableFuture<CategoryListResponse> =
+    fun list(requestOptions: RequestOptions): CompletableFuture<CategoryListPageAsync> =
         list(CategoryListParams.none(), requestOptions)
 
     /** Get a list of Spotify playlists tagged with a particular category. */
@@ -192,25 +192,25 @@ interface CategoryServiceAsync {
          * Returns a raw HTTP response for `get /browse/categories`, but is otherwise the same as
          * [CategoryServiceAsync.list].
          */
-        fun list(): CompletableFuture<HttpResponseFor<CategoryListResponse>> =
+        fun list(): CompletableFuture<HttpResponseFor<CategoryListPageAsync>> =
             list(CategoryListParams.none())
 
         /** @see list */
         fun list(
             params: CategoryListParams = CategoryListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<CategoryListResponse>>
+        ): CompletableFuture<HttpResponseFor<CategoryListPageAsync>>
 
         /** @see list */
         fun list(
             params: CategoryListParams = CategoryListParams.none()
-        ): CompletableFuture<HttpResponseFor<CategoryListResponse>> =
+        ): CompletableFuture<HttpResponseFor<CategoryListPageAsync>> =
             list(params, RequestOptions.none())
 
         /** @see list */
         fun list(
             requestOptions: RequestOptions
-        ): CompletableFuture<HttpResponseFor<CategoryListResponse>> =
+        ): CompletableFuture<HttpResponseFor<CategoryListPageAsync>> =
             list(CategoryListParams.none(), requestOptions)
 
         /**
