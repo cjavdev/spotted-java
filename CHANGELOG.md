@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.12.0 (2026-01-05)
+
+Full Changelog: [v0.11.0...v0.12.0](https://github.com/cjavdev/spotted-java/compare/v0.11.0...v0.12.0)
+
+### Features
+
+* **api:** manual updates ([f996668](https://github.com/cjavdev/spotted-java/commit/f996668c191ad53918317b1397545696deed68cc))
+
 ## 0.11.0 (2025-12-18)
 
 Full Changelog: [v0.10.0...v0.11.0](https://github.com/cjavdev/spotted-java/compare/v0.10.0...v0.11.0)
