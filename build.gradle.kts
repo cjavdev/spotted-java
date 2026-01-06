@@ -8,7 +8,7 @@ repositories {
 
 allprojects {
     group = "dev.cjav.spotted"
-    version = "0.12.0" // x-release-please-version
+    version = "0.13.0" // x-release-please-version
 }
 
 subprojects {
