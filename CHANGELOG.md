@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.13.0 (2026-01-06)
+
+Full Changelog: [v0.12.0...v0.13.0](https://github.com/cjavdev/spotted-java/compare/v0.12.0...v0.13.0)
+
+### Features
+
+* **api:** manual updates ([1eb7699](https://github.com/cjavdev/spotted-java/commit/1eb7699e6ef230a093f3517fb3ccf6f817776c72))
+* **client:** add `HttpRequest#url()` method ([e082850](https://github.com/cjavdev/spotted-java/commit/e082850144d45edf3328ae2a96eff57deca2bd10))
+
+
+### Documentation
+
+* prominently feature MCP server setup in root SDK readmes ([aca35ea](https://github.com/cjavdev/spotted-java/commit/aca35ea764f389c60a0fe1d8afc480c58400feb9))
+
 ## 0.12.0 (2026-01-05)
 
 Full Changelog: [v0.11.0...v0.12.0](https://github.com/cjavdev/spotted-java/compare/v0.11.0...v0.12.0)
