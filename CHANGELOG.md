@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.14.0 (2026-01-09)
+
+Full Changelog: [v0.13.0...v0.14.0](https://github.com/cjavdev/spotted-java/compare/v0.13.0...v0.14.0)
+
+### Features
+
+* **client:** allow configuring dispatcher executor service ([5190d0b](https://github.com/cjavdev/spotted-java/commit/5190d0bdd854ac4ffdc8942816de0b2cced8a1e8))
+
 ## 0.13.0 (2026-01-06)
 
 Full Changelog: [v0.12.0...v0.13.0](https://github.com/cjavdev/spotted-java/compare/v0.12.0...v0.13.0)
