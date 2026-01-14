@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.15.0 (2026-01-14)
+
+Full Changelog: [v0.14.0...v0.15.0](https://github.com/cjavdev/spotted-java/compare/v0.14.0...v0.15.0)
+
+### Features
+
+* **api:** api update ([76aaea6](https://github.com/cjavdev/spotted-java/commit/76aaea637575a1b4f9237cc2cc78e610da06bb48))
+
+
+### Chores
+
+* **internal:** support uploading Maven repo artifacts to stainless package server ([ee3c19c](https://github.com/cjavdev/spotted-java/commit/ee3c19cc878b4204733f66cde367a54bb7bf64f4))
+
 ## 0.14.0 (2026-01-09)
 
 Full Changelog: [v0.13.0...v0.14.0](https://github.com/cjavdev/spotted-java/compare/v0.13.0...v0.14.0)
