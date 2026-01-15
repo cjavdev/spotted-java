@@ -7,7 +7,7 @@
 
 <!-- x-release-please-end -->
 
-The Unofficial Spotify SDK provides convenient access to the [Spotted REST API](https://spotted.stldocs.com?docs) from applications written in Java.
+The Unofficial Spotify SDK provides convenient access to the [Spotted REST API](https://spotted.cjav.dev) from applications written in Java.
 
 The Spotted Java SDK is similar to the Spotted Kotlin SDK but with minor differences that make it more ergonomic for use in Java, such as `Optional` instead of nullable values, `Stream` instead of `Sequence`, and `CompletableFuture` instead of suspend functions.
 
@@ -24,7 +24,7 @@ Use the Spotted MCP Server to enable AI assistants to interact with this API, al
 
 <!-- x-release-please-start-version -->
 
-The REST API documentation can be found on [spotted.stldocs.com](https://spotted.stldocs.com?docs). Javadocs are available on [javadoc.io](https://javadoc.io/doc/dev.cjav.spotted/spotted-java/0.15.0).
+The REST API documentation can be found on [spotted.cjav.dev](https://spotted.cjav.dev). Javadocs are available on [javadoc.io](https://javadoc.io/doc/dev.cjav.spotted/spotted-java/0.15.0).
 
 <!-- x-release-please-end -->
 
