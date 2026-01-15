@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.16.0 (2026-01-15)
+
+Full Changelog: [v0.15.0...v0.16.0](https://github.com/cjavdev/spotted-java/compare/v0.15.0...v0.16.0)
+
+### Features
+
+* **api:** manual updates ([cf4837e](https://github.com/cjavdev/spotted-java/commit/cf4837ed70ffc9c06fcfd5b25b2b54ff211c9633))
+* **api:** manual updates ([59ae7dd](https://github.com/cjavdev/spotted-java/commit/59ae7dda9b8877b9aea42c78019e2f163d292a00))
+* **api:** turn off oauth ([59c2a6b](https://github.com/cjavdev/spotted-java/commit/59c2a6b079b292b3da5c65a51d45e4dde7847a3f))
+
+
+### Chores
+
+* remove custom code ([7e3131d](https://github.com/cjavdev/spotted-java/commit/7e3131dfa2079260a6fb3229f2f85ad57f5eb53e))
+
 ## 0.15.0 (2026-01-14)
 
 Full Changelog: [v0.14.0...v0.15.0](https://github.com/cjavdev/spotted-java/compare/v0.14.0...v0.15.0)
