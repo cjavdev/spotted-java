@@ -92,7 +92,9 @@ private constructor(@JvmSynthetic internal val okHttpClient: okhttp3.OkHttpClien
                 else -> null
             }
         if (logLevel != null) {
-            clientBuilder.addNetworkInterceptor(HttpLoggingInterceptor().setLevel(logLevel))
+            clientBuilder.addNetworkInterceptor(
+                HttpLoggingInterceptor().setLevel(logLevel).apply { redactHeader("Authorization") }
+            )
         }
 
         requestOptions.timeout?.let {
