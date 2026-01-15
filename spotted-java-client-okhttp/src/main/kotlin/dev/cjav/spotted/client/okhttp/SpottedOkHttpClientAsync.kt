@@ -229,20 +229,7 @@ class SpottedOkHttpClientAsync private constructor() {
          */
         fun maxRetries(maxRetries: Int) = apply { clientOptions.maxRetries(maxRetries) }
 
-        fun clientId(clientId: String?) = apply { clientOptions.clientId(clientId) }
-
-        /** Alias for calling [Builder.clientId] with `clientId.orElse(null)`. */
-        fun clientId(clientId: Optional<String>) = clientId(clientId.getOrNull())
-
-        fun clientSecret(clientSecret: String?) = apply { clientOptions.clientSecret(clientSecret) }
-
-        /** Alias for calling [Builder.clientSecret] with `clientSecret.orElse(null)`. */
-        fun clientSecret(clientSecret: Optional<String>) = clientSecret(clientSecret.getOrNull())
-
-        fun accessToken(accessToken: String?) = apply { clientOptions.accessToken(accessToken) }
-
-        /** Alias for calling [Builder.accessToken] with `accessToken.orElse(null)`. */
-        fun accessToken(accessToken: Optional<String>) = accessToken(accessToken.getOrNull())
+        fun accessToken(accessToken: String) = apply { clientOptions.accessToken(accessToken) }
 
         fun headers(headers: Headers) = apply { clientOptions.headers(headers) }
 

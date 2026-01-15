@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.json.JsonMapper
 import dev.cjav.spotted.core.http.AsyncStreamResponse
 import dev.cjav.spotted.core.http.Headers
 import dev.cjav.spotted.core.http.HttpClient
-import dev.cjav.spotted.core.http.OAuth2HttpClient
 import dev.cjav.spotted.core.http.PhantomReachableClosingHttpClient
 import dev.cjav.spotted.core.http.QueryParams
 import dev.cjav.spotted.core.http.RetryingHttpClient
@@ -108,9 +107,7 @@ private constructor(
      * Defaults to 2.
      */
     @get:JvmName("maxRetries") val maxRetries: Int,
-    private val clientId: String?,
-    private val clientSecret: String?,
-    private val accessToken: String?,
+    @get:JvmName("accessToken") val accessToken: String,
 ) {
 
     init {
@@ -126,12 +123,6 @@ private constructor(
      */
     fun baseUrl(): String = baseUrl ?: PRODUCTION_URL
 
-    fun clientId(): Optional<String> = Optional.ofNullable(clientId)
-
-    fun clientSecret(): Optional<String> = Optional.ofNullable(clientSecret)
-
-    fun accessToken(): Optional<String> = Optional.ofNullable(accessToken)
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -144,6 +135,7 @@ private constructor(
          * The following fields are required:
          * ```java
          * .httpClient()
+         * .accessToken()
          * ```
          */
         @JvmStatic fun builder() = Builder()
@@ -171,8 +163,6 @@ private constructor(
         private var responseValidation: Boolean = false
         private var timeout: Timeout = Timeout.default()
         private var maxRetries: Int = 2
-        private var clientId: String? = null
-        private var clientSecret: String? = null
         private var accessToken: String? = null
 
         @JvmSynthetic
@@ -189,8 +179,6 @@ private constructor(
             responseValidation = clientOptions.responseValidation
             timeout = clientOptions.timeout
             maxRetries = clientOptions.maxRetries
-            clientId = clientOptions.clientId
-            clientSecret = clientOptions.clientSecret
             accessToken = clientOptions.accessToken
         }
 
@@ -312,20 +300,7 @@ private constructor(
          */
         fun maxRetries(maxRetries: Int) = apply { this.maxRetries = maxRetries }
 
-        fun clientId(clientId: String?) = apply { this.clientId = clientId }
-
-        /** Alias for calling [Builder.clientId] with `clientId.orElse(null)`. */
-        fun clientId(clientId: Optional<String>) = clientId(clientId.getOrNull())
-
-        fun clientSecret(clientSecret: String?) = apply { this.clientSecret = clientSecret }
-
-        /** Alias for calling [Builder.clientSecret] with `clientSecret.orElse(null)`. */
-        fun clientSecret(clientSecret: Optional<String>) = clientSecret(clientSecret.getOrNull())
-
-        fun accessToken(accessToken: String?) = apply { this.accessToken = accessToken }
-
-        /** Alias for calling [Builder.accessToken] with `accessToken.orElse(null)`. */
-        fun accessToken(accessToken: Optional<String>) = accessToken(accessToken.getOrNull())
+        fun accessToken(accessToken: String) = apply { this.accessToken = accessToken }
 
         fun headers(headers: Headers) = apply {
             this.headers.clear()
@@ -414,12 +389,10 @@ private constructor(
          *
          * See this table for the available options:
          *
-         * |Setter        |System property              |Environment variable   |Required|Default value                 |
-         * |--------------|-----------------------------|-----------------------|--------|------------------------------|
-         * |`clientId`    |`spotted.spotifyClientId`    |`SPOTIFY_CLIENT_ID`    |false   |-                             |
-         * |`clientSecret`|`spotted.spotifyClientSecret`|`SPOTIFY_CLIENT_SECRET`|false   |-                             |
-         * |`accessToken` |`spotted.spotifyAccessToken` |`SPOTIFY_ACCESS_TOKEN` |false   |-                             |
-         * |`baseUrl`     |`spotted.baseUrl`            |`SPOTTED_BASE_URL`     |true    |`"https://api.spotify.com/v1"`|
+         * |Setter       |System property             |Environment variable  |Required|Default value                 |
+         * |-------------|----------------------------|----------------------|--------|------------------------------|
+         * |`accessToken`|`spotted.spotifyAccessToken`|`SPOTIFY_ACCESS_TOKEN`|true    |-                             |
+         * |`baseUrl`    |`spotted.baseUrl`           |`SPOTTED_BASE_URL`    |true    |`"https://api.spotify.com/v1"`|
          *
          * System properties take precedence over environment variables.
          */
@@ -427,11 +400,6 @@ private constructor(
             (System.getProperty("spotted.baseUrl") ?: System.getenv("SPOTTED_BASE_URL"))?.let {
                 baseUrl(it)
             }
-            (System.getProperty("spotted.spotifyClientId") ?: System.getenv("SPOTIFY_CLIENT_ID"))
-                ?.let { clientId(it) }
-            (System.getProperty("spotted.spotifyClientSecret")
-                    ?: System.getenv("SPOTIFY_CLIENT_SECRET"))
-                ?.let { clientSecret(it) }
             (System.getProperty("spotted.spotifyAccessToken")
                     ?: System.getenv("SPOTIFY_ACCESS_TOKEN"))
                 ?.let { accessToken(it) }
@@ -445,6 +413,7 @@ private constructor(
          * The following fields are required:
          * ```java
          * .httpClient()
+         * .accessToken()
          * ```
          *
          * @throws IllegalStateException if any required field is unset.
@@ -470,6 +439,7 @@ private constructor(
                         )
                     )
             val sleeper = sleeper ?: PhantomReachableSleeper(DefaultSleeper())
+            val accessToken = checkRequired("accessToken", accessToken)
 
             val headers = Headers.builder()
             val queryParams = QueryParams.builder()
@@ -480,34 +450,13 @@ private constructor(
             headers.put("X-Stainless-Package-Version", getPackageVersion())
             headers.put("X-Stainless-Runtime", "JRE")
             headers.put("X-Stainless-Runtime-Version", getJavaVersion())
-            accessToken?.let {
-                if (!it.isEmpty()) {
-                    headers.put("Authorization", "Bearer $it")
-                }
-            }
             headers.replaceAll(this.headers.build())
             queryParams.replaceAll(this.queryParams.build())
 
             return ClientOptions(
                 httpClient,
                 RetryingHttpClient.builder()
-                    .httpClient(
-                        if (clientId != null && clientSecret != null) {
-                            OAuth2HttpClient.builder()
-                                .httpClient(httpClient)
-                                .tokenUrl(
-                                    (baseUrl ?: PRODUCTION_URL) +
-                                        "https://accounts.spotify.com/api/token"
-                                )
-                                .clientId(clientId!!)
-                                .clientSecret(clientSecret!!)
-                                .jsonMapper(jsonMapper)
-                                .clock(clock)
-                                .build()
-                        } else {
-                            httpClient
-                        }
-                    )
+                    .httpClient(httpClient)
                     .sleeper(sleeper)
                     .clock(clock)
                     .maxRetries(maxRetries)
@@ -523,8 +472,6 @@ private constructor(
                 responseValidation,
                 timeout,
                 maxRetries,
-                clientId,
-                clientSecret,
                 accessToken,
             )
         }
