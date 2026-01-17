@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.16.2 (2026-01-17)
+
+Full Changelog: [v0.16.1...v0.16.2](https://github.com/cjavdev/spotted-java/compare/v0.16.1...v0.16.2)
+
+### Bug Fixes
+
+* **client:** fully respect max retries ([9b1a513](https://github.com/cjavdev/spotted-java/commit/9b1a513a71298dd885575344a6dbc1927708c423))
+* **client:** send retry count header for max retries 0 ([9b1a513](https://github.com/cjavdev/spotted-java/commit/9b1a513a71298dd885575344a6dbc1927708c423))
+
+
+### Chores
+
+* **ci:** upgrade `actions/setup-java` ([3f26d00](https://github.com/cjavdev/spotted-java/commit/3f26d00d222513946a2d6f611cbd4fabf8e578e7))
+* **internal:** depend on packages directly in example ([9b1a513](https://github.com/cjavdev/spotted-java/commit/9b1a513a71298dd885575344a6dbc1927708c423))
+* **internal:** update `actions/checkout` version ([3163aa2](https://github.com/cjavdev/spotted-java/commit/3163aa26162da0e70533092318c81bbebba754df))
+
 ## 0.16.1 (2026-01-17)
 
 Full Changelog: [v0.16.0...v0.16.1](https://github.com/cjavdev/spotted-java/compare/v0.16.0...v0.16.1)
