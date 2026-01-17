@@ -2,8 +2,8 @@
 
 <!-- x-release-please-start-version -->
 
-[![Maven Central](https://img.shields.io/maven-central/v/dev.cjav.spotted/spotted-java)](https://central.sonatype.com/artifact/dev.cjav.spotted/spotted-java/0.16.0)
-[![javadoc](https://javadoc.io/badge2/dev.cjav.spotted/spotted-java/0.16.0/javadoc.svg)](https://javadoc.io/doc/dev.cjav.spotted/spotted-java/0.16.0)
+[![Maven Central](https://img.shields.io/maven-central/v/dev.cjav.spotted/spotted-java)](https://central.sonatype.com/artifact/dev.cjav.spotted/spotted-java/0.16.1)
+[![javadoc](https://javadoc.io/badge2/dev.cjav.spotted/spotted-java/0.16.1/javadoc.svg)](https://javadoc.io/doc/dev.cjav.spotted/spotted-java/0.16.1)
 
 <!-- x-release-please-end -->
 
@@ -24,7 +24,7 @@ Use the Spotted MCP Server to enable AI assistants to interact with this API, al
 
 <!-- x-release-please-start-version -->
 
-The REST API documentation can be found on [spotted.cjav.dev](https://spotted.cjav.dev). Javadocs are available on [javadoc.io](https://javadoc.io/doc/dev.cjav.spotted/spotted-java/0.16.0).
+The REST API documentation can be found on [spotted.cjav.dev](https://spotted.cjav.dev). Javadocs are available on [javadoc.io](https://javadoc.io/doc/dev.cjav.spotted/spotted-java/0.16.1).
 
 <!-- x-release-please-end -->
 
@@ -35,7 +35,7 @@ The REST API documentation can be found on [spotted.cjav.dev](https://spotted.cj
 ### Gradle
 
 ```kotlin
-implementation("dev.cjav.spotted:spotted-java:0.16.0")
+implementation("dev.cjav.spotted:spotted-java:0.16.1")
 ```
 
 ### Maven
@@ -44,7 +44,7 @@ implementation("dev.cjav.spotted:spotted-java:0.16.0")
 <dependency>
   <groupId>dev.cjav.spotted</groupId>
   <artifactId>spotted-java</artifactId>
-  <version>0.16.0</version>
+  <version>0.16.1</version>
 </dependency>
 ```
 
