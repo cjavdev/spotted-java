@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.16.1 (2026-01-17)
+
+Full Changelog: [v0.16.0...v0.16.1](https://github.com/cjavdev/spotted-java/compare/v0.16.0...v0.16.1)
+
+### Bug Fixes
+
+* **client:** disallow coercion from float to int ([3ac5055](https://github.com/cjavdev/spotted-java/commit/3ac505510657ce07fcf3416d41b870fc10cae501))
+* date time deserialization leniency ([3277c9b](https://github.com/cjavdev/spotted-java/commit/3277c9b5cf1b4df4ae588b5e6ec658866042d377))
+
+
+### Chores
+
+* **internal:** clean up maven repo artifact script and add html documentation to repo root ([d940488](https://github.com/cjavdev/spotted-java/commit/d940488f8219d5c0bb62be99c6a3016af56e06c2))
+* **internal:** improve maven repo docs ([10e72e8](https://github.com/cjavdev/spotted-java/commit/10e72e80c756bdc5d55325faf59178494986697e))
+* test on Jackson 2.14.0 to avoid encountering FasterXML/jackson-databind[#3240](https://github.com/cjavdev/spotted-java/issues/3240) in tests ([3277c9b](https://github.com/cjavdev/spotted-java/commit/3277c9b5cf1b4df4ae588b5e6ec658866042d377))
+
 ## 0.16.0 (2026-01-15)
 
 Full Changelog: [v0.15.0...v0.16.0](https://github.com/cjavdev/spotted-java/compare/v0.15.0...v0.16.0)
