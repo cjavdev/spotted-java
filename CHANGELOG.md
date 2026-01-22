@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.17.0 (2026-01-22)
+
+Full Changelog: [v0.16.2...v0.17.0](https://github.com/cjavdev/spotted-java/compare/v0.16.2...v0.17.0)
+
+### Features
+
+* **client:** send `X-Stainless-Kotlin-Version` header ([b5902ef](https://github.com/cjavdev/spotted-java/commit/b5902efcfbe55984d45b7234d4ee04c9facbf28a))
+
+
+### Chores
+
+* **internal:** update maven repo doc to include authentication ([f25d93a](https://github.com/cjavdev/spotted-java/commit/f25d93aee442dfe4416300cd1f210e3a07493c49))
+
 ## 0.16.2 (2026-01-17)
 
 Full Changelog: [v0.16.1...v0.16.2](https://github.com/cjavdev/spotted-java/compare/v0.16.1...v0.16.2)
