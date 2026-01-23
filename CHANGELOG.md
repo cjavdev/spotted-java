@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.17.1 (2026-01-23)
+
+Full Changelog: [v0.17.0...v0.17.1](https://github.com/cjavdev/spotted-java/compare/v0.17.0...v0.17.1)
+
+### Bug Fixes
+
+* **client:** preserve time zone in lenient date-time parsing ([a2f1e0e](https://github.com/cjavdev/spotted-java/commit/a2f1e0e856dbc43760a1bfd74c331e8d40946573))
+
+
+### Chores
+
+* **internal:** correct cache invalidation for `SKIP_MOCK_TESTS` ([8c9e566](https://github.com/cjavdev/spotted-java/commit/8c9e566f0a03d9bd47aef395598409eadc783dc7))
+
 ## 0.17.0 (2026-01-22)
 
 Full Changelog: [v0.16.2...v0.17.0](https://github.com/cjavdev/spotted-java/compare/v0.16.2...v0.17.0)
