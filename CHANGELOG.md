@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.17.2 (2026-01-24)
+
+Full Changelog: [v0.17.1...v0.17.2](https://github.com/cjavdev/spotted-java/compare/v0.17.1...v0.17.2)
+
+### Chores
+
+* **ci:** upgrade `actions/github-script` ([2a075b1](https://github.com/cjavdev/spotted-java/commit/2a075b1665a9806ccd8e4b02b4ee760485f506fc))
+
 ## 0.17.1 (2026-01-23)
 
 Full Changelog: [v0.17.0...v0.17.1](https://github.com/cjavdev/spotted-java/compare/v0.17.0...v0.17.1)
