@@ -10,6 +10,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /** Get public profile information about a Spotify user. */
+@Deprecated("deprecated")
 class UserRetrieveProfileParams
 private constructor(
     private val userId: String?,

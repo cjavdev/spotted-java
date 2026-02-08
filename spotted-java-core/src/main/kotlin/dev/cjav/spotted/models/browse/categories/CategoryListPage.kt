@@ -11,6 +11,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /** @see CategoryService.list */
+@Deprecated("deprecated")
 class CategoryListPage
 private constructor(
     private val service: CategoryService,

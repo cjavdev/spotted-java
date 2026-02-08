@@ -10,6 +10,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /** Get a list of the playlists owned or followed by a Spotify user. */
+@Deprecated("deprecated")
 class PlaylistListParams
 private constructor(
     private val userId: String?,

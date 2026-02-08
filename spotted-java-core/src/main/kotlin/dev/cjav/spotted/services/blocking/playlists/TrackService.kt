@@ -70,7 +70,11 @@ interface TrackService {
     fun update(playlistId: String, requestOptions: RequestOptions): TrackUpdateResponse =
         update(playlistId, TrackUpdateParams.none(), requestOptions)
 
-    /** Get full details of the items of a playlist owned by a Spotify user. */
+    /**
+     * Get full details of the items of a playlist owned by a Spotify user.
+     *
+     * **Note**: This endpoint is only accessible for playlists owned by the current user.
+     */
     fun list(playlistId: String): TrackListPage = list(playlistId, TrackListParams.none())
 
     /** @see list */

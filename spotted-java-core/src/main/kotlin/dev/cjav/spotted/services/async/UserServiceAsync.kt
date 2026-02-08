@@ -28,10 +28,12 @@ interface UserServiceAsync {
     fun playlists(): PlaylistServiceAsync
 
     /** Get public profile information about a Spotify user. */
+    @Deprecated("deprecated")
     fun retrieveProfile(userId: String): CompletableFuture<UserRetrieveProfileResponse> =
         retrieveProfile(userId, UserRetrieveProfileParams.none())
 
     /** @see retrieveProfile */
+    @Deprecated("deprecated")
     fun retrieveProfile(
         userId: String,
         params: UserRetrieveProfileParams = UserRetrieveProfileParams.none(),
@@ -40,6 +42,7 @@ interface UserServiceAsync {
         retrieveProfile(params.toBuilder().userId(userId).build(), requestOptions)
 
     /** @see retrieveProfile */
+    @Deprecated("deprecated")
     fun retrieveProfile(
         userId: String,
         params: UserRetrieveProfileParams = UserRetrieveProfileParams.none(),
@@ -47,18 +50,21 @@ interface UserServiceAsync {
         retrieveProfile(userId, params, RequestOptions.none())
 
     /** @see retrieveProfile */
+    @Deprecated("deprecated")
     fun retrieveProfile(
         params: UserRetrieveProfileParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<UserRetrieveProfileResponse>
 
     /** @see retrieveProfile */
+    @Deprecated("deprecated")
     fun retrieveProfile(
         params: UserRetrieveProfileParams
     ): CompletableFuture<UserRetrieveProfileResponse> =
         retrieveProfile(params, RequestOptions.none())
 
     /** @see retrieveProfile */
+    @Deprecated("deprecated")
     fun retrieveProfile(
         userId: String,
         requestOptions: RequestOptions,
@@ -81,12 +87,14 @@ interface UserServiceAsync {
          * Returns a raw HTTP response for `get /users/{user_id}`, but is otherwise the same as
          * [UserServiceAsync.retrieveProfile].
          */
+        @Deprecated("deprecated")
         fun retrieveProfile(
             userId: String
         ): CompletableFuture<HttpResponseFor<UserRetrieveProfileResponse>> =
             retrieveProfile(userId, UserRetrieveProfileParams.none())
 
         /** @see retrieveProfile */
+        @Deprecated("deprecated")
         fun retrieveProfile(
             userId: String,
             params: UserRetrieveProfileParams = UserRetrieveProfileParams.none(),
@@ -95,6 +103,7 @@ interface UserServiceAsync {
             retrieveProfile(params.toBuilder().userId(userId).build(), requestOptions)
 
         /** @see retrieveProfile */
+        @Deprecated("deprecated")
         fun retrieveProfile(
             userId: String,
             params: UserRetrieveProfileParams = UserRetrieveProfileParams.none(),
@@ -102,18 +111,21 @@ interface UserServiceAsync {
             retrieveProfile(userId, params, RequestOptions.none())
 
         /** @see retrieveProfile */
+        @Deprecated("deprecated")
         fun retrieveProfile(
             params: UserRetrieveProfileParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<UserRetrieveProfileResponse>>
 
         /** @see retrieveProfile */
+        @Deprecated("deprecated")
         fun retrieveProfile(
             params: UserRetrieveProfileParams
         ): CompletableFuture<HttpResponseFor<UserRetrieveProfileResponse>> =
             retrieveProfile(params, RequestOptions.none())
 
         /** @see retrieveProfile */
+        @Deprecated("deprecated")
         fun retrieveProfile(
             userId: String,
             requestOptions: RequestOptions,

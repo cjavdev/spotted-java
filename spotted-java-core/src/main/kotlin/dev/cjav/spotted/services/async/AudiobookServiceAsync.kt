@@ -71,12 +71,14 @@ interface AudiobookServiceAsync {
      * Audiobooks are only available within the US, UK, Canada, Ireland, New Zealand and Australia
      * markets.
      */
+    @Deprecated("deprecated")
     fun bulkRetrieve(
         params: AudiobookBulkRetrieveParams
     ): CompletableFuture<AudiobookBulkRetrieveResponse> =
         bulkRetrieve(params, RequestOptions.none())
 
     /** @see bulkRetrieve */
+    @Deprecated("deprecated")
     fun bulkRetrieve(
         params: AudiobookBulkRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -182,12 +184,14 @@ interface AudiobookServiceAsync {
          * Returns a raw HTTP response for `get /audiobooks`, but is otherwise the same as
          * [AudiobookServiceAsync.bulkRetrieve].
          */
+        @Deprecated("deprecated")
         fun bulkRetrieve(
             params: AudiobookBulkRetrieveParams
         ): CompletableFuture<HttpResponseFor<AudiobookBulkRetrieveResponse>> =
             bulkRetrieve(params, RequestOptions.none())
 
         /** @see bulkRetrieve */
+        @Deprecated("deprecated")
         fun bulkRetrieve(
             params: AudiobookBulkRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),

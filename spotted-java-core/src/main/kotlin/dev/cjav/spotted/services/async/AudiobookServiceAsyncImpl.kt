@@ -45,6 +45,7 @@ class AudiobookServiceAsyncImpl internal constructor(private val clientOptions: 
         // get /audiobooks/{id}
         withRawResponse().retrieve(params, requestOptions).thenApply { it.parse() }
 
+    @Deprecated("deprecated")
     override fun bulkRetrieve(
         params: AudiobookBulkRetrieveParams,
         requestOptions: RequestOptions,
@@ -108,6 +109,7 @@ class AudiobookServiceAsyncImpl internal constructor(private val clientOptions: 
         private val bulkRetrieveHandler: Handler<AudiobookBulkRetrieveResponse> =
             jsonHandler<AudiobookBulkRetrieveResponse>(clientOptions.jsonMapper)
 
+        @Deprecated("deprecated")
         override fun bulkRetrieve(
             params: AudiobookBulkRetrieveParams,
             requestOptions: RequestOptions,

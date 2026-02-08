@@ -41,6 +41,7 @@ class TrackServiceImpl internal constructor(private val clientOptions: ClientOpt
         // get /tracks/{id}
         withRawResponse().retrieve(params, requestOptions).parse()
 
+    @Deprecated("deprecated")
     override fun bulkRetrieve(
         params: TrackBulkRetrieveParams,
         requestOptions: RequestOptions,
@@ -94,6 +95,7 @@ class TrackServiceImpl internal constructor(private val clientOptions: ClientOpt
         private val bulkRetrieveHandler: Handler<TrackBulkRetrieveResponse> =
             jsonHandler<TrackBulkRetrieveResponse>(clientOptions.jsonMapper)
 
+        @Deprecated("deprecated")
         override fun bulkRetrieve(
             params: TrackBulkRetrieveParams,
             requestOptions: RequestOptions,

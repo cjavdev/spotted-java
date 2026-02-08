@@ -25,20 +25,24 @@ interface MarketServiceAsync {
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): MarketServiceAsync
 
     /** Get the list of markets where Spotify is available. */
+    @Deprecated("deprecated")
     fun list(): CompletableFuture<MarketListResponse> = list(MarketListParams.none())
 
     /** @see list */
+    @Deprecated("deprecated")
     fun list(
         params: MarketListParams = MarketListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<MarketListResponse>
 
     /** @see list */
+    @Deprecated("deprecated")
     fun list(
         params: MarketListParams = MarketListParams.none()
     ): CompletableFuture<MarketListResponse> = list(params, RequestOptions.none())
 
     /** @see list */
+    @Deprecated("deprecated")
     fun list(requestOptions: RequestOptions): CompletableFuture<MarketListResponse> =
         list(MarketListParams.none(), requestOptions)
 
@@ -60,22 +64,26 @@ interface MarketServiceAsync {
          * Returns a raw HTTP response for `get /markets`, but is otherwise the same as
          * [MarketServiceAsync.list].
          */
+        @Deprecated("deprecated")
         fun list(): CompletableFuture<HttpResponseFor<MarketListResponse>> =
             list(MarketListParams.none())
 
         /** @see list */
+        @Deprecated("deprecated")
         fun list(
             params: MarketListParams = MarketListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<MarketListResponse>>
 
         /** @see list */
+        @Deprecated("deprecated")
         fun list(
             params: MarketListParams = MarketListParams.none()
         ): CompletableFuture<HttpResponseFor<MarketListResponse>> =
             list(params, RequestOptions.none())
 
         /** @see list */
+        @Deprecated("deprecated")
         fun list(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<MarketListResponse>> =

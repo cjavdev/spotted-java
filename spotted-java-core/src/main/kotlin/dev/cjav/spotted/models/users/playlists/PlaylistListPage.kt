@@ -13,6 +13,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /** @see PlaylistService.list */
+@Deprecated("deprecated")
 class PlaylistListPage
 private constructor(
     private val service: PlaylistService,

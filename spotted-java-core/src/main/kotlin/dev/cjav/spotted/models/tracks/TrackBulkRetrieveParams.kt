@@ -11,6 +11,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /** Get Spotify catalog information for multiple tracks based on their Spotify IDs. */
+@Deprecated("deprecated")
 class TrackBulkRetrieveParams
 private constructor(
     private val ids: String,
