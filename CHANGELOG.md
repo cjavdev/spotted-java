@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.18.0 (2026-02-08)
+
+Full Changelog: [v0.17.2...v0.18.0](https://github.com/cjavdev/spotted-java/compare/v0.17.2...v0.18.0)
+
+### Features
+
+* **api:** api update ([2b43722](https://github.com/cjavdev/spotted-java/commit/2b4372274c56bacaef19a0ab046f0be1a05ba4a6))
+
+
+### Chores
+
+* **internal:** allow passing args to `./scripts/test` ([f3728b6](https://github.com/cjavdev/spotted-java/commit/f3728b6cfd0731b0fb268f90e7b44e680b3c2341))
+* **internal:** upgrade AssertJ ([81945b3](https://github.com/cjavdev/spotted-java/commit/81945b3248a414265b396c870bdbebee29ee6b12))
+
 ## 0.17.2 (2026-01-29)
 
 Full Changelog: [v0.17.1...v0.17.2](https://github.com/cjavdev/spotted-java/compare/v0.17.1...v0.17.2)
