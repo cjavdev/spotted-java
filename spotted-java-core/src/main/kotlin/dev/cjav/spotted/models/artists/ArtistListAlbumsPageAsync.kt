@@ -13,6 +13,7 @@ import java.util.concurrent.Executor
 import kotlin.jvm.optionals.getOrNull
 
 /** @see ArtistServiceAsync.listAlbums */
+@Deprecated("deprecated")
 class ArtistListAlbumsPageAsync
 private constructor(
     private val service: ArtistServiceAsync,

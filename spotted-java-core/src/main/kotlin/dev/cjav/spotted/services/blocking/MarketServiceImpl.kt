@@ -30,6 +30,7 @@ class MarketServiceImpl internal constructor(private val clientOptions: ClientOp
     override fun withOptions(modifier: Consumer<ClientOptions.Builder>): MarketService =
         MarketServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
+    @Deprecated("deprecated")
     override fun list(
         params: MarketListParams,
         requestOptions: RequestOptions,
@@ -53,6 +54,7 @@ class MarketServiceImpl internal constructor(private val clientOptions: ClientOp
         private val listHandler: Handler<MarketListResponse> =
             jsonHandler<MarketListResponse>(clientOptions.jsonMapper)
 
+        @Deprecated("deprecated")
         override fun list(
             params: MarketListParams,
             requestOptions: RequestOptions,

@@ -37,6 +37,7 @@ class PlaylistServiceAsyncImpl internal constructor(private val clientOptions: C
     override fun withOptions(modifier: Consumer<ClientOptions.Builder>): PlaylistServiceAsync =
         PlaylistServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
+    @Deprecated("deprecated")
     override fun create(
         params: PlaylistCreateParams,
         requestOptions: RequestOptions,
@@ -44,6 +45,7 @@ class PlaylistServiceAsyncImpl internal constructor(private val clientOptions: C
         // post /users/{user_id}/playlists
         withRawResponse().create(params, requestOptions).thenApply { it.parse() }
 
+    @Deprecated("deprecated")
     override fun list(
         params: PlaylistListParams,
         requestOptions: RequestOptions,
@@ -67,6 +69,7 @@ class PlaylistServiceAsyncImpl internal constructor(private val clientOptions: C
         private val createHandler: Handler<PlaylistCreateResponse> =
             jsonHandler<PlaylistCreateResponse>(clientOptions.jsonMapper)
 
+        @Deprecated("deprecated")
         override fun create(
             params: PlaylistCreateParams,
             requestOptions: RequestOptions,
@@ -101,6 +104,7 @@ class PlaylistServiceAsyncImpl internal constructor(private val clientOptions: C
         private val listHandler: Handler<PagingPlaylistObject> =
             jsonHandler<PagingPlaylistObject>(clientOptions.jsonMapper)
 
+        @Deprecated("deprecated")
         override fun list(
             params: PlaylistListParams,
             requestOptions: RequestOptions,

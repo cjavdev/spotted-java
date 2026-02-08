@@ -21,10 +21,13 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /**
+ * **Deprecated**: Use [Create Playlist](/documentation/web-api/reference/create-playlist) instead.
+ *
  * Create a playlist for a Spotify user. (The playlist will be empty until you
  * [add tracks](/documentation/web-api/reference/add-tracks-to-playlist).) Each user is generally
  * limited to a maximum of 11000 playlists.
  */
+@Deprecated("deprecated")
 class PlaylistCreateParams
 private constructor(
     private val userId: String?,

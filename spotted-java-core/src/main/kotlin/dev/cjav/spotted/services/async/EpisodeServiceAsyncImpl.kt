@@ -42,6 +42,7 @@ class EpisodeServiceAsyncImpl internal constructor(private val clientOptions: Cl
         // get /episodes/{id}
         withRawResponse().retrieve(params, requestOptions).thenApply { it.parse() }
 
+    @Deprecated("deprecated")
     override fun bulkRetrieve(
         params: EpisodeBulkRetrieveParams,
         requestOptions: RequestOptions,
@@ -98,6 +99,7 @@ class EpisodeServiceAsyncImpl internal constructor(private val clientOptions: Cl
         private val bulkRetrieveHandler: Handler<EpisodeBulkRetrieveResponse> =
             jsonHandler<EpisodeBulkRetrieveResponse>(clientOptions.jsonMapper)
 
+        @Deprecated("deprecated")
         override fun bulkRetrieve(
             params: EpisodeBulkRetrieveParams,
             requestOptions: RequestOptions,

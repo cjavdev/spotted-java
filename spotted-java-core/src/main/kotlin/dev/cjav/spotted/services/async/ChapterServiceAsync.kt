@@ -69,11 +69,13 @@ interface ChapterServiceAsync {
      * IDs. Chapters are only available within the US, UK, Canada, Ireland, New Zealand and
      * Australia markets.
      */
+    @Deprecated("deprecated")
     fun bulkRetrieve(
         params: ChapterBulkRetrieveParams
     ): CompletableFuture<ChapterBulkRetrieveResponse> = bulkRetrieve(params, RequestOptions.none())
 
     /** @see bulkRetrieve */
+    @Deprecated("deprecated")
     fun bulkRetrieve(
         params: ChapterBulkRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -138,12 +140,14 @@ interface ChapterServiceAsync {
          * Returns a raw HTTP response for `get /chapters`, but is otherwise the same as
          * [ChapterServiceAsync.bulkRetrieve].
          */
+        @Deprecated("deprecated")
         fun bulkRetrieve(
             params: ChapterBulkRetrieveParams
         ): CompletableFuture<HttpResponseFor<ChapterBulkRetrieveResponse>> =
             bulkRetrieve(params, RequestOptions.none())
 
         /** @see bulkRetrieve */
+        @Deprecated("deprecated")
         fun bulkRetrieve(
             params: ChapterBulkRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),

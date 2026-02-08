@@ -10,6 +10,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /** Get Spotify catalog information about an artist's albums. */
+@Deprecated("deprecated")
 class ArtistListAlbumsParams
 private constructor(
     private val id: String?,
@@ -31,7 +32,7 @@ private constructor(
      */
     fun includeGroups(): Optional<String> = Optional.ofNullable(includeGroups)
 
-    /** The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50. */
+    /** The maximum number of items to return. Default: 5. Minimum: 1. Maximum: 10. */
     fun limit(): Optional<Long> = Optional.ofNullable(limit)
 
     /**
@@ -107,7 +108,7 @@ private constructor(
         fun includeGroups(includeGroups: Optional<String>) =
             includeGroups(includeGroups.getOrNull())
 
-        /** The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50. */
+        /** The maximum number of items to return. Default: 5. Minimum: 1. Maximum: 10. */
         fun limit(limit: Long?) = apply { this.limit = limit }
 
         /**

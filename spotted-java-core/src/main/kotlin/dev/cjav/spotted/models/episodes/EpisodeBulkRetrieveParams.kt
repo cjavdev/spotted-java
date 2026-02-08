@@ -11,6 +11,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /** Get Spotify catalog information for several episodes based on their Spotify IDs. */
+@Deprecated("deprecated")
 class EpisodeBulkRetrieveParams
 private constructor(
     private val ids: String,

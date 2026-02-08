@@ -42,6 +42,7 @@ class TrackServiceAsyncImpl internal constructor(private val clientOptions: Clie
         // get /tracks/{id}
         withRawResponse().retrieve(params, requestOptions).thenApply { it.parse() }
 
+    @Deprecated("deprecated")
     override fun bulkRetrieve(
         params: TrackBulkRetrieveParams,
         requestOptions: RequestOptions,
@@ -98,6 +99,7 @@ class TrackServiceAsyncImpl internal constructor(private val clientOptions: Clie
         private val bulkRetrieveHandler: Handler<TrackBulkRetrieveResponse> =
             jsonHandler<TrackBulkRetrieveResponse>(clientOptions.jsonMapper)
 
+        @Deprecated("deprecated")
         override fun bulkRetrieve(
             params: TrackBulkRetrieveParams,
             requestOptions: RequestOptions,

@@ -25,19 +25,22 @@ interface MarketService {
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): MarketService
 
     /** Get the list of markets where Spotify is available. */
-    fun list(): MarketListResponse = list(MarketListParams.none())
+    @Deprecated("deprecated") fun list(): MarketListResponse = list(MarketListParams.none())
 
     /** @see list */
+    @Deprecated("deprecated")
     fun list(
         params: MarketListParams = MarketListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): MarketListResponse
 
     /** @see list */
+    @Deprecated("deprecated")
     fun list(params: MarketListParams = MarketListParams.none()): MarketListResponse =
         list(params, RequestOptions.none())
 
     /** @see list */
+    @Deprecated("deprecated")
     fun list(requestOptions: RequestOptions): MarketListResponse =
         list(MarketListParams.none(), requestOptions)
 
@@ -55,10 +58,12 @@ interface MarketService {
          * Returns a raw HTTP response for `get /markets`, but is otherwise the same as
          * [MarketService.list].
          */
+        @Deprecated("deprecated")
         @MustBeClosed
         fun list(): HttpResponseFor<MarketListResponse> = list(MarketListParams.none())
 
         /** @see list */
+        @Deprecated("deprecated")
         @MustBeClosed
         fun list(
             params: MarketListParams = MarketListParams.none(),
@@ -66,12 +71,14 @@ interface MarketService {
         ): HttpResponseFor<MarketListResponse>
 
         /** @see list */
+        @Deprecated("deprecated")
         @MustBeClosed
         fun list(
             params: MarketListParams = MarketListParams.none()
         ): HttpResponseFor<MarketListResponse> = list(params, RequestOptions.none())
 
         /** @see list */
+        @Deprecated("deprecated")
         @MustBeClosed
         fun list(requestOptions: RequestOptions): HttpResponseFor<MarketListResponse> =
             list(MarketListParams.none(), requestOptions)

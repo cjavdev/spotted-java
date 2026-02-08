@@ -38,6 +38,7 @@ class CategoryServiceAsyncImpl internal constructor(private val clientOptions: C
     override fun withOptions(modifier: Consumer<ClientOptions.Builder>): CategoryServiceAsync =
         CategoryServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
+    @Deprecated("deprecated")
     override fun retrieve(
         params: CategoryRetrieveParams,
         requestOptions: RequestOptions,
@@ -45,6 +46,7 @@ class CategoryServiceAsyncImpl internal constructor(private val clientOptions: C
         // get /browse/categories/{category_id}
         withRawResponse().retrieve(params, requestOptions).thenApply { it.parse() }
 
+    @Deprecated("deprecated")
     override fun list(
         params: CategoryListParams,
         requestOptions: RequestOptions,
@@ -76,6 +78,7 @@ class CategoryServiceAsyncImpl internal constructor(private val clientOptions: C
         private val retrieveHandler: Handler<CategoryRetrieveResponse> =
             jsonHandler<CategoryRetrieveResponse>(clientOptions.jsonMapper)
 
+        @Deprecated("deprecated")
         override fun retrieve(
             params: CategoryRetrieveParams,
             requestOptions: RequestOptions,
@@ -109,6 +112,7 @@ class CategoryServiceAsyncImpl internal constructor(private val clientOptions: C
         private val listHandler: Handler<CategoryListPageResponse> =
             jsonHandler<CategoryListPageResponse>(clientOptions.jsonMapper)
 
+        @Deprecated("deprecated")
         override fun list(
             params: CategoryListParams,
             requestOptions: RequestOptions,

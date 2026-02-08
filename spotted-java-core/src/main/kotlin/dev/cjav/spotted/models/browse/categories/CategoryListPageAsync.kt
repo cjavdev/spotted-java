@@ -13,6 +13,7 @@ import java.util.concurrent.Executor
 import kotlin.jvm.optionals.getOrNull
 
 /** @see CategoryServiceAsync.list */
+@Deprecated("deprecated")
 class CategoryListPageAsync
 private constructor(
     private val service: CategoryServiceAsync,

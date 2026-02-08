@@ -64,10 +64,12 @@ interface ShowServiceAsync {
         retrieve(id, ShowRetrieveParams.none(), requestOptions)
 
     /** Get Spotify catalog information for several shows based on their Spotify IDs. */
+    @Deprecated("deprecated")
     fun bulkRetrieve(params: ShowBulkRetrieveParams): CompletableFuture<ShowBulkRetrieveResponse> =
         bulkRetrieve(params, RequestOptions.none())
 
     /** @see bulkRetrieve */
+    @Deprecated("deprecated")
     fun bulkRetrieve(
         params: ShowBulkRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -167,12 +169,14 @@ interface ShowServiceAsync {
          * Returns a raw HTTP response for `get /shows`, but is otherwise the same as
          * [ShowServiceAsync.bulkRetrieve].
          */
+        @Deprecated("deprecated")
         fun bulkRetrieve(
             params: ShowBulkRetrieveParams
         ): CompletableFuture<HttpResponseFor<ShowBulkRetrieveResponse>> =
             bulkRetrieve(params, RequestOptions.none())
 
         /** @see bulkRetrieve */
+        @Deprecated("deprecated")
         fun bulkRetrieve(
             params: ShowBulkRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
