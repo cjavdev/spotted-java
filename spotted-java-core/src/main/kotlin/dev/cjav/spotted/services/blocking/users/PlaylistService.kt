@@ -27,14 +27,19 @@ interface PlaylistService {
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): PlaylistService
 
     /**
+     * **Deprecated**: Use [Create Playlist](/documentation/web-api/reference/create-playlist)
+     * instead.
+     *
      * Create a playlist for a Spotify user. (The playlist will be empty until you
      * [add tracks](/documentation/web-api/reference/add-tracks-to-playlist).) Each user is
      * generally limited to a maximum of 11000 playlists.
      */
+    @Deprecated("deprecated")
     fun create(userId: String, params: PlaylistCreateParams): PlaylistCreateResponse =
         create(userId, params, RequestOptions.none())
 
     /** @see create */
+    @Deprecated("deprecated")
     fun create(
         userId: String,
         params: PlaylistCreateParams,
@@ -42,19 +47,23 @@ interface PlaylistService {
     ): PlaylistCreateResponse = create(params.toBuilder().userId(userId).build(), requestOptions)
 
     /** @see create */
+    @Deprecated("deprecated")
     fun create(params: PlaylistCreateParams): PlaylistCreateResponse =
         create(params, RequestOptions.none())
 
     /** @see create */
+    @Deprecated("deprecated")
     fun create(
         params: PlaylistCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): PlaylistCreateResponse
 
     /** Get a list of the playlists owned or followed by a Spotify user. */
+    @Deprecated("deprecated")
     fun list(userId: String): PlaylistListPage = list(userId, PlaylistListParams.none())
 
     /** @see list */
+    @Deprecated("deprecated")
     fun list(
         userId: String,
         params: PlaylistListParams = PlaylistListParams.none(),
@@ -62,21 +71,25 @@ interface PlaylistService {
     ): PlaylistListPage = list(params.toBuilder().userId(userId).build(), requestOptions)
 
     /** @see list */
+    @Deprecated("deprecated")
     fun list(
         userId: String,
         params: PlaylistListParams = PlaylistListParams.none(),
     ): PlaylistListPage = list(userId, params, RequestOptions.none())
 
     /** @see list */
+    @Deprecated("deprecated")
     fun list(
         params: PlaylistListParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): PlaylistListPage
 
     /** @see list */
+    @Deprecated("deprecated")
     fun list(params: PlaylistListParams): PlaylistListPage = list(params, RequestOptions.none())
 
     /** @see list */
+    @Deprecated("deprecated")
     fun list(userId: String, requestOptions: RequestOptions): PlaylistListPage =
         list(userId, PlaylistListParams.none(), requestOptions)
 
@@ -94,6 +107,7 @@ interface PlaylistService {
          * Returns a raw HTTP response for `post /users/{user_id}/playlists`, but is otherwise the
          * same as [PlaylistService.create].
          */
+        @Deprecated("deprecated")
         @MustBeClosed
         fun create(
             userId: String,
@@ -101,6 +115,7 @@ interface PlaylistService {
         ): HttpResponseFor<PlaylistCreateResponse> = create(userId, params, RequestOptions.none())
 
         /** @see create */
+        @Deprecated("deprecated")
         @MustBeClosed
         fun create(
             userId: String,
@@ -110,11 +125,13 @@ interface PlaylistService {
             create(params.toBuilder().userId(userId).build(), requestOptions)
 
         /** @see create */
+        @Deprecated("deprecated")
         @MustBeClosed
         fun create(params: PlaylistCreateParams): HttpResponseFor<PlaylistCreateResponse> =
             create(params, RequestOptions.none())
 
         /** @see create */
+        @Deprecated("deprecated")
         @MustBeClosed
         fun create(
             params: PlaylistCreateParams,
@@ -125,11 +142,13 @@ interface PlaylistService {
          * Returns a raw HTTP response for `get /users/{user_id}/playlists`, but is otherwise the
          * same as [PlaylistService.list].
          */
+        @Deprecated("deprecated")
         @MustBeClosed
         fun list(userId: String): HttpResponseFor<PlaylistListPage> =
             list(userId, PlaylistListParams.none())
 
         /** @see list */
+        @Deprecated("deprecated")
         @MustBeClosed
         fun list(
             userId: String,
@@ -139,6 +158,7 @@ interface PlaylistService {
             list(params.toBuilder().userId(userId).build(), requestOptions)
 
         /** @see list */
+        @Deprecated("deprecated")
         @MustBeClosed
         fun list(
             userId: String,
@@ -146,6 +166,7 @@ interface PlaylistService {
         ): HttpResponseFor<PlaylistListPage> = list(userId, params, RequestOptions.none())
 
         /** @see list */
+        @Deprecated("deprecated")
         @MustBeClosed
         fun list(
             params: PlaylistListParams,
@@ -153,11 +174,13 @@ interface PlaylistService {
         ): HttpResponseFor<PlaylistListPage>
 
         /** @see list */
+        @Deprecated("deprecated")
         @MustBeClosed
         fun list(params: PlaylistListParams): HttpResponseFor<PlaylistListPage> =
             list(params, RequestOptions.none())
 
         /** @see list */
+        @Deprecated("deprecated")
         @MustBeClosed
         fun list(
             userId: String,

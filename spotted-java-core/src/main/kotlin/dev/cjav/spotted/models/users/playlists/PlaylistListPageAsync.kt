@@ -15,6 +15,7 @@ import java.util.concurrent.Executor
 import kotlin.jvm.optionals.getOrNull
 
 /** @see PlaylistServiceAsync.list */
+@Deprecated("deprecated")
 class PlaylistListPageAsync
 private constructor(
     private val service: PlaylistServiceAsync,

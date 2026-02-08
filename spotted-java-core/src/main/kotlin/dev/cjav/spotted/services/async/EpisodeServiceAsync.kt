@@ -59,11 +59,13 @@ interface EpisodeServiceAsync {
         retrieve(id, EpisodeRetrieveParams.none(), requestOptions)
 
     /** Get Spotify catalog information for several episodes based on their Spotify IDs. */
+    @Deprecated("deprecated")
     fun bulkRetrieve(
         params: EpisodeBulkRetrieveParams
     ): CompletableFuture<EpisodeBulkRetrieveResponse> = bulkRetrieve(params, RequestOptions.none())
 
     /** @see bulkRetrieve */
+    @Deprecated("deprecated")
     fun bulkRetrieve(
         params: EpisodeBulkRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -128,12 +130,14 @@ interface EpisodeServiceAsync {
          * Returns a raw HTTP response for `get /episodes`, but is otherwise the same as
          * [EpisodeServiceAsync.bulkRetrieve].
          */
+        @Deprecated("deprecated")
         fun bulkRetrieve(
             params: EpisodeBulkRetrieveParams
         ): CompletableFuture<HttpResponseFor<EpisodeBulkRetrieveResponse>> =
             bulkRetrieve(params, RequestOptions.none())
 
         /** @see bulkRetrieve */
+        @Deprecated("deprecated")
         fun bulkRetrieve(
             params: EpisodeBulkRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),

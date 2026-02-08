@@ -62,22 +62,26 @@ interface BrowseServiceAsync {
      * Get a list of new album releases featured in Spotify (shown, for example, on a Spotify
      * player’s “Browse” tab).
      */
+    @Deprecated("deprecated")
     fun getNewReleases(): CompletableFuture<BrowseGetNewReleasesResponse> =
         getNewReleases(BrowseGetNewReleasesParams.none())
 
     /** @see getNewReleases */
+    @Deprecated("deprecated")
     fun getNewReleases(
         params: BrowseGetNewReleasesParams = BrowseGetNewReleasesParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<BrowseGetNewReleasesResponse>
 
     /** @see getNewReleases */
+    @Deprecated("deprecated")
     fun getNewReleases(
         params: BrowseGetNewReleasesParams = BrowseGetNewReleasesParams.none()
     ): CompletableFuture<BrowseGetNewReleasesResponse> =
         getNewReleases(params, RequestOptions.none())
 
     /** @see getNewReleases */
+    @Deprecated("deprecated")
     fun getNewReleases(
         requestOptions: RequestOptions
     ): CompletableFuture<BrowseGetNewReleasesResponse> =
@@ -133,22 +137,26 @@ interface BrowseServiceAsync {
          * Returns a raw HTTP response for `get /browse/new-releases`, but is otherwise the same as
          * [BrowseServiceAsync.getNewReleases].
          */
+        @Deprecated("deprecated")
         fun getNewReleases(): CompletableFuture<HttpResponseFor<BrowseGetNewReleasesResponse>> =
             getNewReleases(BrowseGetNewReleasesParams.none())
 
         /** @see getNewReleases */
+        @Deprecated("deprecated")
         fun getNewReleases(
             params: BrowseGetNewReleasesParams = BrowseGetNewReleasesParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<BrowseGetNewReleasesResponse>>
 
         /** @see getNewReleases */
+        @Deprecated("deprecated")
         fun getNewReleases(
             params: BrowseGetNewReleasesParams = BrowseGetNewReleasesParams.none()
         ): CompletableFuture<HttpResponseFor<BrowseGetNewReleasesResponse>> =
             getNewReleases(params, RequestOptions.none())
 
         /** @see getNewReleases */
+        @Deprecated("deprecated")
         fun getNewReleases(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<BrowseGetNewReleasesResponse>> =

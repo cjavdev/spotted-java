@@ -49,6 +49,7 @@ class ArtistServiceAsyncImpl internal constructor(private val clientOptions: Cli
         // get /artists/{id}
         withRawResponse().retrieve(params, requestOptions).thenApply { it.parse() }
 
+    @Deprecated("deprecated")
     override fun bulkRetrieve(
         params: ArtistBulkRetrieveParams,
         requestOptions: RequestOptions,
@@ -56,6 +57,7 @@ class ArtistServiceAsyncImpl internal constructor(private val clientOptions: Cli
         // get /artists
         withRawResponse().bulkRetrieve(params, requestOptions).thenApply { it.parse() }
 
+    @Deprecated("deprecated")
     override fun listAlbums(
         params: ArtistListAlbumsParams,
         requestOptions: RequestOptions,
@@ -71,6 +73,7 @@ class ArtistServiceAsyncImpl internal constructor(private val clientOptions: Cli
         // get /artists/{id}/related-artists
         withRawResponse().listRelatedArtists(params, requestOptions).thenApply { it.parse() }
 
+    @Deprecated("deprecated")
     override fun topTracks(
         params: ArtistTopTracksParams,
         requestOptions: RequestOptions,
@@ -127,6 +130,7 @@ class ArtistServiceAsyncImpl internal constructor(private val clientOptions: Cli
         private val bulkRetrieveHandler: Handler<ArtistBulkRetrieveResponse> =
             jsonHandler<ArtistBulkRetrieveResponse>(clientOptions.jsonMapper)
 
+        @Deprecated("deprecated")
         override fun bulkRetrieve(
             params: ArtistBulkRetrieveParams,
             requestOptions: RequestOptions,
@@ -157,6 +161,7 @@ class ArtistServiceAsyncImpl internal constructor(private val clientOptions: Cli
         private val listAlbumsHandler: Handler<ArtistListAlbumsPageResponse> =
             jsonHandler<ArtistListAlbumsPageResponse>(clientOptions.jsonMapper)
 
+        @Deprecated("deprecated")
         override fun listAlbums(
             params: ArtistListAlbumsParams,
             requestOptions: RequestOptions,
@@ -232,6 +237,7 @@ class ArtistServiceAsyncImpl internal constructor(private val clientOptions: Cli
         private val topTracksHandler: Handler<ArtistTopTracksResponse> =
             jsonHandler<ArtistTopTracksResponse>(clientOptions.jsonMapper)
 
+        @Deprecated("deprecated")
         override fun topTracks(
             params: ArtistTopTracksParams,
             requestOptions: RequestOptions,

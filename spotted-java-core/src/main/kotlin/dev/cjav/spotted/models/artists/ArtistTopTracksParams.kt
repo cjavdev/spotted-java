@@ -10,6 +10,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /** Get Spotify catalog information about an artist's top tracks by country. */
+@Deprecated("deprecated")
 class ArtistTopTracksParams
 private constructor(
     private val id: String?,

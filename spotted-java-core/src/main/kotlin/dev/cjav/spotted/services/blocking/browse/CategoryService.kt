@@ -32,10 +32,12 @@ interface CategoryService {
      * Get a single category used to tag items in Spotify (on, for example, the Spotify player’s
      * “Browse” tab).
      */
+    @Deprecated("deprecated")
     fun retrieve(categoryId: String): CategoryRetrieveResponse =
         retrieve(categoryId, CategoryRetrieveParams.none())
 
     /** @see retrieve */
+    @Deprecated("deprecated")
     fun retrieve(
         categoryId: String,
         params: CategoryRetrieveParams = CategoryRetrieveParams.none(),
@@ -44,22 +46,26 @@ interface CategoryService {
         retrieve(params.toBuilder().categoryId(categoryId).build(), requestOptions)
 
     /** @see retrieve */
+    @Deprecated("deprecated")
     fun retrieve(
         categoryId: String,
         params: CategoryRetrieveParams = CategoryRetrieveParams.none(),
     ): CategoryRetrieveResponse = retrieve(categoryId, params, RequestOptions.none())
 
     /** @see retrieve */
+    @Deprecated("deprecated")
     fun retrieve(
         params: CategoryRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CategoryRetrieveResponse
 
     /** @see retrieve */
+    @Deprecated("deprecated")
     fun retrieve(params: CategoryRetrieveParams): CategoryRetrieveResponse =
         retrieve(params, RequestOptions.none())
 
     /** @see retrieve */
+    @Deprecated("deprecated")
     fun retrieve(categoryId: String, requestOptions: RequestOptions): CategoryRetrieveResponse =
         retrieve(categoryId, CategoryRetrieveParams.none(), requestOptions)
 
@@ -67,19 +73,22 @@ interface CategoryService {
      * Get a list of categories used to tag items in Spotify (on, for example, the Spotify player’s
      * “Browse” tab).
      */
-    fun list(): CategoryListPage = list(CategoryListParams.none())
+    @Deprecated("deprecated") fun list(): CategoryListPage = list(CategoryListParams.none())
 
     /** @see list */
+    @Deprecated("deprecated")
     fun list(
         params: CategoryListParams = CategoryListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CategoryListPage
 
     /** @see list */
+    @Deprecated("deprecated")
     fun list(params: CategoryListParams = CategoryListParams.none()): CategoryListPage =
         list(params, RequestOptions.none())
 
     /** @see list */
+    @Deprecated("deprecated")
     fun list(requestOptions: RequestOptions): CategoryListPage =
         list(CategoryListParams.none(), requestOptions)
 
@@ -138,11 +147,13 @@ interface CategoryService {
          * Returns a raw HTTP response for `get /browse/categories/{category_id}`, but is otherwise
          * the same as [CategoryService.retrieve].
          */
+        @Deprecated("deprecated")
         @MustBeClosed
         fun retrieve(categoryId: String): HttpResponseFor<CategoryRetrieveResponse> =
             retrieve(categoryId, CategoryRetrieveParams.none())
 
         /** @see retrieve */
+        @Deprecated("deprecated")
         @MustBeClosed
         fun retrieve(
             categoryId: String,
@@ -152,6 +163,7 @@ interface CategoryService {
             retrieve(params.toBuilder().categoryId(categoryId).build(), requestOptions)
 
         /** @see retrieve */
+        @Deprecated("deprecated")
         @MustBeClosed
         fun retrieve(
             categoryId: String,
@@ -160,6 +172,7 @@ interface CategoryService {
             retrieve(categoryId, params, RequestOptions.none())
 
         /** @see retrieve */
+        @Deprecated("deprecated")
         @MustBeClosed
         fun retrieve(
             params: CategoryRetrieveParams,
@@ -167,11 +180,13 @@ interface CategoryService {
         ): HttpResponseFor<CategoryRetrieveResponse>
 
         /** @see retrieve */
+        @Deprecated("deprecated")
         @MustBeClosed
         fun retrieve(params: CategoryRetrieveParams): HttpResponseFor<CategoryRetrieveResponse> =
             retrieve(params, RequestOptions.none())
 
         /** @see retrieve */
+        @Deprecated("deprecated")
         @MustBeClosed
         fun retrieve(
             categoryId: String,
@@ -183,10 +198,12 @@ interface CategoryService {
          * Returns a raw HTTP response for `get /browse/categories`, but is otherwise the same as
          * [CategoryService.list].
          */
+        @Deprecated("deprecated")
         @MustBeClosed
         fun list(): HttpResponseFor<CategoryListPage> = list(CategoryListParams.none())
 
         /** @see list */
+        @Deprecated("deprecated")
         @MustBeClosed
         fun list(
             params: CategoryListParams = CategoryListParams.none(),
@@ -194,12 +211,14 @@ interface CategoryService {
         ): HttpResponseFor<CategoryListPage>
 
         /** @see list */
+        @Deprecated("deprecated")
         @MustBeClosed
         fun list(
             params: CategoryListParams = CategoryListParams.none()
         ): HttpResponseFor<CategoryListPage> = list(params, RequestOptions.none())
 
         /** @see list */
+        @Deprecated("deprecated")
         @MustBeClosed
         fun list(requestOptions: RequestOptions): HttpResponseFor<CategoryListPage> =
             list(CategoryListParams.none(), requestOptions)

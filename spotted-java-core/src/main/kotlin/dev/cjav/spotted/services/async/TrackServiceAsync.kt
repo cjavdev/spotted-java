@@ -58,11 +58,13 @@ interface TrackServiceAsync {
         retrieve(id, TrackRetrieveParams.none(), requestOptions)
 
     /** Get Spotify catalog information for multiple tracks based on their Spotify IDs. */
+    @Deprecated("deprecated")
     fun bulkRetrieve(
         params: TrackBulkRetrieveParams
     ): CompletableFuture<TrackBulkRetrieveResponse> = bulkRetrieve(params, RequestOptions.none())
 
     /** @see bulkRetrieve */
+    @Deprecated("deprecated")
     fun bulkRetrieve(
         params: TrackBulkRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -123,12 +125,14 @@ interface TrackServiceAsync {
          * Returns a raw HTTP response for `get /tracks`, but is otherwise the same as
          * [TrackServiceAsync.bulkRetrieve].
          */
+        @Deprecated("deprecated")
         fun bulkRetrieve(
             params: TrackBulkRetrieveParams
         ): CompletableFuture<HttpResponseFor<TrackBulkRetrieveResponse>> =
             bulkRetrieve(params, RequestOptions.none())
 
         /** @see bulkRetrieve */
+        @Deprecated("deprecated")
         fun bulkRetrieve(
             params: TrackBulkRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),

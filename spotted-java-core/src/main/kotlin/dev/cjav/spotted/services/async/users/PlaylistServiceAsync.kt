@@ -27,16 +27,21 @@ interface PlaylistServiceAsync {
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): PlaylistServiceAsync
 
     /**
+     * **Deprecated**: Use [Create Playlist](/documentation/web-api/reference/create-playlist)
+     * instead.
+     *
      * Create a playlist for a Spotify user. (The playlist will be empty until you
      * [add tracks](/documentation/web-api/reference/add-tracks-to-playlist).) Each user is
      * generally limited to a maximum of 11000 playlists.
      */
+    @Deprecated("deprecated")
     fun create(
         userId: String,
         params: PlaylistCreateParams,
     ): CompletableFuture<PlaylistCreateResponse> = create(userId, params, RequestOptions.none())
 
     /** @see create */
+    @Deprecated("deprecated")
     fun create(
         userId: String,
         params: PlaylistCreateParams,
@@ -45,20 +50,24 @@ interface PlaylistServiceAsync {
         create(params.toBuilder().userId(userId).build(), requestOptions)
 
     /** @see create */
+    @Deprecated("deprecated")
     fun create(params: PlaylistCreateParams): CompletableFuture<PlaylistCreateResponse> =
         create(params, RequestOptions.none())
 
     /** @see create */
+    @Deprecated("deprecated")
     fun create(
         params: PlaylistCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<PlaylistCreateResponse>
 
     /** Get a list of the playlists owned or followed by a Spotify user. */
+    @Deprecated("deprecated")
     fun list(userId: String): CompletableFuture<PlaylistListPageAsync> =
         list(userId, PlaylistListParams.none())
 
     /** @see list */
+    @Deprecated("deprecated")
     fun list(
         userId: String,
         params: PlaylistListParams = PlaylistListParams.none(),
@@ -67,22 +76,26 @@ interface PlaylistServiceAsync {
         list(params.toBuilder().userId(userId).build(), requestOptions)
 
     /** @see list */
+    @Deprecated("deprecated")
     fun list(
         userId: String,
         params: PlaylistListParams = PlaylistListParams.none(),
     ): CompletableFuture<PlaylistListPageAsync> = list(userId, params, RequestOptions.none())
 
     /** @see list */
+    @Deprecated("deprecated")
     fun list(
         params: PlaylistListParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<PlaylistListPageAsync>
 
     /** @see list */
+    @Deprecated("deprecated")
     fun list(params: PlaylistListParams): CompletableFuture<PlaylistListPageAsync> =
         list(params, RequestOptions.none())
 
     /** @see list */
+    @Deprecated("deprecated")
     fun list(
         userId: String,
         requestOptions: RequestOptions,
@@ -107,6 +120,7 @@ interface PlaylistServiceAsync {
          * Returns a raw HTTP response for `post /users/{user_id}/playlists`, but is otherwise the
          * same as [PlaylistServiceAsync.create].
          */
+        @Deprecated("deprecated")
         fun create(
             userId: String,
             params: PlaylistCreateParams,
@@ -114,6 +128,7 @@ interface PlaylistServiceAsync {
             create(userId, params, RequestOptions.none())
 
         /** @see create */
+        @Deprecated("deprecated")
         fun create(
             userId: String,
             params: PlaylistCreateParams,
@@ -122,12 +137,14 @@ interface PlaylistServiceAsync {
             create(params.toBuilder().userId(userId).build(), requestOptions)
 
         /** @see create */
+        @Deprecated("deprecated")
         fun create(
             params: PlaylistCreateParams
         ): CompletableFuture<HttpResponseFor<PlaylistCreateResponse>> =
             create(params, RequestOptions.none())
 
         /** @see create */
+        @Deprecated("deprecated")
         fun create(
             params: PlaylistCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -137,10 +154,12 @@ interface PlaylistServiceAsync {
          * Returns a raw HTTP response for `get /users/{user_id}/playlists`, but is otherwise the
          * same as [PlaylistServiceAsync.list].
          */
+        @Deprecated("deprecated")
         fun list(userId: String): CompletableFuture<HttpResponseFor<PlaylistListPageAsync>> =
             list(userId, PlaylistListParams.none())
 
         /** @see list */
+        @Deprecated("deprecated")
         fun list(
             userId: String,
             params: PlaylistListParams = PlaylistListParams.none(),
@@ -149,6 +168,7 @@ interface PlaylistServiceAsync {
             list(params.toBuilder().userId(userId).build(), requestOptions)
 
         /** @see list */
+        @Deprecated("deprecated")
         fun list(
             userId: String,
             params: PlaylistListParams = PlaylistListParams.none(),
@@ -156,18 +176,21 @@ interface PlaylistServiceAsync {
             list(userId, params, RequestOptions.none())
 
         /** @see list */
+        @Deprecated("deprecated")
         fun list(
             params: PlaylistListParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<PlaylistListPageAsync>>
 
         /** @see list */
+        @Deprecated("deprecated")
         fun list(
             params: PlaylistListParams
         ): CompletableFuture<HttpResponseFor<PlaylistListPageAsync>> =
             list(params, RequestOptions.none())
 
         /** @see list */
+        @Deprecated("deprecated")
         fun list(
             userId: String,
             requestOptions: RequestOptions,

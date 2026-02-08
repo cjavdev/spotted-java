@@ -41,6 +41,7 @@ class ChapterServiceImpl internal constructor(private val clientOptions: ClientO
         // get /chapters/{id}
         withRawResponse().retrieve(params, requestOptions).parse()
 
+    @Deprecated("deprecated")
     override fun bulkRetrieve(
         params: ChapterBulkRetrieveParams,
         requestOptions: RequestOptions,
@@ -94,6 +95,7 @@ class ChapterServiceImpl internal constructor(private val clientOptions: ClientO
         private val bulkRetrieveHandler: Handler<ChapterBulkRetrieveResponse> =
             jsonHandler<ChapterBulkRetrieveResponse>(clientOptions.jsonMapper)
 
+        @Deprecated("deprecated")
         override fun bulkRetrieve(
             params: ChapterBulkRetrieveParams,
             requestOptions: RequestOptions,

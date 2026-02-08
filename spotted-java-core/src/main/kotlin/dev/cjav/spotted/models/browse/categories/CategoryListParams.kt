@@ -13,6 +13,7 @@ import kotlin.jvm.optionals.getOrNull
  * Get a list of categories used to tag items in Spotify (on, for example, the Spotify player’s
  * “Browse” tab).
  */
+@Deprecated("deprecated")
 class CategoryListParams
 private constructor(
     private val limit: Long?,

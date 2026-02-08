@@ -15,6 +15,7 @@ import kotlin.jvm.optionals.getOrNull
  * Chapters are only available within the US, UK, Canada, Ireland, New Zealand and Australia
  * markets.
  */
+@Deprecated("deprecated")
 class ChapterBulkRetrieveParams
 private constructor(
     private val ids: String,

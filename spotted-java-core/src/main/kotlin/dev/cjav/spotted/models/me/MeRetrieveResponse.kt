@@ -99,7 +99,7 @@ private constructor(
      * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun country(): Optional<String> = country.getOptional("country")
+    @Deprecated("deprecated") fun country(): Optional<String> = country.getOptional("country")
 
     /**
      * The name displayed on the user's profile. `null` if not available.
@@ -118,7 +118,7 @@ private constructor(
      * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun email(): Optional<String> = email.getOptional("email")
+    @Deprecated("deprecated") fun email(): Optional<String> = email.getOptional("email")
 
     /**
      * The user's explicit content settings. _This field is only available when the current user has
@@ -128,6 +128,7 @@ private constructor(
      * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
+    @Deprecated("deprecated")
     fun explicitContent(): Optional<ExplicitContent> =
         explicitContent.getOptional("explicit_content")
 
@@ -145,6 +146,7 @@ private constructor(
      * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
+    @Deprecated("deprecated")
     fun followers(): Optional<FollowersObject> = followers.getOptional("followers")
 
     /**
@@ -172,7 +174,7 @@ private constructor(
      * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun product(): Optional<String> = product.getOptional("product")
+    @Deprecated("deprecated") fun product(): Optional<String> = product.getOptional("product")
 
     /**
      * The playlist's public/private status (if it should be added to the user's profile or not):
@@ -213,7 +215,10 @@ private constructor(
      *
      * Unlike [country], this method doesn't throw if the JSON field has an unexpected type.
      */
-    @JsonProperty("country") @ExcludeMissing fun _country(): JsonField<String> = country
+    @Deprecated("deprecated")
+    @JsonProperty("country")
+    @ExcludeMissing
+    fun _country(): JsonField<String> = country
 
     /**
      * Returns the raw JSON value of [displayName].
@@ -229,13 +234,17 @@ private constructor(
      *
      * Unlike [email], this method doesn't throw if the JSON field has an unexpected type.
      */
-    @JsonProperty("email") @ExcludeMissing fun _email(): JsonField<String> = email
+    @Deprecated("deprecated")
+    @JsonProperty("email")
+    @ExcludeMissing
+    fun _email(): JsonField<String> = email
 
     /**
      * Returns the raw JSON value of [explicitContent].
      *
      * Unlike [explicitContent], this method doesn't throw if the JSON field has an unexpected type.
      */
+    @Deprecated("deprecated")
     @JsonProperty("explicit_content")
     @ExcludeMissing
     fun _explicitContent(): JsonField<ExplicitContent> = explicitContent
@@ -254,6 +263,7 @@ private constructor(
      *
      * Unlike [followers], this method doesn't throw if the JSON field has an unexpected type.
      */
+    @Deprecated("deprecated")
     @JsonProperty("followers")
     @ExcludeMissing
     fun _followers(): JsonField<FollowersObject> = followers
@@ -277,7 +287,10 @@ private constructor(
      *
      * Unlike [product], this method doesn't throw if the JSON field has an unexpected type.
      */
-    @JsonProperty("product") @ExcludeMissing fun _product(): JsonField<String> = product
+    @Deprecated("deprecated")
+    @JsonProperty("product")
+    @ExcludeMissing
+    fun _product(): JsonField<String> = product
 
     /**
      * Returns the raw JSON value of [published].
@@ -371,7 +384,7 @@ private constructor(
          * field is only available when the current user has granted access to the
          * [user-read-private](/documentation/web-api/concepts/scopes/#list-of-scopes) scope._
          */
-        fun country(country: String) = country(JsonField.of(country))
+        @Deprecated("deprecated") fun country(country: String) = country(JsonField.of(country))
 
         /**
          * Sets [Builder.country] to an arbitrary JSON value.
@@ -379,6 +392,7 @@ private constructor(
          * You should usually call [Builder.country] with a well-typed [String] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
+        @Deprecated("deprecated")
         fun country(country: JsonField<String>) = apply { this.country = country }
 
         /** The name displayed on the user's profile. `null` if not available. */
@@ -400,7 +414,7 @@ private constructor(
          * access to the [user-read-email](/documentation/web-api/concepts/scopes/#list-of-scopes)
          * scope._
          */
-        fun email(email: String) = email(JsonField.of(email))
+        @Deprecated("deprecated") fun email(email: String) = email(JsonField.of(email))
 
         /**
          * Sets [Builder.email] to an arbitrary JSON value.
@@ -408,13 +422,14 @@ private constructor(
          * You should usually call [Builder.email] with a well-typed [String] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun email(email: JsonField<String>) = apply { this.email = email }
+        @Deprecated("deprecated") fun email(email: JsonField<String>) = apply { this.email = email }
 
         /**
          * The user's explicit content settings. _This field is only available when the current user
          * has granted access to the
          * [user-read-private](/documentation/web-api/concepts/scopes/#list-of-scopes) scope._
          */
+        @Deprecated("deprecated")
         fun explicitContent(explicitContent: ExplicitContent) =
             explicitContent(JsonField.of(explicitContent))
 
@@ -425,6 +440,7 @@ private constructor(
          * value instead. This method is primarily for setting the field to an undocumented or not
          * yet supported value.
          */
+        @Deprecated("deprecated")
         fun explicitContent(explicitContent: JsonField<ExplicitContent>) = apply {
             this.explicitContent = explicitContent
         }
@@ -444,6 +460,7 @@ private constructor(
         }
 
         /** Information about the followers of the user. */
+        @Deprecated("deprecated")
         fun followers(followers: FollowersObject) = followers(JsonField.of(followers))
 
         /**
@@ -453,6 +470,7 @@ private constructor(
          * instead. This method is primarily for setting the field to an undocumented or not yet
          * supported value.
          */
+        @Deprecated("deprecated")
         fun followers(followers: JsonField<FollowersObject>) = apply { this.followers = followers }
 
         /** A link to the Web API endpoint for this user. */
@@ -498,7 +516,7 @@ private constructor(
          * current user has granted access to the
          * [user-read-private](/documentation/web-api/concepts/scopes/#list-of-scopes) scope._
          */
-        fun product(product: String) = product(JsonField.of(product))
+        @Deprecated("deprecated") fun product(product: String) = product(JsonField.of(product))
 
         /**
          * Sets [Builder.product] to an arbitrary JSON value.
@@ -506,6 +524,7 @@ private constructor(
          * You should usually call [Builder.product] with a well-typed [String] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
+        @Deprecated("deprecated")
         fun product(product: JsonField<String>) = apply { this.product = product }
 
         /**
@@ -647,6 +666,7 @@ private constructor(
      * granted access to the
      * [user-read-private](/documentation/web-api/concepts/scopes/#list-of-scopes) scope._
      */
+    @Deprecated("deprecated")
     class ExplicitContent
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
