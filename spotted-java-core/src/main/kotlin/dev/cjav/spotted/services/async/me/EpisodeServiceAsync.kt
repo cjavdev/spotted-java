@@ -72,19 +72,23 @@ interface EpisodeServiceAsync {
      * that you discover, in our
      * [developer community forum](https://community.spotify.com/t5/Spotify-for-Developers/bd-p/Spotify_Developer).
      */
+    @Deprecated("deprecated")
     fun remove(): CompletableFuture<Void?> = remove(EpisodeRemoveParams.none())
 
     /** @see remove */
+    @Deprecated("deprecated")
     fun remove(
         params: EpisodeRemoveParams = EpisodeRemoveParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Void?>
 
     /** @see remove */
+    @Deprecated("deprecated")
     fun remove(params: EpisodeRemoveParams = EpisodeRemoveParams.none()): CompletableFuture<Void?> =
         remove(params, RequestOptions.none())
 
     /** @see remove */
+    @Deprecated("deprecated")
     fun remove(requestOptions: RequestOptions): CompletableFuture<Void?> =
         remove(EpisodeRemoveParams.none(), requestOptions)
 
@@ -94,10 +98,12 @@ interface EpisodeServiceAsync {
      * that you discover, in our
      * [developer community forum](https://community.spotify.com/t5/Spotify-for-Developers/bd-p/Spotify_Developer).
      */
+    @Deprecated("deprecated")
     fun save(params: EpisodeSaveParams): CompletableFuture<Void?> =
         save(params, RequestOptions.none())
 
     /** @see save */
+    @Deprecated("deprecated")
     fun save(
         params: EpisodeSaveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -159,20 +165,24 @@ interface EpisodeServiceAsync {
          * Returns a raw HTTP response for `delete /me/episodes`, but is otherwise the same as
          * [EpisodeServiceAsync.remove].
          */
+        @Deprecated("deprecated")
         fun remove(): CompletableFuture<HttpResponse> = remove(EpisodeRemoveParams.none())
 
         /** @see remove */
+        @Deprecated("deprecated")
         fun remove(
             params: EpisodeRemoveParams = EpisodeRemoveParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponse>
 
         /** @see remove */
+        @Deprecated("deprecated")
         fun remove(
             params: EpisodeRemoveParams = EpisodeRemoveParams.none()
         ): CompletableFuture<HttpResponse> = remove(params, RequestOptions.none())
 
         /** @see remove */
+        @Deprecated("deprecated")
         fun remove(requestOptions: RequestOptions): CompletableFuture<HttpResponse> =
             remove(EpisodeRemoveParams.none(), requestOptions)
 
@@ -180,10 +190,12 @@ interface EpisodeServiceAsync {
          * Returns a raw HTTP response for `put /me/episodes`, but is otherwise the same as
          * [EpisodeServiceAsync.save].
          */
+        @Deprecated("deprecated")
         fun save(params: EpisodeSaveParams): CompletableFuture<HttpResponse> =
             save(params, RequestOptions.none())
 
         /** @see save */
+        @Deprecated("deprecated")
         fun save(
             params: EpisodeSaveParams,
             requestOptions: RequestOptions = RequestOptions.none(),

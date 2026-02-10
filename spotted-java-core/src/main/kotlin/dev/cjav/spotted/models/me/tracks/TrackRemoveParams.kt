@@ -22,6 +22,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /** Remove one or more tracks from the current user's 'Your Music' library. */
+@Deprecated("deprecated")
 class TrackRemoveParams
 private constructor(
     private val body: Body,

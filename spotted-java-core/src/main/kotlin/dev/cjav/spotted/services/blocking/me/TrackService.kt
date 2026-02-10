@@ -58,25 +58,30 @@ interface TrackService {
     ): List<Boolean>
 
     /** Remove one or more tracks from the current user's 'Your Music' library. */
-    fun remove() = remove(TrackRemoveParams.none())
+    @Deprecated("deprecated") fun remove() = remove(TrackRemoveParams.none())
 
     /** @see remove */
+    @Deprecated("deprecated")
     fun remove(
         params: TrackRemoveParams = TrackRemoveParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     )
 
     /** @see remove */
+    @Deprecated("deprecated")
     fun remove(params: TrackRemoveParams = TrackRemoveParams.none()) =
         remove(params, RequestOptions.none())
 
     /** @see remove */
+    @Deprecated("deprecated")
     fun remove(requestOptions: RequestOptions) = remove(TrackRemoveParams.none(), requestOptions)
 
     /** Save one or more tracks to the current user's 'Your Music' library. */
+    @Deprecated("deprecated")
     fun save(params: TrackSaveParams) = save(params, RequestOptions.none())
 
     /** @see save */
+    @Deprecated("deprecated")
     fun save(params: TrackSaveParams, requestOptions: RequestOptions = RequestOptions.none())
 
     /** A view of [TrackService] that provides access to raw HTTP responses for each method. */
@@ -131,9 +136,12 @@ interface TrackService {
          * Returns a raw HTTP response for `delete /me/tracks`, but is otherwise the same as
          * [TrackService.remove].
          */
-        @MustBeClosed fun remove(): HttpResponse = remove(TrackRemoveParams.none())
+        @Deprecated("deprecated")
+        @MustBeClosed
+        fun remove(): HttpResponse = remove(TrackRemoveParams.none())
 
         /** @see remove */
+        @Deprecated("deprecated")
         @MustBeClosed
         fun remove(
             params: TrackRemoveParams = TrackRemoveParams.none(),
@@ -141,11 +149,13 @@ interface TrackService {
         ): HttpResponse
 
         /** @see remove */
+        @Deprecated("deprecated")
         @MustBeClosed
         fun remove(params: TrackRemoveParams = TrackRemoveParams.none()): HttpResponse =
             remove(params, RequestOptions.none())
 
         /** @see remove */
+        @Deprecated("deprecated")
         @MustBeClosed
         fun remove(requestOptions: RequestOptions): HttpResponse =
             remove(TrackRemoveParams.none(), requestOptions)
@@ -154,10 +164,12 @@ interface TrackService {
          * Returns a raw HTTP response for `put /me/tracks`, but is otherwise the same as
          * [TrackService.save].
          */
+        @Deprecated("deprecated")
         @MustBeClosed
         fun save(params: TrackSaveParams): HttpResponse = save(params, RequestOptions.none())
 
         /** @see save */
+        @Deprecated("deprecated")
         @MustBeClosed
         fun save(
             params: TrackSaveParams,

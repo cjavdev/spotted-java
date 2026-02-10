@@ -12,6 +12,7 @@ import java.util.Objects
 import java.util.Optional
 
 /** Save one or more audiobooks to the current Spotify user's library. */
+@Deprecated("deprecated")
 class AudiobookSaveParams
 private constructor(
     private val ids: String,
