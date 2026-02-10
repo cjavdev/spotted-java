@@ -59,36 +59,43 @@ interface ShowServiceAsync {
     ): CompletableFuture<List<Boolean>>
 
     /** Delete one or more shows from current Spotify user's library. */
+    @Deprecated("deprecated")
     fun remove(): CompletableFuture<Void?> = remove(ShowRemoveParams.none())
 
     /** @see remove */
+    @Deprecated("deprecated")
     fun remove(
         params: ShowRemoveParams = ShowRemoveParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Void?>
 
     /** @see remove */
+    @Deprecated("deprecated")
     fun remove(params: ShowRemoveParams = ShowRemoveParams.none()): CompletableFuture<Void?> =
         remove(params, RequestOptions.none())
 
     /** @see remove */
+    @Deprecated("deprecated")
     fun remove(requestOptions: RequestOptions): CompletableFuture<Void?> =
         remove(ShowRemoveParams.none(), requestOptions)
 
     /** Save one or more shows to current Spotify user's library. */
-    fun save(): CompletableFuture<Void?> = save(ShowSaveParams.none())
+    @Deprecated("deprecated") fun save(): CompletableFuture<Void?> = save(ShowSaveParams.none())
 
     /** @see save */
+    @Deprecated("deprecated")
     fun save(
         params: ShowSaveParams = ShowSaveParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Void?>
 
     /** @see save */
+    @Deprecated("deprecated")
     fun save(params: ShowSaveParams = ShowSaveParams.none()): CompletableFuture<Void?> =
         save(params, RequestOptions.none())
 
     /** @see save */
+    @Deprecated("deprecated")
     fun save(requestOptions: RequestOptions): CompletableFuture<Void?> =
         save(ShowSaveParams.none(), requestOptions)
 
@@ -144,20 +151,24 @@ interface ShowServiceAsync {
          * Returns a raw HTTP response for `delete /me/shows`, but is otherwise the same as
          * [ShowServiceAsync.remove].
          */
+        @Deprecated("deprecated")
         fun remove(): CompletableFuture<HttpResponse> = remove(ShowRemoveParams.none())
 
         /** @see remove */
+        @Deprecated("deprecated")
         fun remove(
             params: ShowRemoveParams = ShowRemoveParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponse>
 
         /** @see remove */
+        @Deprecated("deprecated")
         fun remove(
             params: ShowRemoveParams = ShowRemoveParams.none()
         ): CompletableFuture<HttpResponse> = remove(params, RequestOptions.none())
 
         /** @see remove */
+        @Deprecated("deprecated")
         fun remove(requestOptions: RequestOptions): CompletableFuture<HttpResponse> =
             remove(ShowRemoveParams.none(), requestOptions)
 
@@ -165,19 +176,23 @@ interface ShowServiceAsync {
          * Returns a raw HTTP response for `put /me/shows`, but is otherwise the same as
          * [ShowServiceAsync.save].
          */
+        @Deprecated("deprecated")
         fun save(): CompletableFuture<HttpResponse> = save(ShowSaveParams.none())
 
         /** @see save */
+        @Deprecated("deprecated")
         fun save(
             params: ShowSaveParams = ShowSaveParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponse>
 
         /** @see save */
+        @Deprecated("deprecated")
         fun save(params: ShowSaveParams = ShowSaveParams.none()): CompletableFuture<HttpResponse> =
             save(params, RequestOptions.none())
 
         /** @see save */
+        @Deprecated("deprecated")
         fun save(requestOptions: RequestOptions): CompletableFuture<HttpResponse> =
             save(ShowSaveParams.none(), requestOptions)
     }

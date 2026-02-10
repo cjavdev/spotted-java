@@ -24,6 +24,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /** Save one or more tracks to the current user's 'Your Music' library. */
+@Deprecated("deprecated")
 class TrackSaveParams
 private constructor(
     private val body: Body,

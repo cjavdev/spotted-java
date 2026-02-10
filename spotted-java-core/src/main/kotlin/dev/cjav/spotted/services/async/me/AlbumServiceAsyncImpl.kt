@@ -51,6 +51,7 @@ class AlbumServiceAsyncImpl internal constructor(private val clientOptions: Clie
         // get /me/albums/contains
         withRawResponse().check(params, requestOptions).thenApply { it.parse() }
 
+    @Deprecated("deprecated")
     override fun remove(
         params: AlbumRemoveParams,
         requestOptions: RequestOptions,
@@ -58,6 +59,7 @@ class AlbumServiceAsyncImpl internal constructor(private val clientOptions: Clie
         // delete /me/albums
         withRawResponse().remove(params, requestOptions).thenAccept {}
 
+    @Deprecated("deprecated")
     override fun save(
         params: AlbumSaveParams,
         requestOptions: RequestOptions,
@@ -142,6 +144,7 @@ class AlbumServiceAsyncImpl internal constructor(private val clientOptions: Clie
 
         private val removeHandler: Handler<Void?> = emptyHandler()
 
+        @Deprecated("deprecated")
         override fun remove(
             params: AlbumRemoveParams,
             requestOptions: RequestOptions,
@@ -166,6 +169,7 @@ class AlbumServiceAsyncImpl internal constructor(private val clientOptions: Clie
 
         private val saveHandler: Handler<Void?> = emptyHandler()
 
+        @Deprecated("deprecated")
         override fun save(
             params: AlbumSaveParams,
             requestOptions: RequestOptions,

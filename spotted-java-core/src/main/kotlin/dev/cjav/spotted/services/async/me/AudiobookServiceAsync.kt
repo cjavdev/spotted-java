@@ -57,20 +57,24 @@ interface AudiobookServiceAsync {
     ): CompletableFuture<List<Boolean>>
 
     /** Remove one or more audiobooks from the Spotify user's library. */
+    @Deprecated("deprecated")
     fun remove(params: AudiobookRemoveParams): CompletableFuture<Void?> =
         remove(params, RequestOptions.none())
 
     /** @see remove */
+    @Deprecated("deprecated")
     fun remove(
         params: AudiobookRemoveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Void?>
 
     /** Save one or more audiobooks to the current Spotify user's library. */
+    @Deprecated("deprecated")
     fun save(params: AudiobookSaveParams): CompletableFuture<Void?> =
         save(params, RequestOptions.none())
 
     /** @see save */
+    @Deprecated("deprecated")
     fun save(
         params: AudiobookSaveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -132,10 +136,12 @@ interface AudiobookServiceAsync {
          * Returns a raw HTTP response for `delete /me/audiobooks`, but is otherwise the same as
          * [AudiobookServiceAsync.remove].
          */
+        @Deprecated("deprecated")
         fun remove(params: AudiobookRemoveParams): CompletableFuture<HttpResponse> =
             remove(params, RequestOptions.none())
 
         /** @see remove */
+        @Deprecated("deprecated")
         fun remove(
             params: AudiobookRemoveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -145,10 +151,12 @@ interface AudiobookServiceAsync {
          * Returns a raw HTTP response for `put /me/audiobooks`, but is otherwise the same as
          * [AudiobookServiceAsync.save].
          */
+        @Deprecated("deprecated")
         fun save(params: AudiobookSaveParams): CompletableFuture<HttpResponse> =
             save(params, RequestOptions.none())
 
         /** @see save */
+        @Deprecated("deprecated")
         fun save(
             params: AudiobookSaveParams,
             requestOptions: RequestOptions = RequestOptions.none(),

@@ -11,7 +11,6 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /** @see ArtistService.listAlbums */
-@Deprecated("deprecated")
 class ArtistListAlbumsPage
 private constructor(
     private val service: ArtistService,

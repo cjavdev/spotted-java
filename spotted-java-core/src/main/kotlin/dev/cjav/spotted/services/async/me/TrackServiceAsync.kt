@@ -60,27 +60,33 @@ interface TrackServiceAsync {
     ): CompletableFuture<List<Boolean>>
 
     /** Remove one or more tracks from the current user's 'Your Music' library. */
+    @Deprecated("deprecated")
     fun remove(): CompletableFuture<Void?> = remove(TrackRemoveParams.none())
 
     /** @see remove */
+    @Deprecated("deprecated")
     fun remove(
         params: TrackRemoveParams = TrackRemoveParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Void?>
 
     /** @see remove */
+    @Deprecated("deprecated")
     fun remove(params: TrackRemoveParams = TrackRemoveParams.none()): CompletableFuture<Void?> =
         remove(params, RequestOptions.none())
 
     /** @see remove */
+    @Deprecated("deprecated")
     fun remove(requestOptions: RequestOptions): CompletableFuture<Void?> =
         remove(TrackRemoveParams.none(), requestOptions)
 
     /** Save one or more tracks to the current user's 'Your Music' library. */
+    @Deprecated("deprecated")
     fun save(params: TrackSaveParams): CompletableFuture<Void?> =
         save(params, RequestOptions.none())
 
     /** @see save */
+    @Deprecated("deprecated")
     fun save(
         params: TrackSaveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -140,20 +146,24 @@ interface TrackServiceAsync {
          * Returns a raw HTTP response for `delete /me/tracks`, but is otherwise the same as
          * [TrackServiceAsync.remove].
          */
+        @Deprecated("deprecated")
         fun remove(): CompletableFuture<HttpResponse> = remove(TrackRemoveParams.none())
 
         /** @see remove */
+        @Deprecated("deprecated")
         fun remove(
             params: TrackRemoveParams = TrackRemoveParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponse>
 
         /** @see remove */
+        @Deprecated("deprecated")
         fun remove(
             params: TrackRemoveParams = TrackRemoveParams.none()
         ): CompletableFuture<HttpResponse> = remove(params, RequestOptions.none())
 
         /** @see remove */
+        @Deprecated("deprecated")
         fun remove(requestOptions: RequestOptions): CompletableFuture<HttpResponse> =
             remove(TrackRemoveParams.none(), requestOptions)
 
@@ -161,10 +171,12 @@ interface TrackServiceAsync {
          * Returns a raw HTTP response for `put /me/tracks`, but is otherwise the same as
          * [TrackServiceAsync.save].
          */
+        @Deprecated("deprecated")
         fun save(params: TrackSaveParams): CompletableFuture<HttpResponse> =
             save(params, RequestOptions.none())
 
         /** @see save */
+        @Deprecated("deprecated")
         fun save(
             params: TrackSaveParams,
             requestOptions: RequestOptions = RequestOptions.none(),

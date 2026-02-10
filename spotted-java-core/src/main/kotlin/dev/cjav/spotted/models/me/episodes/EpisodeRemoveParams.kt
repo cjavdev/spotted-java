@@ -27,6 +27,7 @@ import kotlin.jvm.optionals.getOrNull
  * that you discover, in our
  * [developer community forum](https://community.spotify.com/t5/Spotify-for-Developers/bd-p/Spotify_Developer).
  */
+@Deprecated("deprecated")
 class EpisodeRemoveParams
 private constructor(
     private val body: Body,

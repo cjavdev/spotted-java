@@ -60,36 +60,43 @@ interface AlbumServiceAsync {
     ): CompletableFuture<List<Boolean>>
 
     /** Remove one or more albums from the current user's 'Your Music' library. */
+    @Deprecated("deprecated")
     fun remove(): CompletableFuture<Void?> = remove(AlbumRemoveParams.none())
 
     /** @see remove */
+    @Deprecated("deprecated")
     fun remove(
         params: AlbumRemoveParams = AlbumRemoveParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Void?>
 
     /** @see remove */
+    @Deprecated("deprecated")
     fun remove(params: AlbumRemoveParams = AlbumRemoveParams.none()): CompletableFuture<Void?> =
         remove(params, RequestOptions.none())
 
     /** @see remove */
+    @Deprecated("deprecated")
     fun remove(requestOptions: RequestOptions): CompletableFuture<Void?> =
         remove(AlbumRemoveParams.none(), requestOptions)
 
     /** Save one or more albums to the current user's 'Your Music' library. */
-    fun save(): CompletableFuture<Void?> = save(AlbumSaveParams.none())
+    @Deprecated("deprecated") fun save(): CompletableFuture<Void?> = save(AlbumSaveParams.none())
 
     /** @see save */
+    @Deprecated("deprecated")
     fun save(
         params: AlbumSaveParams = AlbumSaveParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Void?>
 
     /** @see save */
+    @Deprecated("deprecated")
     fun save(params: AlbumSaveParams = AlbumSaveParams.none()): CompletableFuture<Void?> =
         save(params, RequestOptions.none())
 
     /** @see save */
+    @Deprecated("deprecated")
     fun save(requestOptions: RequestOptions): CompletableFuture<Void?> =
         save(AlbumSaveParams.none(), requestOptions)
 
@@ -147,20 +154,24 @@ interface AlbumServiceAsync {
          * Returns a raw HTTP response for `delete /me/albums`, but is otherwise the same as
          * [AlbumServiceAsync.remove].
          */
+        @Deprecated("deprecated")
         fun remove(): CompletableFuture<HttpResponse> = remove(AlbumRemoveParams.none())
 
         /** @see remove */
+        @Deprecated("deprecated")
         fun remove(
             params: AlbumRemoveParams = AlbumRemoveParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponse>
 
         /** @see remove */
+        @Deprecated("deprecated")
         fun remove(
             params: AlbumRemoveParams = AlbumRemoveParams.none()
         ): CompletableFuture<HttpResponse> = remove(params, RequestOptions.none())
 
         /** @see remove */
+        @Deprecated("deprecated")
         fun remove(requestOptions: RequestOptions): CompletableFuture<HttpResponse> =
             remove(AlbumRemoveParams.none(), requestOptions)
 
@@ -168,20 +179,24 @@ interface AlbumServiceAsync {
          * Returns a raw HTTP response for `put /me/albums`, but is otherwise the same as
          * [AlbumServiceAsync.save].
          */
+        @Deprecated("deprecated")
         fun save(): CompletableFuture<HttpResponse> = save(AlbumSaveParams.none())
 
         /** @see save */
+        @Deprecated("deprecated")
         fun save(
             params: AlbumSaveParams = AlbumSaveParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponse>
 
         /** @see save */
+        @Deprecated("deprecated")
         fun save(
             params: AlbumSaveParams = AlbumSaveParams.none()
         ): CompletableFuture<HttpResponse> = save(params, RequestOptions.none())
 
         /** @see save */
+        @Deprecated("deprecated")
         fun save(requestOptions: RequestOptions): CompletableFuture<HttpResponse> =
             save(AlbumSaveParams.none(), requestOptions)
     }

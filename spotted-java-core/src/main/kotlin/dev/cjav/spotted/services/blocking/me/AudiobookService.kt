@@ -55,18 +55,22 @@ interface AudiobookService {
     ): List<Boolean>
 
     /** Remove one or more audiobooks from the Spotify user's library. */
+    @Deprecated("deprecated")
     fun remove(params: AudiobookRemoveParams) = remove(params, RequestOptions.none())
 
     /** @see remove */
+    @Deprecated("deprecated")
     fun remove(
         params: AudiobookRemoveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     )
 
     /** Save one or more audiobooks to the current Spotify user's library. */
+    @Deprecated("deprecated")
     fun save(params: AudiobookSaveParams) = save(params, RequestOptions.none())
 
     /** @see save */
+    @Deprecated("deprecated")
     fun save(params: AudiobookSaveParams, requestOptions: RequestOptions = RequestOptions.none())
 
     /** A view of [AudiobookService] that provides access to raw HTTP responses for each method. */
@@ -123,11 +127,13 @@ interface AudiobookService {
          * Returns a raw HTTP response for `delete /me/audiobooks`, but is otherwise the same as
          * [AudiobookService.remove].
          */
+        @Deprecated("deprecated")
         @MustBeClosed
         fun remove(params: AudiobookRemoveParams): HttpResponse =
             remove(params, RequestOptions.none())
 
         /** @see remove */
+        @Deprecated("deprecated")
         @MustBeClosed
         fun remove(
             params: AudiobookRemoveParams,
@@ -138,10 +144,12 @@ interface AudiobookService {
          * Returns a raw HTTP response for `put /me/audiobooks`, but is otherwise the same as
          * [AudiobookService.save].
          */
+        @Deprecated("deprecated")
         @MustBeClosed
         fun save(params: AudiobookSaveParams): HttpResponse = save(params, RequestOptions.none())
 
         /** @see save */
+        @Deprecated("deprecated")
         @MustBeClosed
         fun save(
             params: AudiobookSaveParams,

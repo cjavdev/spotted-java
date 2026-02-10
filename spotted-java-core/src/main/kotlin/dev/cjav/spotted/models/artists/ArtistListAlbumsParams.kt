@@ -10,7 +10,6 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /** Get Spotify catalog information about an artist's albums. */
-@Deprecated("deprecated")
 class ArtistListAlbumsParams
 private constructor(
     private val id: String?,

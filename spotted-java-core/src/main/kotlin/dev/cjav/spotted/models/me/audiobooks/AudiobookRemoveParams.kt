@@ -12,6 +12,7 @@ import java.util.Objects
 import java.util.Optional
 
 /** Remove one or more audiobooks from the Spotify user's library. */
+@Deprecated("deprecated")
 class AudiobookRemoveParams
 private constructor(
     private val ids: String,
