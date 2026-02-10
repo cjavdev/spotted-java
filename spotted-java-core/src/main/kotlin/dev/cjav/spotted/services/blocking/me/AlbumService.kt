@@ -58,34 +58,40 @@ interface AlbumService {
     ): List<Boolean>
 
     /** Remove one or more albums from the current user's 'Your Music' library. */
-    fun remove() = remove(AlbumRemoveParams.none())
+    @Deprecated("deprecated") fun remove() = remove(AlbumRemoveParams.none())
 
     /** @see remove */
+    @Deprecated("deprecated")
     fun remove(
         params: AlbumRemoveParams = AlbumRemoveParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     )
 
     /** @see remove */
+    @Deprecated("deprecated")
     fun remove(params: AlbumRemoveParams = AlbumRemoveParams.none()) =
         remove(params, RequestOptions.none())
 
     /** @see remove */
+    @Deprecated("deprecated")
     fun remove(requestOptions: RequestOptions) = remove(AlbumRemoveParams.none(), requestOptions)
 
     /** Save one or more albums to the current user's 'Your Music' library. */
-    fun save() = save(AlbumSaveParams.none())
+    @Deprecated("deprecated") fun save() = save(AlbumSaveParams.none())
 
     /** @see save */
+    @Deprecated("deprecated")
     fun save(
         params: AlbumSaveParams = AlbumSaveParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     )
 
     /** @see save */
+    @Deprecated("deprecated")
     fun save(params: AlbumSaveParams = AlbumSaveParams.none()) = save(params, RequestOptions.none())
 
     /** @see save */
+    @Deprecated("deprecated")
     fun save(requestOptions: RequestOptions) = save(AlbumSaveParams.none(), requestOptions)
 
     /** A view of [AlbumService] that provides access to raw HTTP responses for each method. */
@@ -140,9 +146,12 @@ interface AlbumService {
          * Returns a raw HTTP response for `delete /me/albums`, but is otherwise the same as
          * [AlbumService.remove].
          */
-        @MustBeClosed fun remove(): HttpResponse = remove(AlbumRemoveParams.none())
+        @Deprecated("deprecated")
+        @MustBeClosed
+        fun remove(): HttpResponse = remove(AlbumRemoveParams.none())
 
         /** @see remove */
+        @Deprecated("deprecated")
         @MustBeClosed
         fun remove(
             params: AlbumRemoveParams = AlbumRemoveParams.none(),
@@ -150,11 +159,13 @@ interface AlbumService {
         ): HttpResponse
 
         /** @see remove */
+        @Deprecated("deprecated")
         @MustBeClosed
         fun remove(params: AlbumRemoveParams = AlbumRemoveParams.none()): HttpResponse =
             remove(params, RequestOptions.none())
 
         /** @see remove */
+        @Deprecated("deprecated")
         @MustBeClosed
         fun remove(requestOptions: RequestOptions): HttpResponse =
             remove(AlbumRemoveParams.none(), requestOptions)
@@ -163,9 +174,12 @@ interface AlbumService {
          * Returns a raw HTTP response for `put /me/albums`, but is otherwise the same as
          * [AlbumService.save].
          */
-        @MustBeClosed fun save(): HttpResponse = save(AlbumSaveParams.none())
+        @Deprecated("deprecated")
+        @MustBeClosed
+        fun save(): HttpResponse = save(AlbumSaveParams.none())
 
         /** @see save */
+        @Deprecated("deprecated")
         @MustBeClosed
         fun save(
             params: AlbumSaveParams = AlbumSaveParams.none(),
@@ -173,11 +187,13 @@ interface AlbumService {
         ): HttpResponse
 
         /** @see save */
+        @Deprecated("deprecated")
         @MustBeClosed
         fun save(params: AlbumSaveParams = AlbumSaveParams.none()): HttpResponse =
             save(params, RequestOptions.none())
 
         /** @see save */
+        @Deprecated("deprecated")
         @MustBeClosed
         fun save(requestOptions: RequestOptions): HttpResponse =
             save(AlbumSaveParams.none(), requestOptions)

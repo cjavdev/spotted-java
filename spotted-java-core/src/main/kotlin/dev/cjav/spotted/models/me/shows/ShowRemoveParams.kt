@@ -22,6 +22,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /** Delete one or more shows from current Spotify user's library. */
+@Deprecated("deprecated")
 class ShowRemoveParams
 private constructor(
     private val body: Body,

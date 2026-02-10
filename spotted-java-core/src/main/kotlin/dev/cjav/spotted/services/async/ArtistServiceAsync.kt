@@ -79,12 +79,10 @@ interface ArtistServiceAsync {
     ): CompletableFuture<ArtistBulkRetrieveResponse>
 
     /** Get Spotify catalog information about an artist's albums. */
-    @Deprecated("deprecated")
     fun listAlbums(id: String): CompletableFuture<ArtistListAlbumsPageAsync> =
         listAlbums(id, ArtistListAlbumsParams.none())
 
     /** @see listAlbums */
-    @Deprecated("deprecated")
     fun listAlbums(
         id: String,
         params: ArtistListAlbumsParams = ArtistListAlbumsParams.none(),
@@ -93,26 +91,22 @@ interface ArtistServiceAsync {
         listAlbums(params.toBuilder().id(id).build(), requestOptions)
 
     /** @see listAlbums */
-    @Deprecated("deprecated")
     fun listAlbums(
         id: String,
         params: ArtistListAlbumsParams = ArtistListAlbumsParams.none(),
     ): CompletableFuture<ArtistListAlbumsPageAsync> = listAlbums(id, params, RequestOptions.none())
 
     /** @see listAlbums */
-    @Deprecated("deprecated")
     fun listAlbums(
         params: ArtistListAlbumsParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ArtistListAlbumsPageAsync>
 
     /** @see listAlbums */
-    @Deprecated("deprecated")
     fun listAlbums(params: ArtistListAlbumsParams): CompletableFuture<ArtistListAlbumsPageAsync> =
         listAlbums(params, RequestOptions.none())
 
     /** @see listAlbums */
-    @Deprecated("deprecated")
     fun listAlbums(
         id: String,
         requestOptions: RequestOptions,
@@ -283,12 +277,10 @@ interface ArtistServiceAsync {
          * Returns a raw HTTP response for `get /artists/{id}/albums`, but is otherwise the same as
          * [ArtistServiceAsync.listAlbums].
          */
-        @Deprecated("deprecated")
         fun listAlbums(id: String): CompletableFuture<HttpResponseFor<ArtistListAlbumsPageAsync>> =
             listAlbums(id, ArtistListAlbumsParams.none())
 
         /** @see listAlbums */
-        @Deprecated("deprecated")
         fun listAlbums(
             id: String,
             params: ArtistListAlbumsParams = ArtistListAlbumsParams.none(),
@@ -297,7 +289,6 @@ interface ArtistServiceAsync {
             listAlbums(params.toBuilder().id(id).build(), requestOptions)
 
         /** @see listAlbums */
-        @Deprecated("deprecated")
         fun listAlbums(
             id: String,
             params: ArtistListAlbumsParams = ArtistListAlbumsParams.none(),
@@ -305,21 +296,18 @@ interface ArtistServiceAsync {
             listAlbums(id, params, RequestOptions.none())
 
         /** @see listAlbums */
-        @Deprecated("deprecated")
         fun listAlbums(
             params: ArtistListAlbumsParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<ArtistListAlbumsPageAsync>>
 
         /** @see listAlbums */
-        @Deprecated("deprecated")
         fun listAlbums(
             params: ArtistListAlbumsParams
         ): CompletableFuture<HttpResponseFor<ArtistListAlbumsPageAsync>> =
             listAlbums(params, RequestOptions.none())
 
         /** @see listAlbums */
-        @Deprecated("deprecated")
         fun listAlbums(
             id: String,
             requestOptions: RequestOptions,

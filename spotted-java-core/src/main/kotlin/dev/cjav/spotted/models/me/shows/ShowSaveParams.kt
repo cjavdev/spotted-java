@@ -22,6 +22,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /** Save one or more shows to current Spotify user's library. */
+@Deprecated("deprecated")
 class ShowSaveParams
 private constructor(
     private val body: Body,

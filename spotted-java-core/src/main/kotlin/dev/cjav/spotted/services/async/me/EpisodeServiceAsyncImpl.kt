@@ -51,6 +51,7 @@ class EpisodeServiceAsyncImpl internal constructor(private val clientOptions: Cl
         // get /me/episodes/contains
         withRawResponse().check(params, requestOptions).thenApply { it.parse() }
 
+    @Deprecated("deprecated")
     override fun remove(
         params: EpisodeRemoveParams,
         requestOptions: RequestOptions,
@@ -58,6 +59,7 @@ class EpisodeServiceAsyncImpl internal constructor(private val clientOptions: Cl
         // delete /me/episodes
         withRawResponse().remove(params, requestOptions).thenAccept {}
 
+    @Deprecated("deprecated")
     override fun save(
         params: EpisodeSaveParams,
         requestOptions: RequestOptions,
@@ -142,6 +144,7 @@ class EpisodeServiceAsyncImpl internal constructor(private val clientOptions: Cl
 
         private val removeHandler: Handler<Void?> = emptyHandler()
 
+        @Deprecated("deprecated")
         override fun remove(
             params: EpisodeRemoveParams,
             requestOptions: RequestOptions,
@@ -166,6 +169,7 @@ class EpisodeServiceAsyncImpl internal constructor(private val clientOptions: Cl
 
         private val saveHandler: Handler<Void?> = emptyHandler()
 
+        @Deprecated("deprecated")
         override fun save(
             params: EpisodeSaveParams,
             requestOptions: RequestOptions,
