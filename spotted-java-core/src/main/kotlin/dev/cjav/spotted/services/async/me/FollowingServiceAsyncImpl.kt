@@ -43,6 +43,7 @@ class FollowingServiceAsyncImpl internal constructor(private val clientOptions: 
         // get /me/following
         withRawResponse().bulkRetrieve(params, requestOptions).thenApply { it.parse() }
 
+    @Deprecated("deprecated")
     override fun check(
         params: FollowingCheckParams,
         requestOptions: RequestOptions,
@@ -50,6 +51,7 @@ class FollowingServiceAsyncImpl internal constructor(private val clientOptions: 
         // get /me/following/contains
         withRawResponse().check(params, requestOptions).thenApply { it.parse() }
 
+    @Deprecated("deprecated")
     override fun follow(
         params: FollowingFollowParams,
         requestOptions: RequestOptions,
@@ -57,6 +59,7 @@ class FollowingServiceAsyncImpl internal constructor(private val clientOptions: 
         // put /me/following
         withRawResponse().follow(params, requestOptions).thenAccept {}
 
+    @Deprecated("deprecated")
     override fun unfollow(
         params: FollowingUnfollowParams,
         requestOptions: RequestOptions,
@@ -110,6 +113,7 @@ class FollowingServiceAsyncImpl internal constructor(private val clientOptions: 
         private val checkHandler: Handler<List<Boolean>> =
             jsonHandler<List<Boolean>>(clientOptions.jsonMapper)
 
+        @Deprecated("deprecated")
         override fun check(
             params: FollowingCheckParams,
             requestOptions: RequestOptions,
@@ -133,6 +137,7 @@ class FollowingServiceAsyncImpl internal constructor(private val clientOptions: 
 
         private val followHandler: Handler<Void?> = emptyHandler()
 
+        @Deprecated("deprecated")
         override fun follow(
             params: FollowingFollowParams,
             requestOptions: RequestOptions,
@@ -157,6 +162,7 @@ class FollowingServiceAsyncImpl internal constructor(private val clientOptions: 
 
         private val unfollowHandler: Handler<Void?> = emptyHandler()
 
+        @Deprecated("deprecated")
         override fun unfollow(
             params: FollowingUnfollowParams,
             requestOptions: RequestOptions,

@@ -31,6 +31,10 @@ interface TrackServiceAsync {
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): TrackServiceAsync
 
     /**
+     * **Deprecated:** Use
+     * [Update Playlist Items](/documentation/web-api/reference/reorder-or-replace-playlists-items)
+     * instead.
+     *
      * Either reorder or replace items in a playlist depending on the request's parameters. To
      * reorder items, include `range_start`, `insert_before`, `range_length` and `snapshot_id` in
      * the request's body. To replace items, include `uris` as either a query parameter or in the
@@ -39,10 +43,12 @@ interface TrackServiceAsync {
      * and reorder are mutually exclusive operations which share the same endpoint, but have
      * different parameters. These operations can't be applied together in a single request.
      */
+    @Deprecated("deprecated")
     fun update(playlistId: String): CompletableFuture<TrackUpdateResponse> =
         update(playlistId, TrackUpdateParams.none())
 
     /** @see update */
+    @Deprecated("deprecated")
     fun update(
         playlistId: String,
         params: TrackUpdateParams = TrackUpdateParams.none(),
@@ -51,22 +57,26 @@ interface TrackServiceAsync {
         update(params.toBuilder().playlistId(playlistId).build(), requestOptions)
 
     /** @see update */
+    @Deprecated("deprecated")
     fun update(
         playlistId: String,
         params: TrackUpdateParams = TrackUpdateParams.none(),
     ): CompletableFuture<TrackUpdateResponse> = update(playlistId, params, RequestOptions.none())
 
     /** @see update */
+    @Deprecated("deprecated")
     fun update(
         params: TrackUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<TrackUpdateResponse>
 
     /** @see update */
+    @Deprecated("deprecated")
     fun update(params: TrackUpdateParams): CompletableFuture<TrackUpdateResponse> =
         update(params, RequestOptions.none())
 
     /** @see update */
+    @Deprecated("deprecated")
     fun update(
         playlistId: String,
         requestOptions: RequestOptions,
@@ -74,14 +84,17 @@ interface TrackServiceAsync {
         update(playlistId, TrackUpdateParams.none(), requestOptions)
 
     /**
-     * Get full details of the items of a playlist owned by a Spotify user.
+     * **Deprecated:** Use
+     * [Get Playlist Items](/documentation/web-api/reference/get-playlists-items) instead.
      *
-     * **Note**: This endpoint is only accessible for playlists owned by the current user.
+     * Get full details of the items of a playlist owned by a Spotify user.
      */
+    @Deprecated("deprecated")
     fun list(playlistId: String): CompletableFuture<TrackListPageAsync> =
         list(playlistId, TrackListParams.none())
 
     /** @see list */
+    @Deprecated("deprecated")
     fun list(
         playlistId: String,
         params: TrackListParams = TrackListParams.none(),
@@ -90,33 +103,44 @@ interface TrackServiceAsync {
         list(params.toBuilder().playlistId(playlistId).build(), requestOptions)
 
     /** @see list */
+    @Deprecated("deprecated")
     fun list(
         playlistId: String,
         params: TrackListParams = TrackListParams.none(),
     ): CompletableFuture<TrackListPageAsync> = list(playlistId, params, RequestOptions.none())
 
     /** @see list */
+    @Deprecated("deprecated")
     fun list(
         params: TrackListParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<TrackListPageAsync>
 
     /** @see list */
+    @Deprecated("deprecated")
     fun list(params: TrackListParams): CompletableFuture<TrackListPageAsync> =
         list(params, RequestOptions.none())
 
     /** @see list */
+    @Deprecated("deprecated")
     fun list(
         playlistId: String,
         requestOptions: RequestOptions,
     ): CompletableFuture<TrackListPageAsync> =
         list(playlistId, TrackListParams.none(), requestOptions)
 
-    /** Add one or more items to a user's playlist. */
+    /**
+     * **Deprecated:** Use
+     * [Add Items to Playlist](/documentation/web-api/reference/add-items-to-playlist) instead.
+     *
+     * Add one or more items to a user's playlist.
+     */
+    @Deprecated("deprecated")
     fun add(playlistId: String): CompletableFuture<TrackAddResponse> =
         add(playlistId, TrackAddParams.none())
 
     /** @see add */
+    @Deprecated("deprecated")
     fun add(
         playlistId: String,
         params: TrackAddParams = TrackAddParams.none(),
@@ -125,34 +149,45 @@ interface TrackServiceAsync {
         add(params.toBuilder().playlistId(playlistId).build(), requestOptions)
 
     /** @see add */
+    @Deprecated("deprecated")
     fun add(
         playlistId: String,
         params: TrackAddParams = TrackAddParams.none(),
     ): CompletableFuture<TrackAddResponse> = add(playlistId, params, RequestOptions.none())
 
     /** @see add */
+    @Deprecated("deprecated")
     fun add(
         params: TrackAddParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<TrackAddResponse>
 
     /** @see add */
+    @Deprecated("deprecated")
     fun add(params: TrackAddParams): CompletableFuture<TrackAddResponse> =
         add(params, RequestOptions.none())
 
     /** @see add */
+    @Deprecated("deprecated")
     fun add(
         playlistId: String,
         requestOptions: RequestOptions,
     ): CompletableFuture<TrackAddResponse> = add(playlistId, TrackAddParams.none(), requestOptions)
 
-    /** Remove one or more items from a user's playlist. */
+    /**
+     * **Deprecated:** Use
+     * [Remove Playlist Items](/documentation/web-api/reference/remove-items-playlist) instead.
+     *
+     * Remove one or more items from a user's playlist.
+     */
+    @Deprecated("deprecated")
     fun remove(
         playlistId: String,
         params: TrackRemoveParams,
     ): CompletableFuture<TrackRemoveResponse> = remove(playlistId, params, RequestOptions.none())
 
     /** @see remove */
+    @Deprecated("deprecated")
     fun remove(
         playlistId: String,
         params: TrackRemoveParams,
@@ -161,10 +196,12 @@ interface TrackServiceAsync {
         remove(params.toBuilder().playlistId(playlistId).build(), requestOptions)
 
     /** @see remove */
+    @Deprecated("deprecated")
     fun remove(params: TrackRemoveParams): CompletableFuture<TrackRemoveResponse> =
         remove(params, RequestOptions.none())
 
     /** @see remove */
+    @Deprecated("deprecated")
     fun remove(
         params: TrackRemoveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -186,10 +223,12 @@ interface TrackServiceAsync {
          * Returns a raw HTTP response for `put /playlists/{playlist_id}/tracks`, but is otherwise
          * the same as [TrackServiceAsync.update].
          */
+        @Deprecated("deprecated")
         fun update(playlistId: String): CompletableFuture<HttpResponseFor<TrackUpdateResponse>> =
             update(playlistId, TrackUpdateParams.none())
 
         /** @see update */
+        @Deprecated("deprecated")
         fun update(
             playlistId: String,
             params: TrackUpdateParams = TrackUpdateParams.none(),
@@ -198,6 +237,7 @@ interface TrackServiceAsync {
             update(params.toBuilder().playlistId(playlistId).build(), requestOptions)
 
         /** @see update */
+        @Deprecated("deprecated")
         fun update(
             playlistId: String,
             params: TrackUpdateParams = TrackUpdateParams.none(),
@@ -205,18 +245,21 @@ interface TrackServiceAsync {
             update(playlistId, params, RequestOptions.none())
 
         /** @see update */
+        @Deprecated("deprecated")
         fun update(
             params: TrackUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<TrackUpdateResponse>>
 
         /** @see update */
+        @Deprecated("deprecated")
         fun update(
             params: TrackUpdateParams
         ): CompletableFuture<HttpResponseFor<TrackUpdateResponse>> =
             update(params, RequestOptions.none())
 
         /** @see update */
+        @Deprecated("deprecated")
         fun update(
             playlistId: String,
             requestOptions: RequestOptions,
@@ -227,10 +270,12 @@ interface TrackServiceAsync {
          * Returns a raw HTTP response for `get /playlists/{playlist_id}/tracks`, but is otherwise
          * the same as [TrackServiceAsync.list].
          */
+        @Deprecated("deprecated")
         fun list(playlistId: String): CompletableFuture<HttpResponseFor<TrackListPageAsync>> =
             list(playlistId, TrackListParams.none())
 
         /** @see list */
+        @Deprecated("deprecated")
         fun list(
             playlistId: String,
             params: TrackListParams = TrackListParams.none(),
@@ -239,6 +284,7 @@ interface TrackServiceAsync {
             list(params.toBuilder().playlistId(playlistId).build(), requestOptions)
 
         /** @see list */
+        @Deprecated("deprecated")
         fun list(
             playlistId: String,
             params: TrackListParams = TrackListParams.none(),
@@ -246,16 +292,19 @@ interface TrackServiceAsync {
             list(playlistId, params, RequestOptions.none())
 
         /** @see list */
+        @Deprecated("deprecated")
         fun list(
             params: TrackListParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<TrackListPageAsync>>
 
         /** @see list */
+        @Deprecated("deprecated")
         fun list(params: TrackListParams): CompletableFuture<HttpResponseFor<TrackListPageAsync>> =
             list(params, RequestOptions.none())
 
         /** @see list */
+        @Deprecated("deprecated")
         fun list(
             playlistId: String,
             requestOptions: RequestOptions,
@@ -266,10 +315,12 @@ interface TrackServiceAsync {
          * Returns a raw HTTP response for `post /playlists/{playlist_id}/tracks`, but is otherwise
          * the same as [TrackServiceAsync.add].
          */
+        @Deprecated("deprecated")
         fun add(playlistId: String): CompletableFuture<HttpResponseFor<TrackAddResponse>> =
             add(playlistId, TrackAddParams.none())
 
         /** @see add */
+        @Deprecated("deprecated")
         fun add(
             playlistId: String,
             params: TrackAddParams = TrackAddParams.none(),
@@ -278,6 +329,7 @@ interface TrackServiceAsync {
             add(params.toBuilder().playlistId(playlistId).build(), requestOptions)
 
         /** @see add */
+        @Deprecated("deprecated")
         fun add(
             playlistId: String,
             params: TrackAddParams = TrackAddParams.none(),
@@ -285,16 +337,19 @@ interface TrackServiceAsync {
             add(playlistId, params, RequestOptions.none())
 
         /** @see add */
+        @Deprecated("deprecated")
         fun add(
             params: TrackAddParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<TrackAddResponse>>
 
         /** @see add */
+        @Deprecated("deprecated")
         fun add(params: TrackAddParams): CompletableFuture<HttpResponseFor<TrackAddResponse>> =
             add(params, RequestOptions.none())
 
         /** @see add */
+        @Deprecated("deprecated")
         fun add(
             playlistId: String,
             requestOptions: RequestOptions,
@@ -305,6 +360,7 @@ interface TrackServiceAsync {
          * Returns a raw HTTP response for `delete /playlists/{playlist_id}/tracks`, but is
          * otherwise the same as [TrackServiceAsync.remove].
          */
+        @Deprecated("deprecated")
         fun remove(
             playlistId: String,
             params: TrackRemoveParams,
@@ -312,6 +368,7 @@ interface TrackServiceAsync {
             remove(playlistId, params, RequestOptions.none())
 
         /** @see remove */
+        @Deprecated("deprecated")
         fun remove(
             playlistId: String,
             params: TrackRemoveParams,
@@ -320,12 +377,14 @@ interface TrackServiceAsync {
             remove(params.toBuilder().playlistId(playlistId).build(), requestOptions)
 
         /** @see remove */
+        @Deprecated("deprecated")
         fun remove(
             params: TrackRemoveParams
         ): CompletableFuture<HttpResponseFor<TrackRemoveResponse>> =
             remove(params, RequestOptions.none())
 
         /** @see remove */
+        @Deprecated("deprecated")
         fun remove(
             params: TrackRemoveParams,
             requestOptions: RequestOptions = RequestOptions.none(),

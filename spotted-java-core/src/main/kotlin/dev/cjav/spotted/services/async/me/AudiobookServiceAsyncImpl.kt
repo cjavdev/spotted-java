@@ -44,6 +44,7 @@ class AudiobookServiceAsyncImpl internal constructor(private val clientOptions: 
         // get /me/audiobooks
         withRawResponse().list(params, requestOptions).thenApply { it.parse() }
 
+    @Deprecated("deprecated")
     override fun check(
         params: AudiobookCheckParams,
         requestOptions: RequestOptions,
@@ -121,6 +122,7 @@ class AudiobookServiceAsyncImpl internal constructor(private val clientOptions: 
         private val checkHandler: Handler<List<Boolean>> =
             jsonHandler<List<Boolean>>(clientOptions.jsonMapper)
 
+        @Deprecated("deprecated")
         override fun check(
             params: AudiobookCheckParams,
             requestOptions: RequestOptions,

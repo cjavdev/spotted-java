@@ -40,6 +40,7 @@ class AlbumServiceImpl internal constructor(private val clientOptions: ClientOpt
         // get /me/albums
         withRawResponse().list(params, requestOptions).parse()
 
+    @Deprecated("deprecated")
     override fun check(params: AlbumCheckParams, requestOptions: RequestOptions): List<Boolean> =
         // get /me/albums/contains
         withRawResponse().check(params, requestOptions).parse()
@@ -106,6 +107,7 @@ class AlbumServiceImpl internal constructor(private val clientOptions: ClientOpt
         private val checkHandler: Handler<List<Boolean>> =
             jsonHandler<List<Boolean>>(clientOptions.jsonMapper)
 
+        @Deprecated("deprecated")
         override fun check(
             params: AlbumCheckParams,
             requestOptions: RequestOptions,

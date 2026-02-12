@@ -42,6 +42,7 @@ class FollowingServiceImpl internal constructor(private val clientOptions: Clien
         // get /me/following
         withRawResponse().bulkRetrieve(params, requestOptions).parse()
 
+    @Deprecated("deprecated")
     override fun check(
         params: FollowingCheckParams,
         requestOptions: RequestOptions,
@@ -49,11 +50,13 @@ class FollowingServiceImpl internal constructor(private val clientOptions: Clien
         // get /me/following/contains
         withRawResponse().check(params, requestOptions).parse()
 
+    @Deprecated("deprecated")
     override fun follow(params: FollowingFollowParams, requestOptions: RequestOptions) {
         // put /me/following
         withRawResponse().follow(params, requestOptions)
     }
 
+    @Deprecated("deprecated")
     override fun unfollow(params: FollowingUnfollowParams, requestOptions: RequestOptions) {
         // delete /me/following
         withRawResponse().unfollow(params, requestOptions)
@@ -102,6 +105,7 @@ class FollowingServiceImpl internal constructor(private val clientOptions: Clien
         private val checkHandler: Handler<List<Boolean>> =
             jsonHandler<List<Boolean>>(clientOptions.jsonMapper)
 
+        @Deprecated("deprecated")
         override fun check(
             params: FollowingCheckParams,
             requestOptions: RequestOptions,
@@ -122,6 +126,7 @@ class FollowingServiceImpl internal constructor(private val clientOptions: Clien
 
         private val followHandler: Handler<Void?> = emptyHandler()
 
+        @Deprecated("deprecated")
         override fun follow(
             params: FollowingFollowParams,
             requestOptions: RequestOptions,
@@ -143,6 +148,7 @@ class FollowingServiceImpl internal constructor(private val clientOptions: Clien
 
         private val unfollowHandler: Handler<Void?> = emptyHandler()
 
+        @Deprecated("deprecated")
         override fun unfollow(
             params: FollowingUnfollowParams,
             requestOptions: RequestOptions,

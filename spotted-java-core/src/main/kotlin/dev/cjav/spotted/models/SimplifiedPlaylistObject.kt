@@ -27,6 +27,7 @@ private constructor(
     private val externalUrls: JsonField<ExternalUrlObject>,
     private val href: JsonField<String>,
     private val images: JsonField<List<ImageObject>>,
+    private val items: JsonField<PlaylistTracksRefObject>,
     private val name: JsonField<String>,
     private val owner: JsonField<Owner>,
     private val published: JsonField<Boolean>,
@@ -53,6 +54,9 @@ private constructor(
         @JsonProperty("images")
         @ExcludeMissing
         images: JsonField<List<ImageObject>> = JsonMissing.of(),
+        @JsonProperty("items")
+        @ExcludeMissing
+        items: JsonField<PlaylistTracksRefObject> = JsonMissing.of(),
         @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
         @JsonProperty("owner") @ExcludeMissing owner: JsonField<Owner> = JsonMissing.of(),
         @JsonProperty("published") @ExcludeMissing published: JsonField<Boolean> = JsonMissing.of(),
@@ -71,6 +75,7 @@ private constructor(
         externalUrls,
         href,
         images,
+        items,
         name,
         owner,
         published,
@@ -133,6 +138,16 @@ private constructor(
     fun images(): Optional<List<ImageObject>> = images.getOptional("images")
 
     /**
+     * A collection containing a link ( `href` ) to the Web API endpoint where full details of the
+     * playlist's items can be retrieved, along with the `total` number of items in the playlist.
+     * Note, a track object may be `null`. This can happen if a track is no longer available.
+     *
+     * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun items(): Optional<PlaylistTracksRefObject> = items.getOptional("items")
+
+    /**
      * The name of the playlist.
      *
      * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -169,13 +184,15 @@ private constructor(
     fun snapshotId(): Optional<String> = snapshotId.getOptional("snapshot_id")
 
     /**
-     * A collection containing a link ( `href` ) to the Web API endpoint where full details of the
-     * playlist's tracks can be retrieved, along with the `total` number of tracks in the playlist.
-     * Note, a track object may be `null`. This can happen if a track is no longer available.
+     * **Deprecated:** Use `items` instead. A collection containing a link ( `href` ) to the Web API
+     * endpoint where full details of the playlist's tracks can be retrieved, along with the `total`
+     * number of tracks in the playlist. Note, a track object may be `null`. This can happen if a
+     * track is no longer available.
      *
      * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
+    @Deprecated("deprecated")
     fun tracks(): Optional<PlaylistTracksRefObject> = tracks.getOptional("tracks")
 
     /**
@@ -241,6 +258,13 @@ private constructor(
     @JsonProperty("images") @ExcludeMissing fun _images(): JsonField<List<ImageObject>> = images
 
     /**
+     * Returns the raw JSON value of [items].
+     *
+     * Unlike [items], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("items") @ExcludeMissing fun _items(): JsonField<PlaylistTracksRefObject> = items
+
+    /**
      * Returns the raw JSON value of [name].
      *
      * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
@@ -273,6 +297,7 @@ private constructor(
      *
      * Unlike [tracks], this method doesn't throw if the JSON field has an unexpected type.
      */
+    @Deprecated("deprecated")
     @JsonProperty("tracks")
     @ExcludeMissing
     fun _tracks(): JsonField<PlaylistTracksRefObject> = tracks
@@ -318,6 +343,7 @@ private constructor(
         private var externalUrls: JsonField<ExternalUrlObject> = JsonMissing.of()
         private var href: JsonField<String> = JsonMissing.of()
         private var images: JsonField<MutableList<ImageObject>>? = null
+        private var items: JsonField<PlaylistTracksRefObject> = JsonMissing.of()
         private var name: JsonField<String> = JsonMissing.of()
         private var owner: JsonField<Owner> = JsonMissing.of()
         private var published: JsonField<Boolean> = JsonMissing.of()
@@ -335,6 +361,7 @@ private constructor(
             externalUrls = simplifiedPlaylistObject.externalUrls
             href = simplifiedPlaylistObject.href
             images = simplifiedPlaylistObject.images.map { it.toMutableList() }
+            items = simplifiedPlaylistObject.items
             name = simplifiedPlaylistObject.name
             owner = simplifiedPlaylistObject.owner
             published = simplifiedPlaylistObject.published
@@ -442,6 +469,23 @@ private constructor(
                 }
         }
 
+        /**
+         * A collection containing a link ( `href` ) to the Web API endpoint where full details of
+         * the playlist's items can be retrieved, along with the `total` number of items in the
+         * playlist. Note, a track object may be `null`. This can happen if a track is no longer
+         * available.
+         */
+        fun items(items: PlaylistTracksRefObject) = items(JsonField.of(items))
+
+        /**
+         * Sets [Builder.items] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.items] with a well-typed [PlaylistTracksRefObject] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun items(items: JsonField<PlaylistTracksRefObject>) = apply { this.items = items }
+
         /** The name of the playlist. */
         fun name(name: String) = name(JsonField.of(name))
 
@@ -497,11 +541,12 @@ private constructor(
         fun snapshotId(snapshotId: JsonField<String>) = apply { this.snapshotId = snapshotId }
 
         /**
-         * A collection containing a link ( `href` ) to the Web API endpoint where full details of
-         * the playlist's tracks can be retrieved, along with the `total` number of tracks in the
-         * playlist. Note, a track object may be `null`. This can happen if a track is no longer
-         * available.
+         * **Deprecated:** Use `items` instead. A collection containing a link ( `href` ) to the Web
+         * API endpoint where full details of the playlist's tracks can be retrieved, along with the
+         * `total` number of tracks in the playlist. Note, a track object may be `null`. This can
+         * happen if a track is no longer available.
          */
+        @Deprecated("deprecated")
         fun tracks(tracks: PlaylistTracksRefObject) = tracks(JsonField.of(tracks))
 
         /**
@@ -511,6 +556,7 @@ private constructor(
          * value instead. This method is primarily for setting the field to an undocumented or not
          * yet supported value.
          */
+        @Deprecated("deprecated")
         fun tracks(tracks: JsonField<PlaylistTracksRefObject>) = apply { this.tracks = tracks }
 
         /** The object type: "playlist" */
@@ -567,6 +613,7 @@ private constructor(
                 externalUrls,
                 href,
                 (images ?: JsonMissing.of()).map { it.toImmutable() },
+                items,
                 name,
                 owner,
                 published,
@@ -591,6 +638,7 @@ private constructor(
         externalUrls().ifPresent { it.validate() }
         href()
         images().ifPresent { it.forEach { it.validate() } }
+        items().ifPresent { it.validate() }
         name()
         owner().ifPresent { it.validate() }
         published()
@@ -622,6 +670,7 @@ private constructor(
             (externalUrls.asKnown().getOrNull()?.validity() ?: 0) +
             (if (href.asKnown().isPresent) 1 else 0) +
             (images.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
+            (items.asKnown().getOrNull()?.validity() ?: 0) +
             (if (name.asKnown().isPresent) 1 else 0) +
             (owner.asKnown().getOrNull()?.validity() ?: 0) +
             (if (published.asKnown().isPresent) 1 else 0) +
@@ -1055,6 +1104,7 @@ private constructor(
             externalUrls == other.externalUrls &&
             href == other.href &&
             images == other.images &&
+            items == other.items &&
             name == other.name &&
             owner == other.owner &&
             published == other.published &&
@@ -1073,6 +1123,7 @@ private constructor(
             externalUrls,
             href,
             images,
+            items,
             name,
             owner,
             published,
@@ -1087,5 +1138,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "SimplifiedPlaylistObject{id=$id, collaborative=$collaborative, description=$description, externalUrls=$externalUrls, href=$href, images=$images, name=$name, owner=$owner, published=$published, snapshotId=$snapshotId, tracks=$tracks, type=$type, uri=$uri, additionalProperties=$additionalProperties}"
+        "SimplifiedPlaylistObject{id=$id, collaborative=$collaborative, description=$description, externalUrls=$externalUrls, href=$href, images=$images, items=$items, name=$name, owner=$owner, published=$published, snapshotId=$snapshotId, tracks=$tracks, type=$type, uri=$uri, additionalProperties=$additionalProperties}"
 }

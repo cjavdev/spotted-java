@@ -11,7 +11,12 @@ import dev.cjav.spotted.core.toImmutable
 import java.util.Objects
 import java.util.Optional
 
-/** Remove one or more audiobooks from the Spotify user's library. */
+/**
+ * Remove one or more audiobooks from the Spotify user's library.
+ *
+ * **Note:** This endpoint is deprecated. Use
+ * [Remove Items from Library](/documentation/web-api/reference/remove-library-items) instead.
+ */
 @Deprecated("deprecated")
 class AudiobookRemoveParams
 private constructor(

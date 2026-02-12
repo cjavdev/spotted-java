@@ -48,17 +48,29 @@ interface ShowServiceAsync {
     fun list(requestOptions: RequestOptions): CompletableFuture<ShowListPageAsync> =
         list(ShowListParams.none(), requestOptions)
 
-    /** Check if one or more shows is already saved in the current Spotify user's library. */
+    /**
+     * Check if one or more shows is already saved in the current Spotify user's library.
+     *
+     * **Note:** This endpoint is deprecated. Use
+     * [Check User's Saved Items](/documentation/web-api/reference/check-library-contains) instead.
+     */
+    @Deprecated("deprecated")
     fun check(params: ShowCheckParams): CompletableFuture<List<Boolean>> =
         check(params, RequestOptions.none())
 
     /** @see check */
+    @Deprecated("deprecated")
     fun check(
         params: ShowCheckParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<List<Boolean>>
 
-    /** Delete one or more shows from current Spotify user's library. */
+    /**
+     * Delete one or more shows from current Spotify user's library.
+     *
+     * **Note:** This endpoint is deprecated. Use
+     * [Remove Items from Library](/documentation/web-api/reference/remove-library-items) instead.
+     */
     @Deprecated("deprecated")
     fun remove(): CompletableFuture<Void?> = remove(ShowRemoveParams.none())
 
@@ -79,7 +91,12 @@ interface ShowServiceAsync {
     fun remove(requestOptions: RequestOptions): CompletableFuture<Void?> =
         remove(ShowRemoveParams.none(), requestOptions)
 
-    /** Save one or more shows to current Spotify user's library. */
+    /**
+     * Save one or more shows to current Spotify user's library.
+     *
+     * **Note:** This endpoint is deprecated. Use
+     * [Save Items to Library](/documentation/web-api/reference/save-library-items) instead.
+     */
     @Deprecated("deprecated") fun save(): CompletableFuture<Void?> = save(ShowSaveParams.none())
 
     /** @see save */
@@ -138,10 +155,12 @@ interface ShowServiceAsync {
          * Returns a raw HTTP response for `get /me/shows/contains`, but is otherwise the same as
          * [ShowServiceAsync.check].
          */
+        @Deprecated("deprecated")
         fun check(params: ShowCheckParams): CompletableFuture<HttpResponseFor<List<Boolean>>> =
             check(params, RequestOptions.none())
 
         /** @see check */
+        @Deprecated("deprecated")
         fun check(
             params: ShowCheckParams,
             requestOptions: RequestOptions = RequestOptions.none(),

@@ -26,11 +26,18 @@ interface FollowerServiceAsync {
      */
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): FollowerServiceAsync
 
-    /** Check to see if the current user is following a specified playlist. */
+    /**
+     * Check to see if the current user is following a specified playlist.
+     *
+     * **Note:** This endpoint is deprecated. Use
+     * [Check User's Saved Items](/documentation/web-api/reference/check-library-contains) instead.
+     */
+    @Deprecated("deprecated")
     fun check(playlistId: String): CompletableFuture<List<Boolean>> =
         check(playlistId, FollowerCheckParams.none())
 
     /** @see check */
+    @Deprecated("deprecated")
     fun check(
         playlistId: String,
         params: FollowerCheckParams = FollowerCheckParams.none(),
@@ -39,33 +46,44 @@ interface FollowerServiceAsync {
         check(params.toBuilder().playlistId(playlistId).build(), requestOptions)
 
     /** @see check */
+    @Deprecated("deprecated")
     fun check(
         playlistId: String,
         params: FollowerCheckParams = FollowerCheckParams.none(),
     ): CompletableFuture<List<Boolean>> = check(playlistId, params, RequestOptions.none())
 
     /** @see check */
+    @Deprecated("deprecated")
     fun check(
         params: FollowerCheckParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<List<Boolean>>
 
     /** @see check */
+    @Deprecated("deprecated")
     fun check(params: FollowerCheckParams): CompletableFuture<List<Boolean>> =
         check(params, RequestOptions.none())
 
     /** @see check */
+    @Deprecated("deprecated")
     fun check(
         playlistId: String,
         requestOptions: RequestOptions,
     ): CompletableFuture<List<Boolean>> =
         check(playlistId, FollowerCheckParams.none(), requestOptions)
 
-    /** Add the current user as a follower of a playlist. */
+    /**
+     * Add the current user as a follower of a playlist.
+     *
+     * **Note:** This endpoint is deprecated. Use
+     * [Save Items to Library](/documentation/web-api/reference/save-library-items) instead.
+     */
+    @Deprecated("deprecated")
     fun follow(playlistId: String): CompletableFuture<Void?> =
         follow(playlistId, FollowerFollowParams.none())
 
     /** @see follow */
+    @Deprecated("deprecated")
     fun follow(
         playlistId: String,
         params: FollowerFollowParams = FollowerFollowParams.none(),
@@ -74,30 +92,41 @@ interface FollowerServiceAsync {
         follow(params.toBuilder().playlistId(playlistId).build(), requestOptions)
 
     /** @see follow */
+    @Deprecated("deprecated")
     fun follow(
         playlistId: String,
         params: FollowerFollowParams = FollowerFollowParams.none(),
     ): CompletableFuture<Void?> = follow(playlistId, params, RequestOptions.none())
 
     /** @see follow */
+    @Deprecated("deprecated")
     fun follow(
         params: FollowerFollowParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Void?>
 
     /** @see follow */
+    @Deprecated("deprecated")
     fun follow(params: FollowerFollowParams): CompletableFuture<Void?> =
         follow(params, RequestOptions.none())
 
     /** @see follow */
+    @Deprecated("deprecated")
     fun follow(playlistId: String, requestOptions: RequestOptions): CompletableFuture<Void?> =
         follow(playlistId, FollowerFollowParams.none(), requestOptions)
 
-    /** Remove the current user as a follower of a playlist. */
+    /**
+     * Remove the current user as a follower of a playlist.
+     *
+     * **Note:** This endpoint is deprecated. Use
+     * [Remove Items from Library](/documentation/web-api/reference/remove-library-items) instead.
+     */
+    @Deprecated("deprecated")
     fun unfollow(playlistId: String): CompletableFuture<Void?> =
         unfollow(playlistId, FollowerUnfollowParams.none())
 
     /** @see unfollow */
+    @Deprecated("deprecated")
     fun unfollow(
         playlistId: String,
         params: FollowerUnfollowParams = FollowerUnfollowParams.none(),
@@ -106,22 +135,26 @@ interface FollowerServiceAsync {
         unfollow(params.toBuilder().playlistId(playlistId).build(), requestOptions)
 
     /** @see unfollow */
+    @Deprecated("deprecated")
     fun unfollow(
         playlistId: String,
         params: FollowerUnfollowParams = FollowerUnfollowParams.none(),
     ): CompletableFuture<Void?> = unfollow(playlistId, params, RequestOptions.none())
 
     /** @see unfollow */
+    @Deprecated("deprecated")
     fun unfollow(
         params: FollowerUnfollowParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Void?>
 
     /** @see unfollow */
+    @Deprecated("deprecated")
     fun unfollow(params: FollowerUnfollowParams): CompletableFuture<Void?> =
         unfollow(params, RequestOptions.none())
 
     /** @see unfollow */
+    @Deprecated("deprecated")
     fun unfollow(playlistId: String, requestOptions: RequestOptions): CompletableFuture<Void?> =
         unfollow(playlistId, FollowerUnfollowParams.none(), requestOptions)
 
@@ -143,10 +176,12 @@ interface FollowerServiceAsync {
          * Returns a raw HTTP response for `get /playlists/{playlist_id}/followers/contains`, but is
          * otherwise the same as [FollowerServiceAsync.check].
          */
+        @Deprecated("deprecated")
         fun check(playlistId: String): CompletableFuture<HttpResponseFor<List<Boolean>>> =
             check(playlistId, FollowerCheckParams.none())
 
         /** @see check */
+        @Deprecated("deprecated")
         fun check(
             playlistId: String,
             params: FollowerCheckParams = FollowerCheckParams.none(),
@@ -155,6 +190,7 @@ interface FollowerServiceAsync {
             check(params.toBuilder().playlistId(playlistId).build(), requestOptions)
 
         /** @see check */
+        @Deprecated("deprecated")
         fun check(
             playlistId: String,
             params: FollowerCheckParams = FollowerCheckParams.none(),
@@ -162,16 +198,19 @@ interface FollowerServiceAsync {
             check(playlistId, params, RequestOptions.none())
 
         /** @see check */
+        @Deprecated("deprecated")
         fun check(
             params: FollowerCheckParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<List<Boolean>>>
 
         /** @see check */
+        @Deprecated("deprecated")
         fun check(params: FollowerCheckParams): CompletableFuture<HttpResponseFor<List<Boolean>>> =
             check(params, RequestOptions.none())
 
         /** @see check */
+        @Deprecated("deprecated")
         fun check(
             playlistId: String,
             requestOptions: RequestOptions,
@@ -182,10 +221,12 @@ interface FollowerServiceAsync {
          * Returns a raw HTTP response for `put /playlists/{playlist_id}/followers`, but is
          * otherwise the same as [FollowerServiceAsync.follow].
          */
+        @Deprecated("deprecated")
         fun follow(playlistId: String): CompletableFuture<HttpResponse> =
             follow(playlistId, FollowerFollowParams.none())
 
         /** @see follow */
+        @Deprecated("deprecated")
         fun follow(
             playlistId: String,
             params: FollowerFollowParams = FollowerFollowParams.none(),
@@ -194,22 +235,26 @@ interface FollowerServiceAsync {
             follow(params.toBuilder().playlistId(playlistId).build(), requestOptions)
 
         /** @see follow */
+        @Deprecated("deprecated")
         fun follow(
             playlistId: String,
             params: FollowerFollowParams = FollowerFollowParams.none(),
         ): CompletableFuture<HttpResponse> = follow(playlistId, params, RequestOptions.none())
 
         /** @see follow */
+        @Deprecated("deprecated")
         fun follow(
             params: FollowerFollowParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponse>
 
         /** @see follow */
+        @Deprecated("deprecated")
         fun follow(params: FollowerFollowParams): CompletableFuture<HttpResponse> =
             follow(params, RequestOptions.none())
 
         /** @see follow */
+        @Deprecated("deprecated")
         fun follow(
             playlistId: String,
             requestOptions: RequestOptions,
@@ -220,10 +265,12 @@ interface FollowerServiceAsync {
          * Returns a raw HTTP response for `delete /playlists/{playlist_id}/followers`, but is
          * otherwise the same as [FollowerServiceAsync.unfollow].
          */
+        @Deprecated("deprecated")
         fun unfollow(playlistId: String): CompletableFuture<HttpResponse> =
             unfollow(playlistId, FollowerUnfollowParams.none())
 
         /** @see unfollow */
+        @Deprecated("deprecated")
         fun unfollow(
             playlistId: String,
             params: FollowerUnfollowParams = FollowerUnfollowParams.none(),
@@ -232,22 +279,26 @@ interface FollowerServiceAsync {
             unfollow(params.toBuilder().playlistId(playlistId).build(), requestOptions)
 
         /** @see unfollow */
+        @Deprecated("deprecated")
         fun unfollow(
             playlistId: String,
             params: FollowerUnfollowParams = FollowerUnfollowParams.none(),
         ): CompletableFuture<HttpResponse> = unfollow(playlistId, params, RequestOptions.none())
 
         /** @see unfollow */
+        @Deprecated("deprecated")
         fun unfollow(
             params: FollowerUnfollowParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponse>
 
         /** @see unfollow */
+        @Deprecated("deprecated")
         fun unfollow(params: FollowerUnfollowParams): CompletableFuture<HttpResponse> =
             unfollow(params, RequestOptions.none())
 
         /** @see unfollow */
+        @Deprecated("deprecated")
         fun unfollow(
             playlistId: String,
             requestOptions: RequestOptions,
