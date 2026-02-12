@@ -29,6 +29,9 @@ internal class SimplifiedPlaylistObjectTest {
                         .published(true)
                         .build()
                 )
+                .items(
+                    PlaylistTracksRefObject.builder().href("href").published(true).total(0L).build()
+                )
                 .name("name")
                 .owner(
                     SimplifiedPlaylistObject.Owner.builder()
@@ -66,6 +69,10 @@ internal class SimplifiedPlaylistObjectTest {
                     .width(300L)
                     .published(true)
                     .build()
+            )
+        assertThat(simplifiedPlaylistObject.items())
+            .contains(
+                PlaylistTracksRefObject.builder().href("href").published(true).total(0L).build()
             )
         assertThat(simplifiedPlaylistObject.name()).contains("name")
         assertThat(simplifiedPlaylistObject.owner())
@@ -111,6 +118,9 @@ internal class SimplifiedPlaylistObjectTest {
                         .width(300L)
                         .published(true)
                         .build()
+                )
+                .items(
+                    PlaylistTracksRefObject.builder().href("href").published(true).total(0L).build()
                 )
                 .name("name")
                 .owner(

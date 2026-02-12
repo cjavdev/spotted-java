@@ -41,6 +41,7 @@ class TrackServiceAsyncImpl internal constructor(private val clientOptions: Clie
     override fun withOptions(modifier: Consumer<ClientOptions.Builder>): TrackServiceAsync =
         TrackServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
+    @Deprecated("deprecated")
     override fun update(
         params: TrackUpdateParams,
         requestOptions: RequestOptions,
@@ -48,6 +49,7 @@ class TrackServiceAsyncImpl internal constructor(private val clientOptions: Clie
         // put /playlists/{playlist_id}/tracks
         withRawResponse().update(params, requestOptions).thenApply { it.parse() }
 
+    @Deprecated("deprecated")
     override fun list(
         params: TrackListParams,
         requestOptions: RequestOptions,
@@ -55,6 +57,7 @@ class TrackServiceAsyncImpl internal constructor(private val clientOptions: Clie
         // get /playlists/{playlist_id}/tracks
         withRawResponse().list(params, requestOptions).thenApply { it.parse() }
 
+    @Deprecated("deprecated")
     override fun add(
         params: TrackAddParams,
         requestOptions: RequestOptions,
@@ -62,6 +65,7 @@ class TrackServiceAsyncImpl internal constructor(private val clientOptions: Clie
         // post /playlists/{playlist_id}/tracks
         withRawResponse().add(params, requestOptions).thenApply { it.parse() }
 
+    @Deprecated("deprecated")
     override fun remove(
         params: TrackRemoveParams,
         requestOptions: RequestOptions,
@@ -85,6 +89,7 @@ class TrackServiceAsyncImpl internal constructor(private val clientOptions: Clie
         private val updateHandler: Handler<TrackUpdateResponse> =
             jsonHandler<TrackUpdateResponse>(clientOptions.jsonMapper)
 
+        @Deprecated("deprecated")
         override fun update(
             params: TrackUpdateParams,
             requestOptions: RequestOptions,
@@ -119,6 +124,7 @@ class TrackServiceAsyncImpl internal constructor(private val clientOptions: Clie
         private val listHandler: Handler<TrackListPageResponse> =
             jsonHandler<TrackListPageResponse>(clientOptions.jsonMapper)
 
+        @Deprecated("deprecated")
         override fun list(
             params: TrackListParams,
             requestOptions: RequestOptions,
@@ -160,6 +166,7 @@ class TrackServiceAsyncImpl internal constructor(private val clientOptions: Clie
         private val addHandler: Handler<TrackAddResponse> =
             jsonHandler<TrackAddResponse>(clientOptions.jsonMapper)
 
+        @Deprecated("deprecated")
         override fun add(
             params: TrackAddParams,
             requestOptions: RequestOptions,
@@ -194,6 +201,7 @@ class TrackServiceAsyncImpl internal constructor(private val clientOptions: Clie
         private val removeHandler: Handler<TrackRemoveResponse> =
             jsonHandler<TrackRemoveResponse>(clientOptions.jsonMapper)
 
+        @Deprecated("deprecated")
         override fun remove(
             params: TrackRemoveParams,
             requestOptions: RequestOptions,

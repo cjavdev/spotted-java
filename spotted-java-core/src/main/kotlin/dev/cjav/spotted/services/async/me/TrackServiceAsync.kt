@@ -49,17 +49,27 @@ interface TrackServiceAsync {
     /**
      * Check if one or more tracks is already saved in the current Spotify user's 'Your Music'
      * library.
+     *
+     * **Note:** This endpoint is deprecated. Use
+     * [Check User's Saved Items](/documentation/web-api/reference/check-library-contains) instead.
      */
+    @Deprecated("deprecated")
     fun check(params: TrackCheckParams): CompletableFuture<List<Boolean>> =
         check(params, RequestOptions.none())
 
     /** @see check */
+    @Deprecated("deprecated")
     fun check(
         params: TrackCheckParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<List<Boolean>>
 
-    /** Remove one or more tracks from the current user's 'Your Music' library. */
+    /**
+     * Remove one or more tracks from the current user's 'Your Music' library.
+     *
+     * **Note:** This endpoint is deprecated. Use
+     * [Remove Items from Library](/documentation/web-api/reference/remove-library-items) instead.
+     */
     @Deprecated("deprecated")
     fun remove(): CompletableFuture<Void?> = remove(TrackRemoveParams.none())
 
@@ -80,7 +90,12 @@ interface TrackServiceAsync {
     fun remove(requestOptions: RequestOptions): CompletableFuture<Void?> =
         remove(TrackRemoveParams.none(), requestOptions)
 
-    /** Save one or more tracks to the current user's 'Your Music' library. */
+    /**
+     * Save one or more tracks to the current user's 'Your Music' library.
+     *
+     * **Note:** This endpoint is deprecated. Use
+     * [Save Items to Library](/documentation/web-api/reference/save-library-items) instead.
+     */
     @Deprecated("deprecated")
     fun save(params: TrackSaveParams): CompletableFuture<Void?> =
         save(params, RequestOptions.none())
@@ -133,10 +148,12 @@ interface TrackServiceAsync {
          * Returns a raw HTTP response for `get /me/tracks/contains`, but is otherwise the same as
          * [TrackServiceAsync.check].
          */
+        @Deprecated("deprecated")
         fun check(params: TrackCheckParams): CompletableFuture<HttpResponseFor<List<Boolean>>> =
             check(params, RequestOptions.none())
 
         /** @see check */
+        @Deprecated("deprecated")
         fun check(
             params: TrackCheckParams,
             requestOptions: RequestOptions = RequestOptions.none(),

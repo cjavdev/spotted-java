@@ -21,7 +21,12 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/** Delete one or more shows from current Spotify user's library. */
+/**
+ * Delete one or more shows from current Spotify user's library.
+ *
+ * **Note:** This endpoint is deprecated. Use
+ * [Remove Items from Library](/documentation/web-api/reference/remove-library-items) instead.
+ */
 @Deprecated("deprecated")
 class ShowRemoveParams
 private constructor(

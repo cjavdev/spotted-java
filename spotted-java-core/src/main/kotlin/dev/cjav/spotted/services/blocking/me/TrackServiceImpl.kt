@@ -40,6 +40,7 @@ class TrackServiceImpl internal constructor(private val clientOptions: ClientOpt
         // get /me/tracks
         withRawResponse().list(params, requestOptions).parse()
 
+    @Deprecated("deprecated")
     override fun check(params: TrackCheckParams, requestOptions: RequestOptions): List<Boolean> =
         // get /me/tracks/contains
         withRawResponse().check(params, requestOptions).parse()
@@ -106,6 +107,7 @@ class TrackServiceImpl internal constructor(private val clientOptions: ClientOpt
         private val checkHandler: Handler<List<Boolean>> =
             jsonHandler<List<Boolean>>(clientOptions.jsonMapper)
 
+        @Deprecated("deprecated")
         override fun check(
             params: TrackCheckParams,
             requestOptions: RequestOptions,

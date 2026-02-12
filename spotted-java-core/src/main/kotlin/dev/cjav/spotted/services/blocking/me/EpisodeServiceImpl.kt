@@ -40,6 +40,7 @@ class EpisodeServiceImpl internal constructor(private val clientOptions: ClientO
         // get /me/episodes
         withRawResponse().list(params, requestOptions).parse()
 
+    @Deprecated("deprecated")
     override fun check(params: EpisodeCheckParams, requestOptions: RequestOptions): List<Boolean> =
         // get /me/episodes/contains
         withRawResponse().check(params, requestOptions).parse()
@@ -106,6 +107,7 @@ class EpisodeServiceImpl internal constructor(private val clientOptions: ClientO
         private val checkHandler: Handler<List<Boolean>> =
             jsonHandler<List<Boolean>>(clientOptions.jsonMapper)
 
+        @Deprecated("deprecated")
         override fun check(
             params: EpisodeCheckParams,
             requestOptions: RequestOptions,

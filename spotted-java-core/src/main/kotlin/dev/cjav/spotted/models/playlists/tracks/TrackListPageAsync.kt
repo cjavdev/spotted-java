@@ -14,6 +14,7 @@ import java.util.concurrent.Executor
 import kotlin.jvm.optionals.getOrNull
 
 /** @see TrackServiceAsync.list */
+@Deprecated("deprecated")
 class TrackListPageAsync
 private constructor(
     private val service: TrackServiceAsync,

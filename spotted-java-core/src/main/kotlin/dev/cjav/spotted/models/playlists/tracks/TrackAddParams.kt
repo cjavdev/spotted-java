@@ -21,7 +21,13 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/** Add one or more items to a user's playlist. */
+/**
+ * **Deprecated:** Use
+ * [Add Items to Playlist](/documentation/web-api/reference/add-items-to-playlist) instead.
+ *
+ * Add one or more items to a user's playlist.
+ */
+@Deprecated("deprecated")
 class TrackAddParams
 private constructor(
     private val playlistId: String?,

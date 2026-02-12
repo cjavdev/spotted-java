@@ -34,6 +34,7 @@ private constructor(
     private val followers: JsonField<FollowersObject>,
     private val href: JsonField<String>,
     private val images: JsonField<List<ImageObject>>,
+    private val items: JsonField<Items>,
     private val name: JsonField<String>,
     private val owner: JsonField<Owner>,
     private val published: JsonField<Boolean>,
@@ -63,6 +64,7 @@ private constructor(
         @JsonProperty("images")
         @ExcludeMissing
         images: JsonField<List<ImageObject>> = JsonMissing.of(),
+        @JsonProperty("items") @ExcludeMissing items: JsonField<Items> = JsonMissing.of(),
         @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
         @JsonProperty("owner") @ExcludeMissing owner: JsonField<Owner> = JsonMissing.of(),
         @JsonProperty("published") @ExcludeMissing published: JsonField<Boolean> = JsonMissing.of(),
@@ -80,6 +82,7 @@ private constructor(
         followers,
         href,
         images,
+        items,
         name,
         owner,
         published,
@@ -150,6 +153,15 @@ private constructor(
     fun images(): Optional<List<ImageObject>> = images.getOptional("images")
 
     /**
+     * The items of the playlist. _**Note**: This field is only available for playlists owned by the
+     * current user or playlists the user is a collaborator of._
+     *
+     * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun items(): Optional<Items> = items.getOptional("items")
+
+    /**
      * The name of the playlist.
      *
      * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -186,13 +198,12 @@ private constructor(
     fun snapshotId(): Optional<String> = snapshotId.getOptional("snapshot_id")
 
     /**
-     * The tracks of the playlist. _**Note**: This field is only available for playlists owned by
-     * the current user._
+     * **Deprecated:** Use `items` instead. The tracks of the playlist.
      *
      * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun tracks(): Optional<Tracks> = tracks.getOptional("tracks")
+    @Deprecated("deprecated") fun tracks(): Optional<Tracks> = tracks.getOptional("tracks")
 
     /**
      * The object type: "playlist"
@@ -266,6 +277,13 @@ private constructor(
     @JsonProperty("images") @ExcludeMissing fun _images(): JsonField<List<ImageObject>> = images
 
     /**
+     * Returns the raw JSON value of [items].
+     *
+     * Unlike [items], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("items") @ExcludeMissing fun _items(): JsonField<Items> = items
+
+    /**
      * Returns the raw JSON value of [name].
      *
      * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
@@ -298,7 +316,10 @@ private constructor(
      *
      * Unlike [tracks], this method doesn't throw if the JSON field has an unexpected type.
      */
-    @JsonProperty("tracks") @ExcludeMissing fun _tracks(): JsonField<Tracks> = tracks
+    @Deprecated("deprecated")
+    @JsonProperty("tracks")
+    @ExcludeMissing
+    fun _tracks(): JsonField<Tracks> = tracks
 
     /**
      * Returns the raw JSON value of [type].
@@ -342,6 +363,7 @@ private constructor(
         private var followers: JsonField<FollowersObject> = JsonMissing.of()
         private var href: JsonField<String> = JsonMissing.of()
         private var images: JsonField<MutableList<ImageObject>>? = null
+        private var items: JsonField<Items> = JsonMissing.of()
         private var name: JsonField<String> = JsonMissing.of()
         private var owner: JsonField<Owner> = JsonMissing.of()
         private var published: JsonField<Boolean> = JsonMissing.of()
@@ -360,6 +382,7 @@ private constructor(
             followers = playlistRetrieveResponse.followers
             href = playlistRetrieveResponse.href
             images = playlistRetrieveResponse.images.map { it.toMutableList() }
+            items = playlistRetrieveResponse.items
             name = playlistRetrieveResponse.name
             owner = playlistRetrieveResponse.owner
             published = playlistRetrieveResponse.published
@@ -482,6 +505,20 @@ private constructor(
                 }
         }
 
+        /**
+         * The items of the playlist. _**Note**: This field is only available for playlists owned by
+         * the current user or playlists the user is a collaborator of._
+         */
+        fun items(items: Items) = items(JsonField.of(items))
+
+        /**
+         * Sets [Builder.items] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.items] with a well-typed [Items] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun items(items: JsonField<Items>) = apply { this.items = items }
+
         /** The name of the playlist. */
         fun name(name: String) = name(JsonField.of(name))
 
@@ -536,11 +573,8 @@ private constructor(
          */
         fun snapshotId(snapshotId: JsonField<String>) = apply { this.snapshotId = snapshotId }
 
-        /**
-         * The tracks of the playlist. _**Note**: This field is only available for playlists owned
-         * by the current user._
-         */
-        fun tracks(tracks: Tracks) = tracks(JsonField.of(tracks))
+        /** **Deprecated:** Use `items` instead. The tracks of the playlist. */
+        @Deprecated("deprecated") fun tracks(tracks: Tracks) = tracks(JsonField.of(tracks))
 
         /**
          * Sets [Builder.tracks] to an arbitrary JSON value.
@@ -548,6 +582,7 @@ private constructor(
          * You should usually call [Builder.tracks] with a well-typed [Tracks] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
+        @Deprecated("deprecated")
         fun tracks(tracks: JsonField<Tracks>) = apply { this.tracks = tracks }
 
         /** The object type: "playlist" */
@@ -605,6 +640,7 @@ private constructor(
                 followers,
                 href,
                 (images ?: JsonMissing.of()).map { it.toImmutable() },
+                items,
                 name,
                 owner,
                 published,
@@ -630,6 +666,7 @@ private constructor(
         followers().ifPresent { it.validate() }
         href()
         images().ifPresent { it.forEach { it.validate() } }
+        items().ifPresent { it.validate() }
         name()
         owner().ifPresent { it.validate() }
         published()
@@ -662,6 +699,7 @@ private constructor(
             (followers.asKnown().getOrNull()?.validity() ?: 0) +
             (if (href.asKnown().isPresent) 1 else 0) +
             (images.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
+            (items.asKnown().getOrNull()?.validity() ?: 0) +
             (if (name.asKnown().isPresent) 1 else 0) +
             (owner.asKnown().getOrNull()?.validity() ?: 0) +
             (if (published.asKnown().isPresent) 1 else 0) +
@@ -669,6 +707,471 @@ private constructor(
             (tracks.asKnown().getOrNull()?.validity() ?: 0) +
             (if (type.asKnown().isPresent) 1 else 0) +
             (if (uri.asKnown().isPresent) 1 else 0)
+
+    /**
+     * The items of the playlist. _**Note**: This field is only available for playlists owned by the
+     * current user or playlists the user is a collaborator of._
+     */
+    class Items
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+    private constructor(
+        private val href: JsonField<String>,
+        private val limit: JsonField<Long>,
+        private val next: JsonField<String>,
+        private val offset: JsonField<Long>,
+        private val previous: JsonField<String>,
+        private val total: JsonField<Long>,
+        private val items: JsonField<List<PlaylistTrackObject>>,
+        private val published: JsonField<Boolean>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
+    ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("href") @ExcludeMissing href: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("limit") @ExcludeMissing limit: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("next") @ExcludeMissing next: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("offset") @ExcludeMissing offset: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("previous")
+            @ExcludeMissing
+            previous: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("total") @ExcludeMissing total: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("items")
+            @ExcludeMissing
+            items: JsonField<List<PlaylistTrackObject>> = JsonMissing.of(),
+            @JsonProperty("published")
+            @ExcludeMissing
+            published: JsonField<Boolean> = JsonMissing.of(),
+        ) : this(href, limit, next, offset, previous, total, items, published, mutableMapOf())
+
+        /**
+         * A link to the Web API endpoint returning the full result of the request
+         *
+         * @throws SpottedInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun href(): String = href.getRequired("href")
+
+        /**
+         * The maximum number of items in the response (as set in the query or by default).
+         *
+         * @throws SpottedInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun limit(): Long = limit.getRequired("limit")
+
+        /**
+         * URL to the next page of items. ( `null` if none)
+         *
+         * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun next(): Optional<String> = next.getOptional("next")
+
+        /**
+         * The offset of the items returned (as set in the query or by default)
+         *
+         * @throws SpottedInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun offset(): Long = offset.getRequired("offset")
+
+        /**
+         * URL to the previous page of items. ( `null` if none)
+         *
+         * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun previous(): Optional<String> = previous.getOptional("previous")
+
+        /**
+         * The total number of items available to return.
+         *
+         * @throws SpottedInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun total(): Long = total.getRequired("total")
+
+        /**
+         * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun items(): Optional<List<PlaylistTrackObject>> = items.getOptional("items")
+
+        /**
+         * The playlist's public/private status (if it should be added to the user's profile or
+         * not): `true` the playlist will be public, `false` the playlist will be private, `null`
+         * the playlist status is not relevant. For more about public/private status, see
+         * [Working with Playlists](/documentation/web-api/concepts/playlists)
+         *
+         * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun published(): Optional<Boolean> = published.getOptional("published")
+
+        /**
+         * Returns the raw JSON value of [href].
+         *
+         * Unlike [href], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("href") @ExcludeMissing fun _href(): JsonField<String> = href
+
+        /**
+         * Returns the raw JSON value of [limit].
+         *
+         * Unlike [limit], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("limit") @ExcludeMissing fun _limit(): JsonField<Long> = limit
+
+        /**
+         * Returns the raw JSON value of [next].
+         *
+         * Unlike [next], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("next") @ExcludeMissing fun _next(): JsonField<String> = next
+
+        /**
+         * Returns the raw JSON value of [offset].
+         *
+         * Unlike [offset], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("offset") @ExcludeMissing fun _offset(): JsonField<Long> = offset
+
+        /**
+         * Returns the raw JSON value of [previous].
+         *
+         * Unlike [previous], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("previous") @ExcludeMissing fun _previous(): JsonField<String> = previous
+
+        /**
+         * Returns the raw JSON value of [total].
+         *
+         * Unlike [total], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("total") @ExcludeMissing fun _total(): JsonField<Long> = total
+
+        /**
+         * Returns the raw JSON value of [items].
+         *
+         * Unlike [items], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("items")
+        @ExcludeMissing
+        fun _items(): JsonField<List<PlaylistTrackObject>> = items
+
+        /**
+         * Returns the raw JSON value of [published].
+         *
+         * Unlike [published], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("published") @ExcludeMissing fun _published(): JsonField<Boolean> = published
+
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
+
+        fun toBuilder() = Builder().from(this)
+
+        companion object {
+
+            /**
+             * Returns a mutable builder for constructing an instance of [Items].
+             *
+             * The following fields are required:
+             * ```java
+             * .href()
+             * .limit()
+             * .next()
+             * .offset()
+             * .previous()
+             * .total()
+             * ```
+             */
+            @JvmStatic fun builder() = Builder()
+        }
+
+        /** A builder for [Items]. */
+        class Builder internal constructor() {
+
+            private var href: JsonField<String>? = null
+            private var limit: JsonField<Long>? = null
+            private var next: JsonField<String>? = null
+            private var offset: JsonField<Long>? = null
+            private var previous: JsonField<String>? = null
+            private var total: JsonField<Long>? = null
+            private var items: JsonField<MutableList<PlaylistTrackObject>>? = null
+            private var published: JsonField<Boolean> = JsonMissing.of()
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+            @JvmSynthetic
+            internal fun from(items: Items) = apply {
+                href = items.href
+                limit = items.limit
+                next = items.next
+                offset = items.offset
+                previous = items.previous
+                total = items.total
+                this.items = items.items.map { it.toMutableList() }
+                published = items.published
+                additionalProperties = items.additionalProperties.toMutableMap()
+            }
+
+            /** A link to the Web API endpoint returning the full result of the request */
+            fun href(href: String) = href(JsonField.of(href))
+
+            /**
+             * Sets [Builder.href] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.href] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
+            fun href(href: JsonField<String>) = apply { this.href = href }
+
+            /** The maximum number of items in the response (as set in the query or by default). */
+            fun limit(limit: Long) = limit(JsonField.of(limit))
+
+            /**
+             * Sets [Builder.limit] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.limit] with a well-typed [Long] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
+            fun limit(limit: JsonField<Long>) = apply { this.limit = limit }
+
+            /** URL to the next page of items. ( `null` if none) */
+            fun next(next: String?) = next(JsonField.ofNullable(next))
+
+            /** Alias for calling [Builder.next] with `next.orElse(null)`. */
+            fun next(next: Optional<String>) = next(next.getOrNull())
+
+            /**
+             * Sets [Builder.next] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.next] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
+            fun next(next: JsonField<String>) = apply { this.next = next }
+
+            /** The offset of the items returned (as set in the query or by default) */
+            fun offset(offset: Long) = offset(JsonField.of(offset))
+
+            /**
+             * Sets [Builder.offset] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.offset] with a well-typed [Long] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
+            fun offset(offset: JsonField<Long>) = apply { this.offset = offset }
+
+            /** URL to the previous page of items. ( `null` if none) */
+            fun previous(previous: String?) = previous(JsonField.ofNullable(previous))
+
+            /** Alias for calling [Builder.previous] with `previous.orElse(null)`. */
+            fun previous(previous: Optional<String>) = previous(previous.getOrNull())
+
+            /**
+             * Sets [Builder.previous] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.previous] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun previous(previous: JsonField<String>) = apply { this.previous = previous }
+
+            /** The total number of items available to return. */
+            fun total(total: Long) = total(JsonField.of(total))
+
+            /**
+             * Sets [Builder.total] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.total] with a well-typed [Long] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
+            fun total(total: JsonField<Long>) = apply { this.total = total }
+
+            fun items(items: List<PlaylistTrackObject>) = items(JsonField.of(items))
+
+            /**
+             * Sets [Builder.items] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.items] with a well-typed `List<PlaylistTrackObject>`
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
+            fun items(items: JsonField<List<PlaylistTrackObject>>) = apply {
+                this.items = items.map { it.toMutableList() }
+            }
+
+            /**
+             * Adds a single [PlaylistTrackObject] to [items].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
+            fun addItem(item: PlaylistTrackObject) = apply {
+                items =
+                    (items ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("items", it).add(item)
+                    }
+            }
+
+            /**
+             * The playlist's public/private status (if it should be added to the user's profile or
+             * not): `true` the playlist will be public, `false` the playlist will be private,
+             * `null` the playlist status is not relevant. For more about public/private status, see
+             * [Working with Playlists](/documentation/web-api/concepts/playlists)
+             */
+            fun published(published: Boolean) = published(JsonField.of(published))
+
+            /**
+             * Sets [Builder.published] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.published] with a well-typed [Boolean] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun published(published: JsonField<Boolean>) = apply { this.published = published }
+
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
+
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
+            /**
+             * Returns an immutable instance of [Items].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             *
+             * The following fields are required:
+             * ```java
+             * .href()
+             * .limit()
+             * .next()
+             * .offset()
+             * .previous()
+             * .total()
+             * ```
+             *
+             * @throws IllegalStateException if any required field is unset.
+             */
+            fun build(): Items =
+                Items(
+                    checkRequired("href", href),
+                    checkRequired("limit", limit),
+                    checkRequired("next", next),
+                    checkRequired("offset", offset),
+                    checkRequired("previous", previous),
+                    checkRequired("total", total),
+                    (items ?: JsonMissing.of()).map { it.toImmutable() },
+                    published,
+                    additionalProperties.toMutableMap(),
+                )
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Items = apply {
+            if (validated) {
+                return@apply
+            }
+
+            href()
+            limit()
+            next()
+            offset()
+            previous()
+            total()
+            items().ifPresent { it.forEach { it.validate() } }
+            published()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: SpottedInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            (if (href.asKnown().isPresent) 1 else 0) +
+                (if (limit.asKnown().isPresent) 1 else 0) +
+                (if (next.asKnown().isPresent) 1 else 0) +
+                (if (offset.asKnown().isPresent) 1 else 0) +
+                (if (previous.asKnown().isPresent) 1 else 0) +
+                (if (total.asKnown().isPresent) 1 else 0) +
+                (items.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
+                (if (published.asKnown().isPresent) 1 else 0)
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is Items &&
+                href == other.href &&
+                limit == other.limit &&
+                next == other.next &&
+                offset == other.offset &&
+                previous == other.previous &&
+                total == other.total &&
+                items == other.items &&
+                published == other.published &&
+                additionalProperties == other.additionalProperties
+        }
+
+        private val hashCode: Int by lazy {
+            Objects.hash(
+                href,
+                limit,
+                next,
+                offset,
+                previous,
+                total,
+                items,
+                published,
+                additionalProperties,
+            )
+        }
+
+        override fun hashCode(): Int = hashCode
+
+        override fun toString() =
+            "Items{href=$href, limit=$limit, next=$next, offset=$offset, previous=$previous, total=$total, items=$items, published=$published, additionalProperties=$additionalProperties}"
+    }
 
     /** The user who owns the playlist */
     class Owner
@@ -1083,10 +1586,8 @@ private constructor(
             "Owner{id=$id, externalUrls=$externalUrls, href=$href, published=$published, type=$type, uri=$uri, displayName=$displayName, additionalProperties=$additionalProperties}"
     }
 
-    /**
-     * The tracks of the playlist. _**Note**: This field is only available for playlists owned by
-     * the current user._
-     */
+    /** **Deprecated:** Use `items` instead. The tracks of the playlist. */
+    @Deprecated("deprecated")
     class Tracks
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
@@ -1561,6 +2062,7 @@ private constructor(
             followers == other.followers &&
             href == other.href &&
             images == other.images &&
+            items == other.items &&
             name == other.name &&
             owner == other.owner &&
             published == other.published &&
@@ -1580,6 +2082,7 @@ private constructor(
             followers,
             href,
             images,
+            items,
             name,
             owner,
             published,
@@ -1594,5 +2097,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "PlaylistRetrieveResponse{id=$id, collaborative=$collaborative, description=$description, externalUrls=$externalUrls, followers=$followers, href=$href, images=$images, name=$name, owner=$owner, published=$published, snapshotId=$snapshotId, tracks=$tracks, type=$type, uri=$uri, additionalProperties=$additionalProperties}"
+        "PlaylistRetrieveResponse{id=$id, collaborative=$collaborative, description=$description, externalUrls=$externalUrls, followers=$followers, href=$href, images=$images, items=$items, name=$name, owner=$owner, published=$published, snapshotId=$snapshotId, tracks=$tracks, type=$type, uri=$uri, additionalProperties=$additionalProperties}"
 }

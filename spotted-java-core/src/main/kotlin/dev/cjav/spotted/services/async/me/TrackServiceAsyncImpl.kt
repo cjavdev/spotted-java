@@ -44,6 +44,7 @@ class TrackServiceAsyncImpl internal constructor(private val clientOptions: Clie
         // get /me/tracks
         withRawResponse().list(params, requestOptions).thenApply { it.parse() }
 
+    @Deprecated("deprecated")
     override fun check(
         params: TrackCheckParams,
         requestOptions: RequestOptions,
@@ -121,6 +122,7 @@ class TrackServiceAsyncImpl internal constructor(private val clientOptions: Clie
         private val checkHandler: Handler<List<Boolean>> =
             jsonHandler<List<Boolean>>(clientOptions.jsonMapper)
 
+        @Deprecated("deprecated")
         override fun check(
             params: TrackCheckParams,
             requestOptions: RequestOptions,
