@@ -46,17 +46,29 @@ interface AudiobookServiceAsync {
     fun list(requestOptions: RequestOptions): CompletableFuture<AudiobookListPageAsync> =
         list(AudiobookListParams.none(), requestOptions)
 
-    /** Check if one or more audiobooks are already saved in the current Spotify user's library. */
+    /**
+     * Check if one or more audiobooks are already saved in the current Spotify user's library.
+     *
+     * **Note:** This endpoint is deprecated. Use
+     * [Check User's Saved Items](/documentation/web-api/reference/check-library-contains) instead.
+     */
+    @Deprecated("deprecated")
     fun check(params: AudiobookCheckParams): CompletableFuture<List<Boolean>> =
         check(params, RequestOptions.none())
 
     /** @see check */
+    @Deprecated("deprecated")
     fun check(
         params: AudiobookCheckParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<List<Boolean>>
 
-    /** Remove one or more audiobooks from the Spotify user's library. */
+    /**
+     * Remove one or more audiobooks from the Spotify user's library.
+     *
+     * **Note:** This endpoint is deprecated. Use
+     * [Remove Items from Library](/documentation/web-api/reference/remove-library-items) instead.
+     */
     @Deprecated("deprecated")
     fun remove(params: AudiobookRemoveParams): CompletableFuture<Void?> =
         remove(params, RequestOptions.none())
@@ -68,7 +80,12 @@ interface AudiobookServiceAsync {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Void?>
 
-    /** Save one or more audiobooks to the current Spotify user's library. */
+    /**
+     * Save one or more audiobooks to the current Spotify user's library.
+     *
+     * **Note:** This endpoint is deprecated. Use
+     * [Save Items to Library](/documentation/web-api/reference/save-library-items) instead.
+     */
     @Deprecated("deprecated")
     fun save(params: AudiobookSaveParams): CompletableFuture<Void?> =
         save(params, RequestOptions.none())
@@ -123,10 +140,12 @@ interface AudiobookServiceAsync {
          * Returns a raw HTTP response for `get /me/audiobooks/contains`, but is otherwise the same
          * as [AudiobookServiceAsync.check].
          */
+        @Deprecated("deprecated")
         fun check(params: AudiobookCheckParams): CompletableFuture<HttpResponseFor<List<Boolean>>> =
             check(params, RequestOptions.none())
 
         /** @see check */
+        @Deprecated("deprecated")
         fun check(
             params: AudiobookCheckParams,
             requestOptions: RequestOptions = RequestOptions.none(),

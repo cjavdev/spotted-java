@@ -48,16 +48,26 @@ interface TrackService {
     /**
      * Check if one or more tracks is already saved in the current Spotify user's 'Your Music'
      * library.
+     *
+     * **Note:** This endpoint is deprecated. Use
+     * [Check User's Saved Items](/documentation/web-api/reference/check-library-contains) instead.
      */
+    @Deprecated("deprecated")
     fun check(params: TrackCheckParams): List<Boolean> = check(params, RequestOptions.none())
 
     /** @see check */
+    @Deprecated("deprecated")
     fun check(
         params: TrackCheckParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): List<Boolean>
 
-    /** Remove one or more tracks from the current user's 'Your Music' library. */
+    /**
+     * Remove one or more tracks from the current user's 'Your Music' library.
+     *
+     * **Note:** This endpoint is deprecated. Use
+     * [Remove Items from Library](/documentation/web-api/reference/remove-library-items) instead.
+     */
     @Deprecated("deprecated") fun remove() = remove(TrackRemoveParams.none())
 
     /** @see remove */
@@ -76,7 +86,12 @@ interface TrackService {
     @Deprecated("deprecated")
     fun remove(requestOptions: RequestOptions) = remove(TrackRemoveParams.none(), requestOptions)
 
-    /** Save one or more tracks to the current user's 'Your Music' library. */
+    /**
+     * Save one or more tracks to the current user's 'Your Music' library.
+     *
+     * **Note:** This endpoint is deprecated. Use
+     * [Save Items to Library](/documentation/web-api/reference/save-library-items) instead.
+     */
     @Deprecated("deprecated")
     fun save(params: TrackSaveParams) = save(params, RequestOptions.none())
 
@@ -121,11 +136,13 @@ interface TrackService {
          * Returns a raw HTTP response for `get /me/tracks/contains`, but is otherwise the same as
          * [TrackService.check].
          */
+        @Deprecated("deprecated")
         @MustBeClosed
         fun check(params: TrackCheckParams): HttpResponseFor<List<Boolean>> =
             check(params, RequestOptions.none())
 
         /** @see check */
+        @Deprecated("deprecated")
         @MustBeClosed
         fun check(
             params: TrackCheckParams,

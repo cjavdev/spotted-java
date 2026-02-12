@@ -11,7 +11,12 @@ import dev.cjav.spotted.core.toImmutable
 import java.util.Objects
 import java.util.Optional
 
-/** Save one or more audiobooks to the current Spotify user's library. */
+/**
+ * Save one or more audiobooks to the current Spotify user's library.
+ *
+ * **Note:** This endpoint is deprecated. Use
+ * [Save Items to Library](/documentation/web-api/reference/save-library-items) instead.
+ */
 @Deprecated("deprecated")
 class AudiobookSaveParams
 private constructor(

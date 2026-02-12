@@ -22,7 +22,13 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/** Remove one or more items from a user's playlist. */
+/**
+ * **Deprecated:** Use
+ * [Remove Playlist Items](/documentation/web-api/reference/remove-items-playlist) instead.
+ *
+ * Remove one or more items from a user's playlist.
+ */
+@Deprecated("deprecated")
 class TrackRemoveParams
 private constructor(
     private val playlistId: String?,

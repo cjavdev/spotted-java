@@ -36,6 +36,7 @@ class FollowerServiceAsyncImpl internal constructor(private val clientOptions: C
     override fun withOptions(modifier: Consumer<ClientOptions.Builder>): FollowerServiceAsync =
         FollowerServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
+    @Deprecated("deprecated")
     override fun check(
         params: FollowerCheckParams,
         requestOptions: RequestOptions,
@@ -43,6 +44,7 @@ class FollowerServiceAsyncImpl internal constructor(private val clientOptions: C
         // get /playlists/{playlist_id}/followers/contains
         withRawResponse().check(params, requestOptions).thenApply { it.parse() }
 
+    @Deprecated("deprecated")
     override fun follow(
         params: FollowerFollowParams,
         requestOptions: RequestOptions,
@@ -50,6 +52,7 @@ class FollowerServiceAsyncImpl internal constructor(private val clientOptions: C
         // put /playlists/{playlist_id}/followers
         withRawResponse().follow(params, requestOptions).thenAccept {}
 
+    @Deprecated("deprecated")
     override fun unfollow(
         params: FollowerUnfollowParams,
         requestOptions: RequestOptions,
@@ -73,6 +76,7 @@ class FollowerServiceAsyncImpl internal constructor(private val clientOptions: C
         private val checkHandler: Handler<List<Boolean>> =
             jsonHandler<List<Boolean>>(clientOptions.jsonMapper)
 
+        @Deprecated("deprecated")
         override fun check(
             params: FollowerCheckParams,
             requestOptions: RequestOptions,
@@ -99,6 +103,7 @@ class FollowerServiceAsyncImpl internal constructor(private val clientOptions: C
 
         private val followHandler: Handler<Void?> = emptyHandler()
 
+        @Deprecated("deprecated")
         override fun follow(
             params: FollowerFollowParams,
             requestOptions: RequestOptions,
@@ -126,6 +131,7 @@ class FollowerServiceAsyncImpl internal constructor(private val clientOptions: C
 
         private val unfollowHandler: Handler<Void?> = emptyHandler()
 
+        @Deprecated("deprecated")
         override fun unfollow(
             params: FollowerUnfollowParams,
             requestOptions: RequestOptions,

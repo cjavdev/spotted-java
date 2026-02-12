@@ -12,6 +12,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /** @see TrackService.list */
+@Deprecated("deprecated")
 class TrackListPage
 private constructor(
     private val service: TrackService,

@@ -21,7 +21,12 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/** Remove one or more tracks from the current user's 'Your Music' library. */
+/**
+ * Remove one or more tracks from the current user's 'Your Music' library.
+ *
+ * **Note:** This endpoint is deprecated. Use
+ * [Remove Items from Library](/documentation/web-api/reference/remove-library-items) instead.
+ */
 @Deprecated("deprecated")
 class TrackRemoveParams
 private constructor(

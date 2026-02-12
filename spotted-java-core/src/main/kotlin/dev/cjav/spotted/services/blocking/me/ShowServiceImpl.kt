@@ -39,6 +39,7 @@ class ShowServiceImpl internal constructor(private val clientOptions: ClientOpti
         // get /me/shows
         withRawResponse().list(params, requestOptions).parse()
 
+    @Deprecated("deprecated")
     override fun check(params: ShowCheckParams, requestOptions: RequestOptions): List<Boolean> =
         // get /me/shows/contains
         withRawResponse().check(params, requestOptions).parse()
@@ -105,6 +106,7 @@ class ShowServiceImpl internal constructor(private val clientOptions: ClientOpti
         private val checkHandler: Handler<List<Boolean>> =
             jsonHandler<List<Boolean>>(clientOptions.jsonMapper)
 
+        @Deprecated("deprecated")
         override fun check(
             params: ShowCheckParams,
             requestOptions: RequestOptions,

@@ -40,41 +40,64 @@ interface FollowingServiceAsync {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<FollowingBulkRetrieveResponse>
 
-    /** Check to see if the current user is following one or more artists or other Spotify users. */
+    /**
+     * Check to see if the current user is following one or more artists or other Spotify users.
+     *
+     * **Note:** This endpoint is deprecated. Use
+     * [Check User's Saved Items](/documentation/web-api/reference/check-library-contains) instead.
+     */
+    @Deprecated("deprecated")
     fun check(params: FollowingCheckParams): CompletableFuture<List<Boolean>> =
         check(params, RequestOptions.none())
 
     /** @see check */
+    @Deprecated("deprecated")
     fun check(
         params: FollowingCheckParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<List<Boolean>>
 
-    /** Add the current user as a follower of one or more artists or other Spotify users. */
+    /**
+     * Add the current user as a follower of one or more artists or other Spotify users.
+     *
+     * **Note:** This endpoint is deprecated. Use
+     * [Save Items to Library](/documentation/web-api/reference/save-library-items) instead.
+     */
+    @Deprecated("deprecated")
     fun follow(params: FollowingFollowParams): CompletableFuture<Void?> =
         follow(params, RequestOptions.none())
 
     /** @see follow */
+    @Deprecated("deprecated")
     fun follow(
         params: FollowingFollowParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Void?>
 
-    /** Remove the current user as a follower of one or more artists or other Spotify users. */
+    /**
+     * Remove the current user as a follower of one or more artists or other Spotify users.
+     *
+     * **Note:** This endpoint is deprecated. Use
+     * [Remove Items from Library](/documentation/web-api/reference/remove-library-items) instead.
+     */
+    @Deprecated("deprecated")
     fun unfollow(): CompletableFuture<Void?> = unfollow(FollowingUnfollowParams.none())
 
     /** @see unfollow */
+    @Deprecated("deprecated")
     fun unfollow(
         params: FollowingUnfollowParams = FollowingUnfollowParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Void?>
 
     /** @see unfollow */
+    @Deprecated("deprecated")
     fun unfollow(
         params: FollowingUnfollowParams = FollowingUnfollowParams.none()
     ): CompletableFuture<Void?> = unfollow(params, RequestOptions.none())
 
     /** @see unfollow */
+    @Deprecated("deprecated")
     fun unfollow(requestOptions: RequestOptions): CompletableFuture<Void?> =
         unfollow(FollowingUnfollowParams.none(), requestOptions)
 
@@ -111,10 +134,12 @@ interface FollowingServiceAsync {
          * Returns a raw HTTP response for `get /me/following/contains`, but is otherwise the same
          * as [FollowingServiceAsync.check].
          */
+        @Deprecated("deprecated")
         fun check(params: FollowingCheckParams): CompletableFuture<HttpResponseFor<List<Boolean>>> =
             check(params, RequestOptions.none())
 
         /** @see check */
+        @Deprecated("deprecated")
         fun check(
             params: FollowingCheckParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -124,10 +149,12 @@ interface FollowingServiceAsync {
          * Returns a raw HTTP response for `put /me/following`, but is otherwise the same as
          * [FollowingServiceAsync.follow].
          */
+        @Deprecated("deprecated")
         fun follow(params: FollowingFollowParams): CompletableFuture<HttpResponse> =
             follow(params, RequestOptions.none())
 
         /** @see follow */
+        @Deprecated("deprecated")
         fun follow(
             params: FollowingFollowParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -137,20 +164,24 @@ interface FollowingServiceAsync {
          * Returns a raw HTTP response for `delete /me/following`, but is otherwise the same as
          * [FollowingServiceAsync.unfollow].
          */
+        @Deprecated("deprecated")
         fun unfollow(): CompletableFuture<HttpResponse> = unfollow(FollowingUnfollowParams.none())
 
         /** @see unfollow */
+        @Deprecated("deprecated")
         fun unfollow(
             params: FollowingUnfollowParams = FollowingUnfollowParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponse>
 
         /** @see unfollow */
+        @Deprecated("deprecated")
         fun unfollow(
             params: FollowingUnfollowParams = FollowingUnfollowParams.none()
         ): CompletableFuture<HttpResponse> = unfollow(params, RequestOptions.none())
 
         /** @see unfollow */
+        @Deprecated("deprecated")
         fun unfollow(requestOptions: RequestOptions): CompletableFuture<HttpResponse> =
             unfollow(FollowingUnfollowParams.none(), requestOptions)
     }
