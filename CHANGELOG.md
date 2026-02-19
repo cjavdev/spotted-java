@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.22.0 (2026-02-19)
+
+Full Changelog: [v0.21.0...v0.22.0](https://github.com/cjavdev/spotted-java/compare/v0.21.0...v0.22.0)
+
+### Features
+
+* **client:** add connection pooling option ([c5d3a59](https://github.com/cjavdev/spotted-java/commit/c5d3a59a4dc7ade42501c0f2dcb72de3368df967))
+
+
+### Chores
+
+* **internal:** make `OkHttp` constructor internal ([9c9abc9](https://github.com/cjavdev/spotted-java/commit/9c9abc92022927b0b23c2800fbfbcb63ac48e100))
+* **internal:** update `TestServerExtension` comment ([ffa7c12](https://github.com/cjavdev/spotted-java/commit/ffa7c1230d1f861cfd237d6e178551abe7d35995))
+
 ## 0.21.0 (2026-02-14)
 
 Full Changelog: [v0.20.0...v0.21.0](https://github.com/cjavdev/spotted-java/compare/v0.20.0...v0.21.0)
