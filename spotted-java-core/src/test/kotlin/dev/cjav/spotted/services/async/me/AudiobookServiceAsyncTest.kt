@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test
 
 internal class AudiobookServiceAsyncTest {
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun list() {
         val client = SpottedOkHttpClientAsync.builder().accessToken("My Access Token").build()
@@ -23,7 +23,7 @@ internal class AudiobookServiceAsyncTest {
         page.response().validate()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun check() {
         val client = SpottedOkHttpClientAsync.builder().accessToken("My Access Token").build()
@@ -39,7 +39,7 @@ internal class AudiobookServiceAsyncTest {
         val response = responseFuture.get()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun remove() {
         val client = SpottedOkHttpClientAsync.builder().accessToken("My Access Token").build()
@@ -55,7 +55,7 @@ internal class AudiobookServiceAsyncTest {
         val response = future.get()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun save() {
         val client = SpottedOkHttpClientAsync.builder().accessToken("My Access Token").build()

@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 
 internal class QueueServiceAsyncTest {
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun add() {
         val client = SpottedOkHttpClientAsync.builder().accessToken("My Access Token").build()
@@ -26,7 +26,7 @@ internal class QueueServiceAsyncTest {
         val response = future.get()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun get() {
         val client = SpottedOkHttpClientAsync.builder().accessToken("My Access Token").build()
