@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test
 
 internal class AlbumServiceAsyncTest {
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun retrieve() {
         val client = SpottedOkHttpClientAsync.builder().accessToken("My Access Token").build()
@@ -25,7 +25,7 @@ internal class AlbumServiceAsyncTest {
         album.validate()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun bulkRetrieve() {
         val client = SpottedOkHttpClientAsync.builder().accessToken("My Access Token").build()
@@ -43,7 +43,7 @@ internal class AlbumServiceAsyncTest {
         response.validate()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun listTracks() {
         val client = SpottedOkHttpClientAsync.builder().accessToken("My Access Token").build()

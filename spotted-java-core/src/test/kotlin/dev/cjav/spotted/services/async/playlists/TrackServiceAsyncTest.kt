@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test
 
 internal class TrackServiceAsyncTest {
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun update() {
         val client = SpottedOkHttpClientAsync.builder().accessToken("My Access Token").build()
@@ -34,7 +34,7 @@ internal class TrackServiceAsyncTest {
         track.validate()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun list() {
         val client = SpottedOkHttpClientAsync.builder().accessToken("My Access Token").build()
@@ -46,7 +46,7 @@ internal class TrackServiceAsyncTest {
         page.response().validate()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun add() {
         val client = SpottedOkHttpClientAsync.builder().accessToken("My Access Token").build()
@@ -66,7 +66,7 @@ internal class TrackServiceAsyncTest {
         response.validate()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun remove() {
         val client = SpottedOkHttpClientAsync.builder().accessToken("My Access Token").build()

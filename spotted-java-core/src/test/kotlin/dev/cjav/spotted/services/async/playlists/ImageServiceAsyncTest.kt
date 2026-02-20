@@ -34,7 +34,7 @@ internal class ImageServiceAsyncTest {
         assertThat(image.body()).hasContent("abc")
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun list() {
         val client = SpottedOkHttpClientAsync.builder().accessToken("My Access Token").build()

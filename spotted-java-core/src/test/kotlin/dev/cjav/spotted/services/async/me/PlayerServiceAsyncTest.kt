@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Test
 
 internal class PlayerServiceAsyncTest {
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun getCurrentlyPlaying() {
         val client = SpottedOkHttpClientAsync.builder().accessToken("My Access Token").build()
@@ -38,7 +38,7 @@ internal class PlayerServiceAsyncTest {
         response.validate()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun getDevices() {
         val client = SpottedOkHttpClientAsync.builder().accessToken("My Access Token").build()
@@ -50,7 +50,7 @@ internal class PlayerServiceAsyncTest {
         response.validate()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun getState() {
         val client = SpottedOkHttpClientAsync.builder().accessToken("My Access Token").build()
@@ -68,7 +68,7 @@ internal class PlayerServiceAsyncTest {
         response.validate()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun listRecentlyPlayed() {
         val client = SpottedOkHttpClientAsync.builder().accessToken("My Access Token").build()
@@ -80,7 +80,7 @@ internal class PlayerServiceAsyncTest {
         page.response().validate()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun pausePlayback() {
         val client = SpottedOkHttpClientAsync.builder().accessToken("My Access Token").build()
@@ -96,7 +96,7 @@ internal class PlayerServiceAsyncTest {
         val response = future.get()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun seekToPosition() {
         val client = SpottedOkHttpClientAsync.builder().accessToken("My Access Token").build()
@@ -113,7 +113,7 @@ internal class PlayerServiceAsyncTest {
         val response = future.get()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun setRepeatMode() {
         val client = SpottedOkHttpClientAsync.builder().accessToken("My Access Token").build()
@@ -130,7 +130,7 @@ internal class PlayerServiceAsyncTest {
         val response = future.get()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun setVolume() {
         val client = SpottedOkHttpClientAsync.builder().accessToken("My Access Token").build()
@@ -147,7 +147,7 @@ internal class PlayerServiceAsyncTest {
         val response = future.get()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun skipNext() {
         val client = SpottedOkHttpClientAsync.builder().accessToken("My Access Token").build()
@@ -163,7 +163,7 @@ internal class PlayerServiceAsyncTest {
         val response = future.get()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun skipPrevious() {
         val client = SpottedOkHttpClientAsync.builder().accessToken("My Access Token").build()
@@ -179,7 +179,7 @@ internal class PlayerServiceAsyncTest {
         val response = future.get()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun startPlayback() {
         val client = SpottedOkHttpClientAsync.builder().accessToken("My Access Token").build()
@@ -204,7 +204,7 @@ internal class PlayerServiceAsyncTest {
         val response = future.get()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun toggleShuffle() {
         val client = SpottedOkHttpClientAsync.builder().accessToken("My Access Token").build()
@@ -221,7 +221,7 @@ internal class PlayerServiceAsyncTest {
         val response = future.get()
     }
 
-    @Disabled("Prism tests are disabled")
+    @Disabled("Mock server tests are disabled")
     @Test
     fun transfer() {
         val client = SpottedOkHttpClientAsync.builder().accessToken("My Access Token").build()
