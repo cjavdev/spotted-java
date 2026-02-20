@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.22.1 (2026-02-20)
+
+Full Changelog: [v0.22.0...v0.22.1](https://github.com/cjavdev/spotted-java/compare/v0.22.0...v0.22.1)
+
+### Chores
+
+* **internal:** remove mock server code ([1018176](https://github.com/cjavdev/spotted-java/commit/101817646ea17a5dba2272282efb5f58105a9418))
+* update mock server docs ([bf2bee0](https://github.com/cjavdev/spotted-java/commit/bf2bee0d08562b70cb548f5d9fee19eaf3d662f8))
+
 ## 0.22.0 (2026-02-19)
 
 Full Changelog: [v0.21.0...v0.22.0](https://github.com/cjavdev/spotted-java/compare/v0.21.0...v0.22.0)
