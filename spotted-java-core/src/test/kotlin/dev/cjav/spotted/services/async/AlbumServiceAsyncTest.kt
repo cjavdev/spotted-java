@@ -2,25 +2,18 @@
 
 package dev.cjav.spotted.services.async
 
-import dev.cjav.spotted.TestServerExtension
 import dev.cjav.spotted.client.okhttp.SpottedOkHttpClientAsync
 import dev.cjav.spotted.models.albums.AlbumBulkRetrieveParams
 import dev.cjav.spotted.models.albums.AlbumRetrieveParams
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
 
-@ExtendWith(TestServerExtension::class)
 internal class AlbumServiceAsyncTest {
 
     @Disabled("Prism tests are disabled")
     @Test
     fun retrieve() {
-        val client =
-            SpottedOkHttpClientAsync.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .accessToken("My Access Token")
-                .build()
+        val client = SpottedOkHttpClientAsync.builder().accessToken("My Access Token").build()
         val albumServiceAsync = client.albums()
 
         val albumFuture =
@@ -35,11 +28,7 @@ internal class AlbumServiceAsyncTest {
     @Disabled("Prism tests are disabled")
     @Test
     fun bulkRetrieve() {
-        val client =
-            SpottedOkHttpClientAsync.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .accessToken("My Access Token")
-                .build()
+        val client = SpottedOkHttpClientAsync.builder().accessToken("My Access Token").build()
         val albumServiceAsync = client.albums()
 
         val responseFuture =
@@ -57,11 +46,7 @@ internal class AlbumServiceAsyncTest {
     @Disabled("Prism tests are disabled")
     @Test
     fun listTracks() {
-        val client =
-            SpottedOkHttpClientAsync.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .accessToken("My Access Token")
-                .build()
+        val client = SpottedOkHttpClientAsync.builder().accessToken("My Access Token").build()
         val albumServiceAsync = client.albums()
 
         val pageFuture = albumServiceAsync.listTracks("4aawyAB9vmqN3uQ7FjRGTy")

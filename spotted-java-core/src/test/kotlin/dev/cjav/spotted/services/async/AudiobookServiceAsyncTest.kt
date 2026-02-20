@@ -2,25 +2,18 @@
 
 package dev.cjav.spotted.services.async
 
-import dev.cjav.spotted.TestServerExtension
 import dev.cjav.spotted.client.okhttp.SpottedOkHttpClientAsync
 import dev.cjav.spotted.models.audiobooks.AudiobookBulkRetrieveParams
 import dev.cjav.spotted.models.audiobooks.AudiobookRetrieveParams
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
 
-@ExtendWith(TestServerExtension::class)
 internal class AudiobookServiceAsyncTest {
 
     @Disabled("Prism tests are disabled")
     @Test
     fun retrieve() {
-        val client =
-            SpottedOkHttpClientAsync.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .accessToken("My Access Token")
-                .build()
+        val client = SpottedOkHttpClientAsync.builder().accessToken("My Access Token").build()
         val audiobookServiceAsync = client.audiobooks()
 
         val audiobookFuture =
@@ -35,11 +28,7 @@ internal class AudiobookServiceAsyncTest {
     @Disabled("Prism tests are disabled")
     @Test
     fun bulkRetrieve() {
-        val client =
-            SpottedOkHttpClientAsync.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .accessToken("My Access Token")
-                .build()
+        val client = SpottedOkHttpClientAsync.builder().accessToken("My Access Token").build()
         val audiobookServiceAsync = client.audiobooks()
 
         val responseFuture =
@@ -57,11 +46,7 @@ internal class AudiobookServiceAsyncTest {
     @Disabled("Prism tests are disabled")
     @Test
     fun listChapters() {
-        val client =
-            SpottedOkHttpClientAsync.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .accessToken("My Access Token")
-                .build()
+        val client = SpottedOkHttpClientAsync.builder().accessToken("My Access Token").build()
         val audiobookServiceAsync = client.audiobooks()
 
         val pageFuture = audiobookServiceAsync.listChapters("7iHfbu1YPACw6oZPAFJtqe")
