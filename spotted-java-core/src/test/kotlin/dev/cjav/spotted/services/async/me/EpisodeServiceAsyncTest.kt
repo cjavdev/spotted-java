@@ -2,26 +2,19 @@
 
 package dev.cjav.spotted.services.async.me
 
-import dev.cjav.spotted.TestServerExtension
 import dev.cjav.spotted.client.okhttp.SpottedOkHttpClientAsync
 import dev.cjav.spotted.models.me.episodes.EpisodeCheckParams
 import dev.cjav.spotted.models.me.episodes.EpisodeRemoveParams
 import dev.cjav.spotted.models.me.episodes.EpisodeSaveParams
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
 
-@ExtendWith(TestServerExtension::class)
 internal class EpisodeServiceAsyncTest {
 
     @Disabled("Prism tests are disabled")
     @Test
     fun list() {
-        val client =
-            SpottedOkHttpClientAsync.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .accessToken("My Access Token")
-                .build()
+        val client = SpottedOkHttpClientAsync.builder().accessToken("My Access Token").build()
         val episodeServiceAsync = client.me().episodes()
 
         val pageFuture = episodeServiceAsync.list()
@@ -33,11 +26,7 @@ internal class EpisodeServiceAsyncTest {
     @Disabled("Prism tests are disabled")
     @Test
     fun check() {
-        val client =
-            SpottedOkHttpClientAsync.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .accessToken("My Access Token")
-                .build()
+        val client = SpottedOkHttpClientAsync.builder().accessToken("My Access Token").build()
         val episodeServiceAsync = client.me().episodes()
 
         val responseFuture =
@@ -53,11 +42,7 @@ internal class EpisodeServiceAsyncTest {
     @Disabled("Prism tests are disabled")
     @Test
     fun remove() {
-        val client =
-            SpottedOkHttpClientAsync.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .accessToken("My Access Token")
-                .build()
+        val client = SpottedOkHttpClientAsync.builder().accessToken("My Access Token").build()
         val episodeServiceAsync = client.me().episodes()
 
         val future =
@@ -71,11 +56,7 @@ internal class EpisodeServiceAsyncTest {
     @Disabled("Prism tests are disabled")
     @Test
     fun save() {
-        val client =
-            SpottedOkHttpClientAsync.builder()
-                .baseUrl(TestServerExtension.BASE_URL)
-                .accessToken("My Access Token")
-                .build()
+        val client = SpottedOkHttpClientAsync.builder().accessToken("My Access Token").build()
         val episodeServiceAsync = client.me().episodes()
 
         val future =
