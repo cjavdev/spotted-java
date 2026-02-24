@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.22.1 (2026-02-24)
+
+Full Changelog: [v0.22.0...v0.22.1](https://github.com/cjavdev/spotted-java/compare/v0.22.0...v0.22.1)
+
+### Bug Fixes
+
+* set Accept header in more places ([f9497a4](https://github.com/cjavdev/spotted-java/commit/f9497a40c37a6367ccdc0b537a8da8b300e04d68))
+
+
+### Chores
+
+* drop apache dependency ([c5bad38](https://github.com/cjavdev/spotted-java/commit/c5bad384997fbff159bfefc4af810e6b971c7234))
+* **internal:** remove mock server code ([1018176](https://github.com/cjavdev/spotted-java/commit/101817646ea17a5dba2272282efb5f58105a9418))
+* make `Properties` more resilient to `null` ([3947102](https://github.com/cjavdev/spotted-java/commit/3947102097ab1919fad4b478a1c0e937f4fff5f9))
+* update mock server docs ([bf2bee0](https://github.com/cjavdev/spotted-java/commit/bf2bee0d08562b70cb548f5d9fee19eaf3d662f8))
+
 ## 0.22.0 (2026-02-19)
 
 Full Changelog: [v0.21.0...v0.22.0](https://github.com/cjavdev/spotted-java/compare/v0.21.0...v0.22.0)
