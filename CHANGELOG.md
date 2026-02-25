@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.22.2 (2026-02-25)
+
+Full Changelog: [v0.22.1...v0.22.2](https://github.com/cjavdev/spotted-java/compare/v0.22.1...v0.22.2)
+
+### Chores
+
+* **internal:** expand imports ([4c60ad9](https://github.com/cjavdev/spotted-java/commit/4c60ad9fdf75dfeb14347c050d740cbafef2e907))
+
 ## 0.22.1 (2026-02-24)
 
 Full Changelog: [v0.22.0...v0.22.1](https://github.com/cjavdev/spotted-java/compare/v0.22.0...v0.22.1)
