@@ -181,7 +181,6 @@ private constructor(
      * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    @Deprecated("deprecated")
     fun externalIds(): Optional<ExternalIdObject> = externalIds.getOptional("external_ids")
 
     /**
@@ -366,7 +365,6 @@ private constructor(
      *
      * Unlike [externalIds], this method doesn't throw if the JSON field has an unexpected type.
      */
-    @Deprecated("deprecated")
     @JsonProperty("external_ids")
     @ExcludeMissing
     fun _externalIds(): JsonField<ExternalIdObject> = externalIds
@@ -670,7 +668,6 @@ private constructor(
         fun explicit(explicit: JsonField<Boolean>) = apply { this.explicit = explicit }
 
         /** Known external IDs for the track. */
-        @Deprecated("deprecated")
         fun externalIds(externalIds: ExternalIdObject) = externalIds(JsonField.of(externalIds))
 
         /**
@@ -680,7 +677,6 @@ private constructor(
          * instead. This method is primarily for setting the field to an undocumented or not yet
          * supported value.
          */
-        @Deprecated("deprecated")
         fun externalIds(externalIds: JsonField<ExternalIdObject>) = apply {
             this.externalIds = externalIds
         }
