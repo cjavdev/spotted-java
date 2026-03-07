@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.23.1 (2026-03-07)
+
+Full Changelog: [v0.23.0...v0.23.1](https://github.com/cjavdev/spotted-java/compare/v0.23.0...v0.23.1)
+
+### Chores
+
+* **internal:** bump palantir-java-format ([0b65906](https://github.com/cjavdev/spotted-java/commit/0b65906ae3b97453d00771e880e54763d8d9f139))
+* **internal:** codegen related update ([27394f5](https://github.com/cjavdev/spotted-java/commit/27394f5b54561251f4ce8d272f0360ac85cec1b9))
+
 ## 0.23.0 (2026-03-06)
 
 Full Changelog: [v0.22.1...v0.23.0](https://github.com/cjavdev/spotted-java/compare/v0.22.1...v0.23.0)
