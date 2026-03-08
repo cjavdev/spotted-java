@@ -28,7 +28,7 @@ internal class ImageServiceAsyncTest {
         val imageServiceAsync = client.playlists().images()
         stubFor(put(anyUrl()).willReturn(ok().withBody("abc")))
 
-        val imageFuture = imageServiceAsync.update("3cEYpjA9oz9GiPac4AsH4n", "some content")
+        val imageFuture = imageServiceAsync.update("3cEYpjA9oz9GiPac4AsH4n", "Example data")
 
         val image = imageFuture.get()
         assertThat(image.body()).hasContent("abc")
