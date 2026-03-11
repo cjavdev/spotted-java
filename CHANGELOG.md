@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.23.1 (2026-03-11)
+
+Full Changelog: [v0.23.0...v0.23.1](https://github.com/cjavdev/spotted-java/compare/v0.23.0...v0.23.1)
+
+### Bug Fixes
+
+* **client:** incorrect `Retry-After` parsing ([6154a05](https://github.com/cjavdev/spotted-java/commit/6154a0577ba7e81d5467d96519dd4a8f10de0722))
+
+
+### Chores
+
+* **ci:** skip uploading artifacts on stainless-internal branches ([2271698](https://github.com/cjavdev/spotted-java/commit/22716988f78b43e5658fb095cec3a426f3961acd))
+* **internal:** bump palantir-java-format ([0b65906](https://github.com/cjavdev/spotted-java/commit/0b65906ae3b97453d00771e880e54763d8d9f139))
+* **internal:** codegen related update ([27394f5](https://github.com/cjavdev/spotted-java/commit/27394f5b54561251f4ce8d272f0360ac85cec1b9))
+* update placeholder string ([0416635](https://github.com/cjavdev/spotted-java/commit/04166351c1fb038518d9c5e14a19271d2aeb1490))
+
 ## 0.23.0 (2026-03-06)
 
 Full Changelog: [v0.22.1...v0.23.0](https://github.com/cjavdev/spotted-java/compare/v0.22.1...v0.23.0)
