@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.23.2 (2026-03-18)
+
+Full Changelog: [v0.23.1...v0.23.2](https://github.com/cjavdev/spotted-java/compare/v0.23.1...v0.23.2)
+
+### Bug Fixes
+
+* **client:** allow updating header/query affecting fields in `toBuilder()` ([f9218dd](https://github.com/cjavdev/spotted-java/commit/f9218ddf23e89c9f6fdaadb5ac36eb273d948fe1))
+
+
+### Chores
+
+* **internal:** tweak CI branches ([4fd0405](https://github.com/cjavdev/spotted-java/commit/4fd0405131f4b1b3ca1cd221711cfe17bc1535ea))
+* **internal:** update retry delay tests ([37b1470](https://github.com/cjavdev/spotted-java/commit/37b1470c63931c12dc23bde3205bd21d3537838e))
+
 ## 0.23.1 (2026-03-11)
 
 Full Changelog: [v0.23.0...v0.23.1](https://github.com/cjavdev/spotted-java/compare/v0.23.0...v0.23.1)
