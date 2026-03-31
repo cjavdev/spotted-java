@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.23.3 (2026-03-31)
+
+Full Changelog: [v0.23.2...v0.23.3](https://github.com/cjavdev/spotted-java/compare/v0.23.2...v0.23.3)
+
+### Chores
+
+* **ci:** skip lint on metadata-only changes ([470385d](https://github.com/cjavdev/spotted-java/commit/470385d618d9470d1dc167ce3917de1a24b7c9fd))
+* **internal:** bump ktfmt ([c177251](https://github.com/cjavdev/spotted-java/commit/c1772515021e8472cf5b13a793dcccab8b049521))
+* **internal:** update gitignore ([3aff8e7](https://github.com/cjavdev/spotted-java/commit/3aff8e7916988b6fda860768021dc997978a4be5))
+
 ## 0.23.2 (2026-03-18)
 
 Full Changelog: [v0.23.1...v0.23.2](https://github.com/cjavdev/spotted-java/compare/v0.23.1...v0.23.2)
