@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.24.0 (2026-04-28)
+
+Full Changelog: [v0.23.3...v0.24.0](https://github.com/cjavdev/spotted-java/compare/v0.23.3...v0.24.0)
+
+### Features
+
+* support setting headers via env ([9178566](https://github.com/cjavdev/spotted-java/commit/91785660721dac4ce9d927d010bcac9e3aed596b))
+
 ## 0.23.3 (2026-03-31)
 
 Full Changelog: [v0.23.2...v0.23.3](https://github.com/cjavdev/spotted-java/compare/v0.23.2...v0.23.3)
