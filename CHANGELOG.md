@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.25.0 (2026-05-05)
+
+Full Changelog: [v0.24.0...v0.25.0](https://github.com/cjavdev/spotted-java/compare/v0.24.0...v0.25.0)
+
+### Features
+
+* **client:** more robust error parsing ([4d371cc](https://github.com/cjavdev/spotted-java/commit/4d371ccaffb729f6ac78fe40cb75f51a772080f8))
+
+
+### Documentation
+
+* clarify forwards compat behavior ([eaea554](https://github.com/cjavdev/spotted-java/commit/eaea55451a917021ed88c8626f63ae58208a0893))
+
 ## 0.24.0 (2026-04-28)
 
 Full Changelog: [v0.23.3...v0.24.0](https://github.com/cjavdev/spotted-java/compare/v0.23.3...v0.24.0)
