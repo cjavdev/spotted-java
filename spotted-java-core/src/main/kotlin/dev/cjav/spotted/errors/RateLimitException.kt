@@ -5,12 +5,16 @@ package dev.cjav.spotted.errors
 import dev.cjav.spotted.core.JsonValue
 import dev.cjav.spotted.core.checkRequired
 import dev.cjav.spotted.core.http.Headers
+import dev.cjav.spotted.core.jsonMapper
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 class RateLimitException
 private constructor(private val headers: Headers, private val body: JsonValue, cause: Throwable?) :
-    SpottedServiceException("429: $body", cause) {
+    SpottedServiceException(
+        "429: ${if (body.isMissing()) "Unknown" else jsonMapper().writeValueAsString(body)}",
+        cause,
+    ) {
 
     override fun statusCode(): Int = 429
 
