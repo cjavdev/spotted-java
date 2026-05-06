@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.26.0 (2026-05-06)
+
+Full Changelog: [v0.25.0...v0.26.0](https://github.com/cjavdev/spotted-java/compare/v0.25.0...v0.26.0)
+
+### Features
+
+* **client:** support proxy authentication ([d802857](https://github.com/cjavdev/spotted-java/commit/d8028570b1e07af071b5da448a862d6d60485299))
+
+
+### Performance Improvements
+
+* **client:** create one json mapper ([4fe7427](https://github.com/cjavdev/spotted-java/commit/4fe74271d52db7a5716dbb5af83bed9a6cbb4d25))
+
+
+### Chores
+
+* remove duplicated dokka setup ([9329e93](https://github.com/cjavdev/spotted-java/commit/9329e935fbe6c69f725c155b1fccb53243ea5d60))
+
 ## 0.25.0 (2026-05-05)
 
 Full Changelog: [v0.24.0...v0.25.0](https://github.com/cjavdev/spotted-java/compare/v0.24.0...v0.25.0)
