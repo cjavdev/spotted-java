@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.json.JsonMapper
 import dev.cjav.spotted.core.http.AsyncStreamResponse
 import dev.cjav.spotted.core.http.Headers
 import dev.cjav.spotted.core.http.HttpClient
+import dev.cjav.spotted.core.http.LoggingHttpClient
 import dev.cjav.spotted.core.http.PhantomReachableClosingHttpClient
 import dev.cjav.spotted.core.http.QueryParams
 import dev.cjav.spotted.core.http.RetryingHttpClient
@@ -110,6 +111,14 @@ private constructor(
      * Defaults to 2.
      */
     @get:JvmName("maxRetries") val maxRetries: Int,
+    /**
+     * The level at which to log request and response information.
+     *
+     * [fromEnv] will set the level from environment variables. See [LogLevel.fromEnv].
+     *
+     * Defaults to [LogLevel.fromEnv].
+     */
+    @get:JvmName("logLevel") val logLevel: LogLevel,
     @get:JvmName("accessToken") val accessToken: String,
 ) {
 
@@ -166,6 +175,7 @@ private constructor(
         private var responseValidation: Boolean = false
         private var timeout: Timeout = Timeout.default()
         private var maxRetries: Int = 2
+        private var logLevel: LogLevel = LogLevel.fromEnv()
         private var accessToken: String? = null
 
         @JvmSynthetic
@@ -182,6 +192,7 @@ private constructor(
             responseValidation = clientOptions.responseValidation
             timeout = clientOptions.timeout
             maxRetries = clientOptions.maxRetries
+            logLevel = clientOptions.logLevel
             accessToken = clientOptions.accessToken
         }
 
@@ -306,6 +317,15 @@ private constructor(
          */
         fun maxRetries(maxRetries: Int) = apply { this.maxRetries = maxRetries }
 
+        /**
+         * The level at which to log request and response information.
+         *
+         * [fromEnv] will set the level from environment variables. See [LogLevel.fromEnv].
+         *
+         * Defaults to [LogLevel.fromEnv].
+         */
+        fun logLevel(logLevel: LogLevel) = apply { this.logLevel = logLevel }
+
         fun accessToken(accessToken: String) = apply { this.accessToken = accessToken }
 
         fun headers(headers: Headers) = apply {
@@ -403,6 +423,7 @@ private constructor(
          * System properties take precedence over environment variables.
          */
         fun fromEnv() = apply {
+            logLevel(LogLevel.fromEnv())
             (System.getProperty("spotted.baseUrl") ?: System.getenv("SPOTTED_BASE_URL"))?.let {
                 baseUrl(it)
             }
@@ -477,7 +498,13 @@ private constructor(
             return ClientOptions(
                 httpClient,
                 RetryingHttpClient.builder()
-                    .httpClient(httpClient)
+                    .httpClient(
+                        LoggingHttpClient.builder()
+                            .httpClient(httpClient)
+                            .clock(clock)
+                            .level(logLevel)
+                            .build()
+                    )
                     .sleeper(sleeper)
                     .clock(clock)
                     .maxRetries(maxRetries)
@@ -493,6 +520,7 @@ private constructor(
                 responseValidation,
                 timeout,
                 maxRetries,
+                logLevel,
                 accessToken,
             )
         }
