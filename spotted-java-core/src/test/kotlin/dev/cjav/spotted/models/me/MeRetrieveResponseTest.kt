@@ -18,6 +18,7 @@ internal class MeRetrieveResponseTest {
         val meRetrieveResponse =
             MeRetrieveResponse.builder()
                 .id("id")
+                .accountId("aB3dE5fG7h")
                 .country("country")
                 .displayName("display_name")
                 .email("email")
@@ -48,6 +49,7 @@ internal class MeRetrieveResponseTest {
                 .build()
 
         assertThat(meRetrieveResponse.id()).contains("id")
+        assertThat(meRetrieveResponse.accountId()).contains("aB3dE5fG7h")
         assertThat(meRetrieveResponse.country()).contains("country")
         assertThat(meRetrieveResponse.displayName()).contains("display_name")
         assertThat(meRetrieveResponse.email()).contains("email")
@@ -85,6 +87,7 @@ internal class MeRetrieveResponseTest {
         val meRetrieveResponse =
             MeRetrieveResponse.builder()
                 .id("id")
+                .accountId("aB3dE5fG7h")
                 .country("country")
                 .displayName("display_name")
                 .email("email")
