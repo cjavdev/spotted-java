@@ -25,6 +25,7 @@ class MeRetrieveResponse
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val id: JsonField<String>,
+    private val accountId: JsonField<String>,
     private val country: JsonField<String>,
     private val displayName: JsonField<String>,
     private val email: JsonField<String>,
@@ -43,6 +44,7 @@ private constructor(
     @JsonCreator
     private constructor(
         @JsonProperty("id") @ExcludeMissing id: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("account_id") @ExcludeMissing accountId: JsonField<String> = JsonMissing.of(),
         @JsonProperty("country") @ExcludeMissing country: JsonField<String> = JsonMissing.of(),
         @JsonProperty("display_name")
         @ExcludeMissing
@@ -67,6 +69,7 @@ private constructor(
         @JsonProperty("uri") @ExcludeMissing uri: JsonField<String> = JsonMissing.of(),
     ) : this(
         id,
+        accountId,
         country,
         displayName,
         email,
@@ -83,12 +86,23 @@ private constructor(
     )
 
     /**
-     * The [Spotify user ID](/documentation/web-api/concepts/spotify-uris-ids) for the user.
+     * The [Spotify user ID](/documentation/web-api/concepts/spotify-uris-ids) for the user. Do not
+     * use this field for account linking — use `account_id` instead, which is immutable.
      *
      * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
     fun id(): Optional<String> = id.getOptional("id")
+
+    /**
+     * A public, immutable, pseudoanonymous identifier for the user's account. Use this field for
+     * account linking rather than the `id` field, as it is stable and will not change over the
+     * lifetime of the account.
+     *
+     * @throws SpottedInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun accountId(): Optional<String> = accountId.getOptional("account_id")
 
     /**
      * The country of the user, as set in the user's account profile. An
@@ -209,6 +223,13 @@ private constructor(
      * Unlike [id], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
+
+    /**
+     * Returns the raw JSON value of [accountId].
+     *
+     * Unlike [accountId], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("account_id") @ExcludeMissing fun _accountId(): JsonField<String> = accountId
 
     /**
      * Returns the raw JSON value of [country].
@@ -335,6 +356,7 @@ private constructor(
     class Builder internal constructor() {
 
         private var id: JsonField<String> = JsonMissing.of()
+        private var accountId: JsonField<String> = JsonMissing.of()
         private var country: JsonField<String> = JsonMissing.of()
         private var displayName: JsonField<String> = JsonMissing.of()
         private var email: JsonField<String> = JsonMissing.of()
@@ -352,6 +374,7 @@ private constructor(
         @JvmSynthetic
         internal fun from(meRetrieveResponse: MeRetrieveResponse) = apply {
             id = meRetrieveResponse.id
+            accountId = meRetrieveResponse.accountId
             country = meRetrieveResponse.country
             displayName = meRetrieveResponse.displayName
             email = meRetrieveResponse.email
@@ -367,7 +390,10 @@ private constructor(
             additionalProperties = meRetrieveResponse.additionalProperties.toMutableMap()
         }
 
-        /** The [Spotify user ID](/documentation/web-api/concepts/spotify-uris-ids) for the user. */
+        /**
+         * The [Spotify user ID](/documentation/web-api/concepts/spotify-uris-ids) for the user. Do
+         * not use this field for account linking — use `account_id` instead, which is immutable.
+         */
         fun id(id: String) = id(JsonField.of(id))
 
         /**
@@ -377,6 +403,22 @@ private constructor(
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun id(id: JsonField<String>) = apply { this.id = id }
+
+        /**
+         * A public, immutable, pseudoanonymous identifier for the user's account. Use this field
+         * for account linking rather than the `id` field, as it is stable and will not change over
+         * the lifetime of the account.
+         */
+        fun accountId(accountId: String) = accountId(JsonField.of(accountId))
+
+        /**
+         * Sets [Builder.accountId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.accountId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun accountId(accountId: JsonField<String>) = apply { this.accountId = accountId }
 
         /**
          * The country of the user, as set in the user's account profile. An
@@ -593,6 +635,7 @@ private constructor(
         fun build(): MeRetrieveResponse =
             MeRetrieveResponse(
                 id,
+                accountId,
                 country,
                 displayName,
                 email,
@@ -625,6 +668,7 @@ private constructor(
         }
 
         id()
+        accountId()
         country()
         displayName()
         email()
@@ -656,6 +700,7 @@ private constructor(
     @JvmSynthetic
     internal fun validity(): Int =
         (if (id.asKnown().isPresent) 1 else 0) +
+            (if (accountId.asKnown().isPresent) 1 else 0) +
             (if (country.asKnown().isPresent) 1 else 0) +
             (if (displayName.asKnown().isPresent) 1 else 0) +
             (if (email.asKnown().isPresent) 1 else 0) +
@@ -938,6 +983,7 @@ private constructor(
 
         return other is MeRetrieveResponse &&
             id == other.id &&
+            accountId == other.accountId &&
             country == other.country &&
             displayName == other.displayName &&
             email == other.email &&
@@ -956,6 +1002,7 @@ private constructor(
     private val hashCode: Int by lazy {
         Objects.hash(
             id,
+            accountId,
             country,
             displayName,
             email,
@@ -975,5 +1022,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "MeRetrieveResponse{id=$id, country=$country, displayName=$displayName, email=$email, explicitContent=$explicitContent, externalUrls=$externalUrls, followers=$followers, href=$href, images=$images, product=$product, published=$published, type=$type, uri=$uri, additionalProperties=$additionalProperties}"
+        "MeRetrieveResponse{id=$id, accountId=$accountId, country=$country, displayName=$displayName, email=$email, explicitContent=$explicitContent, externalUrls=$externalUrls, followers=$followers, href=$href, images=$images, product=$product, published=$published, type=$type, uri=$uri, additionalProperties=$additionalProperties}"
 }
