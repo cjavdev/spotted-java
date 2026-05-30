@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.28.0 (2026-05-30)
+
+Full Changelog: [v0.27.0...v0.28.0](https://github.com/cjavdev/spotted-java/compare/v0.27.0...v0.28.0)
+
+### Features
+
+* **api:** api update ([6e74178](https://github.com/cjavdev/spotted-java/commit/6e741783090ef84bb7004fcd83310c801c6c63d4))
+
+
+### Chores
+
+* redact api-key headers in debug logs ([e170a6a](https://github.com/cjavdev/spotted-java/commit/e170a6a55e95e0ca31607a5347f2b9f2968606b2))
+
 ## 0.27.0 (2026-05-07)
 
 Full Changelog: [v0.26.0...v0.27.0](https://github.com/cjavdev/spotted-java/compare/v0.26.0...v0.27.0)
