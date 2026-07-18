@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.29.0 (2026-07-18)
+
+Full Changelog: [v0.28.0...v0.29.0](https://github.com/cjavdev/spotted-java/compare/v0.28.0...v0.29.0)
+
+### Features
+
+* **stlc:** configurable CI runner and private-production-repo support in workflow templates ([a5ab28b](https://github.com/cjavdev/spotted-java/commit/a5ab28b6ab95b79eef61a7611faf79ea360aee21))
+
 ## 0.28.0 (2026-05-30)
 
 Full Changelog: [v0.27.0...v0.28.0](https://github.com/cjavdev/spotted-java/compare/v0.27.0...v0.28.0)
